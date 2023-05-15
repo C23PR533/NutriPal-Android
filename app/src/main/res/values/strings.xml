@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NutriPal</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+    <string name="title_tracking_food">Tracking Food</string>
+    <string name="title_profile">Profile</string>
+</resources>
