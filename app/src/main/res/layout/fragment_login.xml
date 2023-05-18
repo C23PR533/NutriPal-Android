@@ -5,18 +5,137 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_transaparent20"
-    tools:context=".ui.search.SearchFragment">
+    android:background="@drawable/bg_auth">
 
-    <TextView
+
+    <Button
+        android:id="@+id/buttonToRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:background="@drawable/bg_white_round_bottom_left_15"
+        android:paddingHorizontal="20dp"
+        android:text="Register"
+        android:textColor="@color/black"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view9"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:alpha="0.3"
+        android:background="@drawable/bg_white_round_top_50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="36sp"
         android:text="Login"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonToRegister" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:maxLines="2"
+        android:text="Find healthy foods that work for you."
+        app:layout_constraintStart_toStartOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="16dp"
+        android:orientation="vertical"
+        android:paddingTop="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view9">
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="20dp"
+            android:layout_marginBottom="18dp"
+            android:backgroundTint="@null"
+            android:textColorHint="#969696"
+            android:background="@drawable/bg_white_round_25"
+            android:hint="Email"/>
+        <EditText
+            android:textColorHint="#969696"
+            android:id="@+id/etPwd"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="20dp"
+            android:layout_marginBottom="18dp"
+            android:backgroundTint="@null"
+            android:inputType="textPassword"
+            android:background="@drawable/bg_white_round_25"
+            android:hint="Password"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password ?"
+            android:textColor="@color/white"
+            android:layout_gravity="end"
+            android:layout_marginBottom="18dp"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:backgroundTint="@null"
+            android:text="Login"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_black_round_25"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_marginHorizontal="16dp"
+        android:id="@+id/btnGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_white_round_25"
+        android:text="Login With Goolge"
         android:textStyle="bold"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        android:drawableLeft="@drawable/ic_google"
+        android:textAllCaps="false"
+        app:backgroundTint="@null"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view9" />
+    <Button
+        android:layout_marginHorizontal="16dp"
+        android:id="@+id/btnFb"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_white_round_25"
+        android:text="Login With Facebook"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_fb"
+        android:textAllCaps="false"
+        app:backgroundTint="@null"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnGoogle" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

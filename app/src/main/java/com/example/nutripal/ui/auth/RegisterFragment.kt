@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
@@ -18,6 +20,13 @@ class RegisterFragment : Fragment() {
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.buttonToLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_register_to_navigation_login)
+        }
     }
 
     override fun onDestroyView() {
