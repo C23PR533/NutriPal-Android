@@ -65,6 +65,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view9">
         <EditText
+            android:textColor="@color/black"
             android:id="@+id/etNama"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -75,6 +76,7 @@
             android:background="@drawable/bg_white_round_25"
             android:hint="Nama"/>
         <EditText
+            android:textColor="@color/black"
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -85,6 +87,7 @@
             android:background="@drawable/bg_white_round_25"
             android:hint="Email"/>
         <EditText
+            android:textColor="@color/black"
             android:id="@+id/etPwd"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -96,6 +99,7 @@
             android:background="@drawable/bg_white_round_25"
             android:hint="Password"/>
         <EditText
+            android:textColor="@color/black"
             android:id="@+id/etCpwd"
             android:layout_width="match_parent"
             android:layout_height="50dp"

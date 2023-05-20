@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.nutripal.MainActivity
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentLoginBinding
+import com.example.nutripal.ui.userpreference.UserPreferencesActivity
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -30,7 +31,7 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
         }
         binding.btnLogin.setOnClickListener {
-            startActivity(Intent(requireContext(),MainActivity::class.java))
+            startActivity(Intent(requireContext(),UserPreferencesActivity::class.java))
         }
 
     }
