@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.nutripal.databinding.FragmentTrackingFoodBinding
+import com.example.nutripal.utils.Util.setupDatePicker
 
 class TrackingFoodFragment : Fragment() {
     private var _binding: FragmentTrackingFoodBinding? = null
@@ -18,6 +19,11 @@ class TrackingFoodFragment : Fragment() {
     ): View {
         _binding = FragmentTrackingFoodBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupDatePicker(requireContext(),binding.tvDate)
     }
 
     override fun onDestroyView() {

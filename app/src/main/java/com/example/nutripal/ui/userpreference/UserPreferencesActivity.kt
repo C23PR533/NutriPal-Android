@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutripal.MainActivity
 import com.example.nutripal.databinding.ActivityUserPreferencesBinding
+import com.example.nutripal.utils.Util.setupDatePicker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -31,7 +32,7 @@ class UserPreferencesActivity : AppCompatActivity() {
 
         setupSpinerWeightGoal()
         setupRadioGender()
-        setupDatePicker()
+        setupDatePicker(this,binding.date)
         setupSpinerLevelActivity()
 
         binding.apply {
@@ -111,25 +112,7 @@ class UserPreferencesActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupDatePicker() {
-        val cal = Calendar.getInstance()
-        val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            cal.set(Calendar.YEAR, year)
-            cal.set(Calendar.MONTH, monthOfYear)
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            val myFormat = "dd-MM-yyyy" // mention the format you need
-            val sdf = SimpleDateFormat(myFormat, Locale.US)
-            binding.date.text = sdf.format(cal.time)
-        }
-
-        binding.date.setOnClickListener {
-            DatePickerDialog(this, dateSetListener,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)).show()
-        }
-    }
 
     private fun setupRadioGender() {
         binding.genderRadioGroup.setOnCheckedChangeListener { group, checkedId ->
