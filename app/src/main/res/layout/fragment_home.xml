@@ -196,6 +196,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:paddingBottom="60dp"
             android:paddingTop="40dp"
             android:paddingHorizontal="20dp"
             android:id="@+id/linearLayout"
@@ -238,6 +239,7 @@
                 </com.google.android.material.chip.ChipGroup>
             </HorizontalScrollView>
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcListHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="10"/>

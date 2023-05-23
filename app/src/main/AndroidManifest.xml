@@ -16,6 +16,9 @@
             android:name=".ui.auth.AuthActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.detail.DetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.userpreference.UserPreferencesActivity"
             android:exported="false" />
         <activity
