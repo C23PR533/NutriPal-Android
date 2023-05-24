@@ -1,10 +1,8 @@
 package com.example.nutripal.ui.userpreference
 
 import android.R
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,21 +12,28 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutripal.MainActivity
 import com.example.nutripal.databinding.ActivityUserPreferencesBinding
+import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.utils.Util.setupDatePicker
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class UserPreferencesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserPreferencesBinding
     val alergiList = ArrayList<String>()
     val favoritFoodList = ArrayList<String>()
+    var goal = ""
+    var level = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserPreferencesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val pref = PreferenceUser(this)
+        val dataPref = pref.getDataPreference()
+        val goall = dataPref[0]
+        if (!goall.equals("null",true)){
+            startActivity(Intent(this,MainActivity::class.java))
+        }
 
         setupSpinerWeightGoal()
         setupRadioGender()
@@ -48,7 +53,27 @@ class UserPreferencesActivity : AppCompatActivity() {
         }
 
         binding.btnSaveUserPreference.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
+            val radioGroup = binding.genderRadioGroup
+            val selectedRadioButtonId = radioGroup.checkedRadioButtonId
+            val selectedRadioButton = findViewById<RadioButton>(selectedRadioButtonId)
+            val gender = selectedRadioButton.text.toString()
+            if (binding.etHeight.text.isNullOrEmpty()){
+                binding.etHeight.error = "Insert your height"
+            }else if (binding.etWeight.text.isNullOrEmpty()){
+                binding.etWeight.error = "Insert your weight"
+            }else{
+                pref.setDataPreference(
+                    "123",
+                    goal,
+                    binding.etWeight.text.toString(),
+                    binding.etHeight.text.toString(),
+                    gender,
+                    binding.date.text.toString(),
+                    level
+                )
+                startActivity(Intent(this,MainActivity::class.java))
+            }
+
 
         }
 
@@ -101,9 +126,8 @@ class UserPreferencesActivity : AppCompatActivity() {
                 id: Long
             ) {
                 val selectedItem = parent?.getItemAtPosition(position) as SpinerItemLevelActivity
-                val selectedValue = selectedItem.value
-                val selectedText = selectedItem.text
-                Toast.makeText(applicationContext,selectedValue.toString(),Toast.LENGTH_SHORT).show()
+                level = selectedItem.value.toString()
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -139,9 +163,7 @@ class UserPreferencesActivity : AppCompatActivity() {
                 id: Long
             ) {
                 val selectedItem = parent?.getItemAtPosition(position) as SpinerItemWeightGoal
-                val selectedValue = selectedItem.value
-                val selectedText = selectedItem.text
-                Toast.makeText(applicationContext,selectedText+selectedValue,Toast.LENGTH_LONG).show()
+                goal = selectedItem.value.toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

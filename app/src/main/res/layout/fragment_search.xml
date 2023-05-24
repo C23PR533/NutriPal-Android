@@ -9,8 +9,9 @@
     tools:context=".ui.search.SearchFragment">
 
     <EditText
+
         android:layout_marginTop="20dp"
-        android:id="@+id/editText"
+        android:id="@+id/etSearch"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginHorizontal="20dp"
@@ -19,6 +20,7 @@
         android:drawablePadding="10dp"
         android:hint="search"
         android:paddingLeft="20dp"
+        android:focusable="true"
         app:layout_constraintEnd_toStartOf="@+id/imageButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +34,7 @@
         android:background="@drawable/bg_white_round_5"
         android:src="@drawable/ic_cam_blue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText" />
+        app:layout_constraintTop_toTopOf="@+id/etSearch" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,5 +45,5 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/etSearch" />
 </androidx.constraintlayout.widget.ConstraintLayout>

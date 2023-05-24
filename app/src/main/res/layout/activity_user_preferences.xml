@@ -89,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:text="Height :"/>
                     <EditText
+                        android:id="@+id/etHeight"
                         android:paddingLeft="5dp"
                         android:hint="Cm"
                         android:textColor="@color/black"
@@ -111,6 +112,7 @@
                         android:layout_height="wrap_content"
                         android:text="Weight :"/>
                     <EditText
+                        android:id="@+id/etWeight"
                         android:paddingLeft="5dp"
                         android:hint="Kg"
                         android:textColor="@color/black"

@@ -3,6 +3,7 @@ package com.example.nutripal.ui.detail
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutripal.databinding.ActivityDetailBinding
+import com.example.nutripal.utils.Util.setupDatePicker
 
 class DetailActivity : AppCompatActivity() {
 
@@ -13,7 +14,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.show()
+        setupDatePicker(this,binding.tvDateDetail)
 
     }
 }

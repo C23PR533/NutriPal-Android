@@ -21,7 +21,14 @@
         android:id="@+id/navigation_tracking_food"
         android:name="com.example.nutripal.ui.trackingfood.TrackingFoodFragment"
         android:label="@string/title_tracking_food"
-        tools:layout="@layout/fragment_tracking_food" />
+        tools:layout="@layout/fragment_tracking_food" >
+        <action
+            android:id="@+id/action_navigation_tracking_food_to_navigation_search"
+            app:destination="@id/navigation_search"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.nutripal.ui.profile.ProfileFragment"
