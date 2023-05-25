@@ -8,8 +8,8 @@
     android:background="@drawable/bg_transaparent20"
     tools:context=".ui.search.SearchFragment">
 
-    <EditText
-
+    <SearchView
+        android:clickable="true"
         android:layout_marginTop="20dp"
         android:id="@+id/etSearch"
         android:layout_width="0dp"
@@ -17,10 +17,8 @@
         android:layout_marginHorizontal="20dp"
         android:background="@drawable/bg_white_round_5"
         android:drawableStart="@drawable/ic_search_blue"
-        android:drawablePadding="10dp"
-        android:hint="search"
-        android:paddingLeft="20dp"
-        android:focusable="true"
+        android:queryHint="Search"
+        android:iconifiedByDefault="false"
         app:layout_constraintEnd_toStartOf="@+id/imageButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

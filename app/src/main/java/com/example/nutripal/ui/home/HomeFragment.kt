@@ -65,6 +65,25 @@ class HomeFragment : Fragment() {
 
                }
            }
+
+            nutripalViewModel.dataDiri.observe(viewLifecycleOwner){dataDiri->
+                when(dataDiri){
+                    is ApiResult.Success->{
+                        val nama = if (dataDiri.data.nama.isEmpty()){
+                            ""
+                        }else{
+                            dataDiri.data.nama
+                        }
+                        binding.tvNameHome.text = "Hi, ${nama}"
+                    }
+                    is ApiResult.Loading->{
+
+                    }
+                    is ApiResult.Error->{
+
+                    }
+                }
+            }
         }
 
     }
