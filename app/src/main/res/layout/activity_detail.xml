@@ -203,6 +203,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/view14" />
         <Spinner
+
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@color/black"
@@ -210,7 +211,7 @@
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:layout_marginTop="30dp"
-            android:id="@+id/textView35"
+            android:id="@+id/spinerMakan"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:drawableEnd="@drawable/ic_next"

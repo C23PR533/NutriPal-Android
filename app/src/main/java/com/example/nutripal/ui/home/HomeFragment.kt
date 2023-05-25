@@ -6,12 +6,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.databinding.FragmentHomeBinding
 import com.example.nutripal.network.dummmy.ResponseFoods
+import com.example.nutripal.network.dummmy.ResponseUserPreference
+import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.detail.DetailActivity
+import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.Util.getCalories
 import com.example.nutripal.utils.Util.getJsonDataFromAsset
 import com.example.nutripal.utils.Util.getPercenCalori
@@ -20,6 +25,7 @@ import com.google.gson.reflect.TypeToken
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
+    private val nutripalViewModel: NutripalViewModel by viewModels()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -27,7 +33,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       activity?.actionBar?.hide()
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,23 +53,29 @@ class HomeFragment : Fragment() {
         binding.rcListHome.adapter = adapter
         binding.rcListHome.layoutManager = layoutManager
 
-        val pref = PreferenceUser(requireContext())
-        val dataPref = pref.getDataPreference()
-        val goal = dataPref[0]
-        val weight = dataPref[1]
-        val height = dataPref[2]
-        val gender = dataPref[3]
-        val birthDate = dataPref[4]
-        val level = dataPref[5]
-        val calorie = getCalories(gender,weight,height,birthDate,level,goal)
+        nutripalViewModel.userPreference.observe(viewLifecycleOwner){preference->
+           when(preference){
+               is ApiResult.Success->{
+                   getDashboard(preference.data)
+               }
+               is ApiResult.Loading->{
+
+               }
+               is ApiResult.Error->{
+
+               }
+           }
+        }
+
+    }
+
+    private fun getDashboard(preference:ResponseUserPreference){
+        val calorie:Double = getCalories(preference)
         val percen = getPercenCalori(calorie,1000)
         binding.tvPercen.text = percen.toString()+"%"
         binding.circularProgressBar.progress = 1000f
         binding.circularProgressBar.progressMax = calorie.toFloat()
         binding.tvKebKalori.text = calorie.toInt().toString()+"kkal"
-        dataPref.forEach {
-            Log.e("USER",it)
-        }
 
     }
 

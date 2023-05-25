@@ -36,16 +36,17 @@ class TrackingFoodFragment : Fragment() {
     private fun setupAddBtn() {
         binding.apply {
             imageView2.setOnClickListener {
-                findNavController().navigate(R.id.navigation_search)
+                findNavController().navigate(R.id.action_navigation_tracking_food_to_navigation_search)
+
             }
             ivAddMakanSiang.setOnClickListener {
-                findNavController().navigate(R.id.navigation_search)
+                findNavController().navigate(R.id.action_navigation_tracking_food_to_navigation_search)
             }
             ivAddMakanMalam.setOnClickListener {
-                findNavController().navigate(R.id.navigation_search)
+                findNavController().navigate(R.id.action_navigation_tracking_food_to_navigation_search)
             }
             ivAddCemilan.setOnClickListener {
-                findNavController().navigate(R.id.navigation_search)
+                findNavController().navigate(R.id.action_navigation_tracking_food_to_navigation_search)
             }
         }
     }
