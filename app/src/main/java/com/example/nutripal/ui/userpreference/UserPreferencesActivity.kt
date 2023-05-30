@@ -42,7 +42,7 @@ class UserPreferencesActivity : AppCompatActivity() {
 
         binding.apply {
             val listCbAlergi = listOf(
-                cbDiabetes,cbAsamurat,cbObesitas
+                cbDiabetes,cbHipertensi,cbJantung,cbObesitas
             )
             val listCbFoods = listOf(
                 cbApple,cbBakso,cbMie,cbNasigoreng,cbRendang,cbSate

@@ -184,7 +184,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Alergi :"/>
+                android:text="Riwayat Penyakit :"/>
             <!--        checkbox alergi-->
             <TableLayout
                 android:layout_width="match_parent"
@@ -207,10 +207,16 @@
                         android:text="Obesity" />
                     <CheckBox
                         android:paddingEnd="5dp"
-                        android:id="@+id/cbAsamurat"
+                        android:id="@+id/cbJantung"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gout" />
+                        android:text="Heart" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbHipertensi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="hypertension" />
                 </TableRow>
             </TableLayout>
             <!--        checkbox alergi-->
