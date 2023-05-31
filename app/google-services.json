@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "520690290572",
+    "project_id": "nutripal-e746c",
+    "storage_bucket": "nutripal-e746c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520690290572:android:9f321ca70c8355f67510a9",
+        "android_client_info": {
+          "package_name": "com.example.nutripal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "520690290572-degegdos4sv9gcgen6rihml6eje0spr4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWaVjDn8UsMyr3gQ3bxb3kz3TKcsGP53w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "520690290572-degegdos4sv9gcgen6rihml6eje0spr4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
