@@ -1,7 +1,6 @@
-package com.example.nutripal.network.dummmy
+package com.example.nutripal.network.response.foods
 
 data class Serving(
-    val added_sugars: String,
     val calcium: String,
     val calories: String,
     val carbohydrate: String,
@@ -25,6 +24,5 @@ data class Serving(
     val sugar: String,
     val trans_fat: String,
     val vitamin_a: String,
-    val vitamin_c: String,
-    val vitamin_d: String
+    val vitamin_c: String
 )

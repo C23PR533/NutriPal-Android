@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutripal.databinding.ItemRecomendationBinding
-import com.example.nutripal.network.dummmy.Food
-import com.example.nutripal.network.dummmy.Serving
+import com.example.nutripal.network.response.foods.ResponseFoodsItem
+import com.example.nutripal.network.response.foods.Serving
 
-class FoodRecomendationAdapter(private val listFood:List<Food>,private val listner:Recomendation):RecyclerView.Adapter<FoodRecomendationAdapter.ViewHolder>() {
+class FoodRecomendationAdapter(private val listFood:List<ResponseFoodsItem>, private val listner:Recomendation):RecyclerView.Adapter<FoodRecomendationAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRecomendationBinding
@@ -20,7 +20,7 @@ class FoodRecomendationAdapter(private val listFood:List<Food>,private val listn
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val food = listFood[position]
-        val serving:Serving = food.servings.serving[0]
+        val serving: Serving = food.servings.serving[0]
         holder.binding.apply {
             tvTitle.text = food.food_name
             tvCal.text = "${serving.calories} kkal"

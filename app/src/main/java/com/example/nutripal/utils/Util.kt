@@ -4,7 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.util.Log
 import android.widget.TextView
-import com.example.nutripal.network.dummmy.ResponseUserPreference
+import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -31,7 +31,7 @@ object Util {
 //        BMR Pria = 66,5 + (13,7 × berat badan) + (5 × tinggi badan) – (6,8 × usia)
 //        BMR Wanita = 655 + (9,6 × berat badan) + (1,8 × tinggi badan) – (4,7 × usia)
     }
-    fun getCalories(preference:ResponseUserPreference):Double{
+    fun getCalories(preference: ListUserPreferences):Double{
         val umur = hitungUmur(preference.birthdate)
         var bmr = 0.0
         if (preference.gender.equals("Male",true)){

@@ -10,6 +10,7 @@ import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
+import com.example.nutripal.network.response.foods.ResponseFoods
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -26,9 +27,31 @@ class NutripalViewModel: ViewModel() {
     val responRegister : LiveData<ApiResult<ResponsStatus>> =_responRegister
     private val _responLogin = MutableLiveData<ApiResult<String>>()
     val responLogin : LiveData<ApiResult<String>> =_responLogin
+    private val _listFood = MutableLiveData<ApiResult<ResponseFoods>>()
+    val listFood : LiveData<ApiResult<ResponseFoods>> = _listFood
 
+init {
+    getListFoods()
+}
 
+     private fun getListFoods(){
+        viewModelScope.launch {
+            _listFood.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().getListFood()
+                if (response.isSuccessful){
+                    val result = response.body()!!
+                    _listFood.value = ApiResult.Success(result)
+                }else{
+                    _listFood.value = ApiResult.Error(response.message())
+                }
 
+            }catch (e:Exception){
+                _listFood.value = ApiResult.Error(e.toString())
+            }
+
+        }
+    }
      fun getDatadiri(idUser:String){
         viewModelScope.launch {
             _dataDiri.value = ApiResult.Loading
@@ -115,7 +138,7 @@ class NutripalViewModel: ViewModel() {
         },2000)
     }
 
-    private  fun getUserPreference(id_user:String){
+      fun getUserPreference(id_user:String){
         _userPrefernce.value = ApiResult.Loading
         viewModelScope.launch {
             try {
