@@ -17,6 +17,9 @@ import com.example.nutripal.databinding.FragmentRegisterBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
+import java.util.Timer
+import java.util.TimerTask
 
 class RegisterFragment : Fragment() {
     companion object{
@@ -118,7 +121,6 @@ class RegisterFragment : Fragment() {
         val close = view.findViewById<Button>(R.id.btn_close)
 
         if (mode== SUCCESS){
-
             val title = SUCCESS
             val message = "Register berhasil"
             ivDialog.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.undraw_completed_03xt))

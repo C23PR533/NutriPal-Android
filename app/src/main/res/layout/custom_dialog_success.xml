@@ -35,8 +35,8 @@
         android:fontFamily="@font/poppins_semibold"
         android:textSize="14dp"
         android:text="Register sukses"/>
-
     <Button
+        android:layout_marginHorizontal="20dp"
         android:id="@+id/btn_close"
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
@@ -44,7 +44,5 @@
         android:layout_gravity="center"
         android:text="Close"
         android:textStyle="bold"
-        app:backgroundTint="@drawable/bg_green_round15"
-        />
-
+       />
 </LinearLayout>

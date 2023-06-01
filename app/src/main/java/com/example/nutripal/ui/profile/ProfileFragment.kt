@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.databinding.FragmentProfileBinding
+import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.auth.AuthActivity
 
 class ProfileFragment : Fragment() {
@@ -27,8 +28,10 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val pref = PreferenceUser(requireContext())
         setupItemProfile()
         binding.btnLogout.setOnClickListener {
+            pref.clearDataPrefrence()
             startActivity(Intent(requireContext(),AuthActivity::class.java))
         }
     }

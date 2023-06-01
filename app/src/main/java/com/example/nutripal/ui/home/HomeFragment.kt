@@ -53,38 +53,38 @@ class HomeFragment : Fragment() {
         binding.rcListHome.adapter = adapter
         binding.rcListHome.layoutManager = layoutManager
 
-        nutripalViewModel.userPreference.observe(viewLifecycleOwner){preference->
-           when(preference){
-               is ApiResult.Success->{
-                   getDashboard(preference.data)
-               }
-               is ApiResult.Loading->{
-
-               }
-               is ApiResult.Error->{
-
-               }
-           }
-
-            nutripalViewModel.dataDiri.observe(viewLifecycleOwner){dataDiri->
-                when(dataDiri){
-                    is ApiResult.Success->{
-                        val nama = if (dataDiri.data.nama.isEmpty()){
-                            ""
-                        }else{
-                            dataDiri.data.nama
-                        }
-                        binding.tvNameHome.text = "Hi, ${nama}"
-                    }
-                    is ApiResult.Loading->{
-
-                    }
-                    is ApiResult.Error->{
-
-                    }
-                }
-            }
-        }
+//        nutripalViewModel.userPreference.observe(viewLifecycleOwner){preference->
+//           when(preference){
+//               is ApiResult.Success->{
+//                   getDashboard(preference.data)
+//               }
+//               is ApiResult.Loading->{
+//
+//               }
+//               is ApiResult.Error->{
+//
+//               }
+//           }
+//
+//            nutripalViewModel.dataDiri.observe(viewLifecycleOwner){dataDiri->
+//                when(dataDiri){
+//                    is ApiResult.Success->{
+//                        val nama = if (dataDiri.data.nama.isEmpty()){
+//                            ""
+//                        }else{
+//                            dataDiri.data.nama
+//                        }
+//                        binding.tvNameHome.text = "Hi, ${nama}"
+//                    }
+//                    is ApiResult.Loading->{
+//
+//                    }
+//                    is ApiResult.Error->{
+//
+//                    }
+//                }
+//            }
+//        }
 
     }
 
