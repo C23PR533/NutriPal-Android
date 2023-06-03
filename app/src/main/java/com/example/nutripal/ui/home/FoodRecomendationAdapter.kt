@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutripal.databinding.ItemRecomendationBinding
-import com.example.nutripal.network.response.foods.ResponseFoodsItem
-import com.example.nutripal.network.response.foods.Serving
+import com.example.nutripal.network.response.food.ResponseFoodsItem
+import com.example.nutripal.network.response.food.Serving
 
 class FoodRecomendationAdapter(private val listFood:List<ResponseFoodsItem>, private val listner:Recomendation):RecyclerView.Adapter<FoodRecomendationAdapter.ViewHolder>() {
 
@@ -22,16 +22,16 @@ class FoodRecomendationAdapter(private val listFood:List<ResponseFoodsItem>, pri
         val food = listFood[position]
         val serving: Serving = food.servings.serving[0]
         holder.binding.apply {
-            tvTitle.text = food.food_name
+            tvTitle.text = food.foodName
             tvCal.text = "${serving.calories} kkal"
         }
         holder.itemView.setOnClickListener {
-            listner.onKlik()
+            listner.onKlik(food)
         }
     }
     class ViewHolder(val binding:ItemRecomendationBinding):RecyclerView.ViewHolder(binding.root)
 
     interface Recomendation{
-        fun onKlik()
+        fun onKlik(food:ResponseFoodsItem)
     }
 }

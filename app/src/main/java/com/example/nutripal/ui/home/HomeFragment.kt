@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentHomeBinding
 import com.example.nutripal.network.response.ApiResult
-import com.example.nutripal.network.response.foods.ResponseFoodsItem
+import com.example.nutripal.network.response.food.ResponseFoodsItem
 import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.auth.AuthActivity
@@ -123,9 +123,13 @@ class HomeFragment : Fragment() {
     private fun setupRecylcerFoods(foods: List<ResponseFoodsItem>) {
         val adapter =
             FoodRecomendationAdapter(foods, object : FoodRecomendationAdapter.Recomendation {
-                override fun onKlik() {
-                    startActivity(Intent(requireContext(), DetailActivity::class.java))
+                override fun onKlik(food: ResponseFoodsItem) {
+
+                    val intent = Intent(requireContext(), DetailActivity::class.java)
+                    intent.putExtra("DATA",food.foodId)
+                    startActivity(intent)
                 }
+
             })
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

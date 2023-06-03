@@ -10,7 +10,8 @@ import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
-import com.example.nutripal.network.response.foods.ResponseFoods
+import com.example.nutripal.network.response.food.ResponseFoods
+import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -29,10 +30,30 @@ class NutripalViewModel: ViewModel() {
     val responLogin : LiveData<ApiResult<String>> =_responLogin
     private val _listFood = MutableLiveData<ApiResult<ResponseFoods>>()
     val listFood : LiveData<ApiResult<ResponseFoods>> = _listFood
+    private val _food = MutableLiveData<ApiResult<ResponseFoodId>>()
+    val food : LiveData<ApiResult<ResponseFoodId>> = _food
 
 init {
     getListFoods()
 }
+
+    fun getFoodId(id:String){
+        viewModelScope.launch {
+            _food.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().getFoodbyId(id)
+                if (response.isSuccessful){
+                    val result = response.body()!!
+                    _food.value = ApiResult.Success(result)
+                }else{
+                    _food.value = ApiResult.Error(response.message())
+                }
+            }catch (e:Exception){
+                _food.value = ApiResult.Error(e.toString())
+            }
+
+        }
+    }
 
      private fun getListFoods(){
         viewModelScope.launch {
