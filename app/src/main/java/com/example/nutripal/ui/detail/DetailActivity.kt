@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -53,34 +55,60 @@ class DetailActivity : AppCompatActivity() {
 
 
     }
+
+    private fun handleNullNutrition(nut:String?,textView:TextView,ll:LinearLayout,unit:String){
+        if (nut.isNullOrEmpty()){
+            ll.visibility = View.GONE
+        }else{
+            val result = decreaseZeroDecimal(nut)+unit
+            textView.text = result
+        }
+    }
+    private fun decreaseZeroDecimal(input:String):String{
+        val value = input.toDoubleOrNull()
+        return if (value != null) {
+            val formatted = String.format("%.10f", value)
+            formatted.trimEnd('0').removeSuffix(".")
+        } else {
+            input
+        }
+    }
+    private fun decreaseZeroDecimal(input:String,unit:String):String{
+        val value = input.toDoubleOrNull()
+        return if (value != null) {
+            val formatted = String.format("%.10f", value)
+            formatted.trimEnd('0').removeSuffix(".")+unit
+        } else {
+            input
+        }
+    }
     private fun setupInformationNutirition(food: ResponseFoodId) {
         binding.apply {
             toolBar.title = food.listUserPreferences.foodName
             val serving = food.listUserPreferences.servings.serving[0]
-            tvTopCaolorie.text = serving.calories
-            tvTopKarb.text = serving.carbohydrate
-            tvTopLemak.text = serving.fat
-            tvTopProtein.text = serving.protein
+
+            tvTopCaolorie.text = decreaseZeroDecimal(serving.calories,"kkal")
+            tvTopKarb.text = decreaseZeroDecimal(serving.carbohydrate,"g")
+            tvTopLemak.text = decreaseZeroDecimal(serving.fat,"g")
+            tvTopProtein.text = decreaseZeroDecimal(serving.protein,"g")
 
             tvPorsi.text = serving.servingDescription
-            tvBerat.text = serving.metricServingAmount+"g"
+            tvBerat.text = decreaseZeroDecimal(serving.metricServingAmount,serving.metricServingUnit)
 
-
-            tvCalorie.text = serving.calories
-            tvKalsium.text = serving.calcium
-            tvKarb.text = serving.carbohydrate
-
-            tvGula.text = serving.sugar+"g"
-            tvSerat.text = serving.fiber+"g"
-            tvLemakJenuh.text = serving.saturatedFat+"g"
-            tvLemak.text = serving.fat+"g"
-            tvLemakTrans.text = serving.transFat+"g"
-            tvLemakTakJenuhGanda.text = serving.polyunsaturatedFat+"g"
-            tvLemakTakJenuhTunggal.text = serving.monounsaturatedFat+"g"
-            tvKalium.text = serving.potassium+"mg"
-            tvSodium.text = serving.sodium+"mg"
-            tvKolestrol.text = serving.cholesterol+"mg"
-
+            handleNullNutrition(serving.calories,tvCalorie,llCalorie,"kkal")
+            handleNullNutrition(serving.calcium,tvKalsium,llKalsium,serving.metricServingUnit)
+            handleNullNutrition(serving.carbohydrate,tvKarb,llKarb,serving.metricServingUnit)
+            handleNullNutrition(serving.protein,tvProtein,llProtein,serving.metricServingUnit)
+            handleNullNutrition(serving.sugar,tvGula,llGula,serving.metricServingUnit)
+            handleNullNutrition(serving.fiber,tvSerat,llSerat,serving.metricServingUnit)
+            handleNullNutrition(serving.fat,tvLemak,llLemak,serving.metricServingUnit)
+            handleNullNutrition(serving.saturatedFat,tvLemakJenuh,llLemakJenuh,serving.metricServingUnit)
+            handleNullNutrition(serving.polyunsaturatedFat,tvLemakTakJenuhGanda,llLemakTakJenuhGanda,serving.metricServingUnit)
+            handleNullNutrition(serving.monounsaturatedFat,tvLemakTakJenuhTunggal,llLemakTakJenuhTunggal,serving.metricServingUnit)
+            handleNullNutrition(serving.transFat,tvLemakTrans,llLemakTrans,serving.metricServingUnit)
+            handleNullNutrition(serving.potassium,tvKalium,llKalium,"mg")
+            handleNullNutrition(serving.sodium,tvSodium,llSodium,"mg")
+            handleNullNutrition(serving.cholesterol,tvKolestrol,llKolestrol,"mg")
 
         }
     }
@@ -116,7 +144,6 @@ class DetailActivity : AppCompatActivity() {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
                 Toast.makeText(this@DetailActivity,selectedItem,Toast.LENGTH_SHORT).show()
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Toast.makeText(applicationContext,"Pilih dahulu", Toast.LENGTH_LONG).show()
             }
