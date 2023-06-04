@@ -4,17 +4,28 @@ import android.content.Context
 
 class PreferenceUser(context: Context) {
     private val preference = context.getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE)
-//    fun setDataPreference(token:String,goal:String,weight:String,height:String,gender:String,birthDate:String,level:String){
-//        val edit = preference.edit()
-//        edit.putString(TOKEN,token)
-//        edit.putString(GOAL,goal)
-//        edit.putString(WEIGTH,weight)
-//        edit.putString(HEIGHT,height)
-//        edit.putString(GENDER,gender)
-//        edit.putString(BIRTHDATE,birthDate)
-//        edit.putString(LEVEL,level)
-//        edit.apply()
-//    }
+    fun setDataPreference(goal:String,weight:String,height:String,gender:String,birthDate:String,level:String){
+        val edit = preference.edit()
+        edit.putString(GOAL,goal)
+        edit.putString(WEIGTH,weight)
+        edit.putString(HEIGHT,height)
+        edit.putString(GENDER,gender)
+        edit.putString(BIRTHDATE,birthDate)
+        edit.putString(LEVEL,level)
+        edit.apply()
+    }
+    fun setDataDiri(nama:String,email:String,noHp:String,gender:String,birthDate:String,fotoProfile:String){
+        val edit = preference.edit()
+        edit.apply {
+            putString(NAMA,nama)
+            putString(EMAIL,email)
+            putString(NOHP,noHp)
+            putString(GENDER,gender)
+            putString(BIRTHDATE,birthDate)
+            putString(FOTO,fotoProfile)
+        }
+        edit.apply()
+    }
     fun setToken(token:String){
         val edit = preference.edit()
         edit.putString(TOKEN,token)
@@ -32,5 +43,15 @@ class PreferenceUser(context: Context) {
     companion object {
         const val PREF_NAME = "login_pref"
         const val TOKEN = "token"
+        const val GOAL = "goal"
+        const val WEIGTH = "weight"
+        const val HEIGHT = "height"
+        const val GENDER = "gender"
+        const val BIRTHDATE = "birthdate"
+        const val LEVEL = "level"
+        const val NAMA = "nama"
+        const val NOHP = "nohp"
+        const val EMAIL = "email"
+        const val FOTO = "foto"
     }
 }

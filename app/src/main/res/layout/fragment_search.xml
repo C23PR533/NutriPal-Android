@@ -34,14 +34,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/etSearch" />
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcListSearch"
+        android:visibility="gone"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Histori Search"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/item_search"
         app:layout_constraintTop_toBottomOf="@+id/etSearch" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

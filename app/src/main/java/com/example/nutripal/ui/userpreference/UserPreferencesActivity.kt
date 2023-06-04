@@ -98,7 +98,7 @@ class UserPreferencesActivity : AppCompatActivity() {
                 cbDiabetes,cbHipertensi,cbJantung,cbObesitas
             )
             val listCbFoods = listOf(
-                cbApple,cbBakso,cbMie,cbNasigoreng,cbRendang,cbSate
+                cbAyam,cbGoreng,cbIkan,cbNasi,cbKue,cbTahu,cbSambal,cbBakar,cbMie,cbTelur,cbDaging,cbTumis,cbUdang,cbSayur,cbPisang,cbEs,cbSapi,cbPuding,cbBolu,cbBumbu
             )
             getCheckBoxAlergi(listCbAlergi)
             getCheckBoxFood(listCbFoods)
@@ -118,6 +118,8 @@ class UserPreferencesActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext,"Pilih Jenis Kelamin",Toast.LENGTH_SHORT).show()
                 }else if (date.text.isNullOrEmpty()){
                     Toast.makeText(applicationContext,"Isi Tanggal Lahir",Toast.LENGTH_SHORT).show()
+                }else if (favoritFoodList.size<5){
+                    Toast.makeText(applicationContext,"Pilih Minimal 3 Makanan Favorite",Toast.LENGTH_SHORT).show()
                 }else{
                     val height = etHeight.text.toString()
                     val weight = etWeight.text.toString()

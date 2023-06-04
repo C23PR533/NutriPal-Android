@@ -12,6 +12,7 @@ import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
 import com.example.nutripal.network.response.food.ResponseFoods
 import com.example.nutripal.network.response.foodid.ResponseFoodId
+import com.example.nutripal.network.response.search.ResponseSearch
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -32,11 +33,33 @@ class NutripalViewModel: ViewModel() {
     val listFood : LiveData<ApiResult<ResponseFoods>> = _listFood
     private val _food = MutableLiveData<ApiResult<ResponseFoodId>>()
     val food : LiveData<ApiResult<ResponseFoodId>> = _food
+    private val _searchFood = MutableLiveData<ApiResult<ResponseSearch>>()
+    val searchFood : LiveData<ApiResult<ResponseSearch>> = _searchFood
 
 init {
     getListFoods()
 }
 
+    fun getSearchFood(food_name:String?){
+        viewModelScope.launch {
+            _searchFood.value = ApiResult.Loading
+            try {
+                val response = food_name?.let { ApiConfig.getApiService().getSearchFood(it) }
+                if (response != null) {
+                    if (response.isSuccessful){
+                        val result = response.body()!!
+                        _searchFood.value = ApiResult.Success(result)
+                    }else{
+                        _searchFood.value = ApiResult.Error(response.message())
+
+                    }
+                }
+            }catch (e:Exception){
+                _searchFood.value = ApiResult.Error(e.toString())
+            }
+
+        }
+    }
     fun getFoodId(id:String){
         viewModelScope.launch {
             _food.value = ApiResult.Loading

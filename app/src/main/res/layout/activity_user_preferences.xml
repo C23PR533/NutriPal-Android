@@ -198,7 +198,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Diabetes" />
-
                     <CheckBox
                         android:paddingEnd="5dp"
                         android:id="@+id/cbObesitas"
@@ -233,48 +232,149 @@
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:paddingEnd="5dp"
-                        android:id="@+id/cbBakso"
+                        android:id="@+id/cbAyam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bakso" />
-
+                        android:text="Ayam" />
                     <CheckBox
                         android:paddingEnd="5dp"
-                        android:id="@+id/cbMie"
+                        android:id="@+id/cbGoreng"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mie" />
+                        android:text="Goreng" />
                     <CheckBox
                         android:paddingEnd="5dp"
-                        android:id="@+id/cbNasigoreng"
+                        android:id="@+id/cbIkan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nasi Goreng" />
+                        android:text="Ikan" />
                 </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:paddingEnd="5dp"
-                        android:id="@+id/cbRendang"
+                        android:id="@+id/cbNasi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rendang" />
-
+                        android:text="Nasi" />
                     <CheckBox
                         android:paddingEnd="5dp"
-                        android:id="@+id/cbSate"
+                        android:id="@+id/cbKue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sate" />
+                        android:text="Kue" />
                     <CheckBox
                         android:paddingEnd="5dp"
-                        android:id="@+id/cbApple"
+                        android:id="@+id/cbTahu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Apel" />
+                        android:text="Tahu" />
                 </TableRow>
-
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbSambal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sambal" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbBakar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bakar" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbMie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mie" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbTelur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Telur" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbDaging"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daging" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbTumis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tumis" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbUdang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Udang" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbSayur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sayur" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbPisang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pisang" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbEs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Es" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbSapi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sapi" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbPuding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Puding" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbBolu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bolu" />
+                    <CheckBox
+                        android:paddingEnd="5dp"
+                        android:id="@+id/cbBumbu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bumbu" />
+                </TableRow>
             </TableLayout>
             <Button
                 android:id="@+id/btnSaveUserPreference"
@@ -288,7 +388,6 @@
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 android:text="Save"/>
-
         </LinearLayout>
 
 

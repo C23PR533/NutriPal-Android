@@ -6,6 +6,7 @@ import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
 import com.example.nutripal.network.response.food.ResponseFoods
 import com.example.nutripal.network.response.foodid.ResponseFoodId
+import com.example.nutripal.network.response.search.ResponseSearch
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
 import retrofit2.Response
 import retrofit2.http.*
@@ -19,6 +20,10 @@ interface ApiService {
     suspend fun getFoodbyId(
         @Path("food_id")food_id:String
     ): Response<ResponseFoodId>
+    @GET("foods/search/{food_name}")
+    suspend fun getSearchFood(
+        @Path("food_name")food_name:String
+    ): Response<ResponseSearch>
 
     @GET("datadiri/{id_user}")
     suspend fun getDatadiri(

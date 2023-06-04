@@ -34,7 +34,6 @@ class DetailActivity : AppCompatActivity() {
         setupDialogLoading()
         val foodId = intent.getStringExtra("DATA")
         nutripalViewModel.getFoodId(foodId.toString())
-        Log.e("FOOD ID",foodId.toString())
 
         nutripalViewModel.food.observe(this){food->
             when(food){

@@ -76,6 +76,15 @@ class HomeFragment : Fragment() {
                 when(dataDiri){
                     is ApiResult.Success->{
                         showDialogLoading(false)
+                        val result = dataDiri.data.data
+                        pref.setDataDiri(
+                            result.nama,
+                            result.email,
+                            result.nomor_hp,
+                            result.gender,
+                            result.birthdate,
+                            result.foto_profile
+                            )
                         val nama = if (dataDiri.data.data.nama.isNullOrEmpty()){
                             ""
                         }else{
