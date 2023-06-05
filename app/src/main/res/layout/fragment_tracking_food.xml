@@ -8,7 +8,8 @@
     android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="80dp"
         tools:context=".ui.trackingfood.TrackingFoodFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,7 +86,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/view5" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/tvTarget"
                 style="@style/Black14spBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,14 +107,14 @@
                 app:layout_constraintTop_toTopOf="@+id/textView11" />
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/tvTercapai"
                 style="@style/Black14spBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="500 kkal"
                 app:layout_constraintEnd_toStartOf="@+id/view7"
                 app:layout_constraintStart_toEndOf="@+id/view6"
-                app:layout_constraintTop_toTopOf="@+id/textView12" />
+                app:layout_constraintTop_toTopOf="@+id/tvTarget" />
 
             <TextView
                 android:id="@+id/textView15"
@@ -126,14 +127,14 @@
                 app:layout_constraintTop_toTopOf="@+id/textView13" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/tvSisa"
                 style="@style/Black14spBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2000 kkal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view7"
-                app:layout_constraintTop_toTopOf="@+id/textView14" />
+                app:layout_constraintTop_toTopOf="@+id/tvTercapai" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -167,7 +168,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/tvTotalSarapan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="400 kkal"
@@ -177,6 +178,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcListSarapan"
+                tools:listitem="@layout/item_tracking_food"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/view8"

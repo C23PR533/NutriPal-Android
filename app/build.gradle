@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -64,6 +65,7 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation "androidx.activity:activity-ktx:1.7.2"
+
 
 
 

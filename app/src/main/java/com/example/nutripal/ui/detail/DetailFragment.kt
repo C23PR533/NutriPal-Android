@@ -1,56 +1,61 @@
 package com.example.nutripal.ui.detail
 
 
-import android.R
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.nutripal.MainActivity
-import com.example.nutripal.databinding.ActivityDetailBinding
+import com.example.nutripal.R
+import com.example.nutripal.databinding.FragmentDetailfoodBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.Util
-import com.example.nutripal.utils.Util.getCalories
 import com.example.nutripal.utils.Util.setupDatePicker
 
-class DetailActivity : AppCompatActivity() {
+class DetailFragment : Fragment() {
 
     private lateinit var builder: AlertDialog.Builder
     private lateinit var dialog: AlertDialog
-    private lateinit var binding: ActivityDetailBinding
-    private val nutripalViewModel:NutripalViewModel by viewModels()
+    private val nutripalViewModel: NutripalViewModel by viewModels()
     private var waktu = ""
-    lateinit var foodId:ResponseFoodId
+    lateinit var foodId: ResponseFoodId
     private var calorie:Double = 0.0
     private var kaloriMakanan = ""
+    private var _binding: FragmentDetailfoodBinding? = null
+    private val binding get() = _binding!!
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentDetailfoodBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val pref = PreferenceUser(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val pref = PreferenceUser(requireContext())
         val token = pref.getToken().toString()
+        val idFood = arguments?.getString("foodId")
 
         nutripalViewModel.getUserPreference(token)
-        nutripalViewModel.userPreference.observe(this) { preference ->
+        nutripalViewModel.userPreference.observe(viewLifecycleOwner) { preference ->
             when (preference) {
                 is ApiResult.Success -> {
-                    calorie = getCalories(preference.data.listUserPreferences)
+                    calorie = Util.getCalories(preference.data.listUserPreferences)
                     showDialogLoading(false)
                 }
 
@@ -72,13 +77,13 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        setupDatePicker(this,binding.tvDateDetail)
+        setupDatePicker(requireContext(), binding.tvDateDetail)
         setupSpinerMakan()
         setupDialogLoading()
-        val foodIdReceive = intent.getStringExtra("DATA")
-        nutripalViewModel.getFoodId(foodIdReceive.toString())
 
-        nutripalViewModel.food.observe(this){food->
+        nutripalViewModel.getFoodId(idFood.toString())
+
+        nutripalViewModel.food.observe(viewLifecycleOwner){food->
             when(food){
                 is ApiResult.Loading->{
                     showDialogLoading(true)
@@ -93,7 +98,7 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
-        nutripalViewModel.responRegister.observe(this){response->
+        nutripalViewModel.responRegister.observe(viewLifecycleOwner){response->
             when(response){
                 is ApiResult.Loading->{
                     showDialogLoading(true)
@@ -103,19 +108,16 @@ class DetailActivity : AppCompatActivity() {
                     Log.e("ERROR",response.errorMessage)
                 }
                 is ApiResult.Success->{
-                    val intent = Intent(this,MainActivity::class.java)
-                    startActivity(intent)
+                    findNavController().navigate(R.id.action_navigation_detail_to_navigation_tracking_food)
                     showDialogLoading(false)
 
                 }
             }
         }
-
-
-
     }
 
-    private fun handleNullNutrition(nut:String?,textView:TextView,ll:LinearLayout,unit:String){
+
+    private fun handleNullNutrition(nut:String?, textView: TextView, ll:LinearLayout, unit:String){
         if (nut.isNullOrEmpty()){
             ll.visibility = View.GONE
         }else{
@@ -203,8 +205,8 @@ class DetailActivity : AppCompatActivity() {
         }
     }
     private fun setupDialogLoading(){
-        builder = AlertDialog.Builder(this)
-        val view = layoutInflater.inflate(com.example.nutripal.R.layout.custom_dialog_loading,null)
+        builder = AlertDialog.Builder(requireContext())
+        val view = layoutInflater.inflate(R.layout.custom_dialog_loading,null)
         builder.setView(view)
         dialog = builder.create()
     }
@@ -221,8 +223,8 @@ class DetailActivity : AppCompatActivity() {
         val list = listOf(
             "Sarapan","Makan Siang","Makan Malam","Cemilan"
         )
-        val spinnerAdapter = ArrayAdapter(this, R.layout.simple_spinner_item, list)
-        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, list)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinerMakan.adapter = spinnerAdapter
         binding.spinerMakan.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -235,12 +237,19 @@ class DetailActivity : AppCompatActivity() {
                 waktu=selectedItem
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(applicationContext,"Pilih dahulu", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(),"Pilih dahulu", Toast.LENGTH_LONG).show()
             }
         }
     }
 
     private fun uploadDataHistoryAktifitas(iduser:String,tanggal:String,kaloriHarian:String,sisaKalori:String,idMakanan:String,namaMakanan:String,kalori:String,waktu:String){
         nutripalViewModel.postHistoryAktifitas(iduser,tanggal,sisaKalori,kaloriHarian,idMakanan,namaMakanan,kalori,waktu)
+    }
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

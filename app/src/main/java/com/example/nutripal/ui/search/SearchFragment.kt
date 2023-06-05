@@ -3,16 +3,13 @@ package com.example.nutripal.ui.search
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.databinding.FragmentSearchBinding
 import com.example.nutripal.network.response.ApiResult
@@ -76,9 +73,11 @@ class SearchFragment : Fragment() {
     private fun setupRcListSearch(listSearch:List<Data>){
         val adapter=SearchFoodAdapter(listSearch,object:SearchFoodAdapter.ListenerSearch{
             override fun onKlik(food: Data) {
-                val intent = Intent(requireContext(),DetailActivity::class.java)
+                val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("DATA",food.food_id)
                 startActivity(intent)
+//                val action = SearchFragmentDirections.actionNavigationSearchToNavigationDetail(food.food_id)
+//                findNavController().navigate(action)
             }
         })
         binding.apply {

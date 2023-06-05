@@ -9,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentHomeBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.food.ResponseFoodsItem
+import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
 import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.auth.AuthActivity
@@ -24,10 +27,15 @@ import com.example.nutripal.utils.Util.getCalories
 import com.example.nutripal.utils.Util.getPercenCalori
 
 class HomeFragment : Fragment() {
+
+    companion object{
+        lateinit var responsHistory:ListHistoryActivity
+         var calorie:Double = 0.0
+    }
     private lateinit var builder: AlertDialog.Builder
     private lateinit var dialog: AlertDialog
     private var _binding: FragmentHomeBinding? = null
-    private val nutripalViewModel: NutripalViewModel by viewModels()
+    val  nutripalViewModel: NutripalViewModel by viewModels()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -46,6 +54,7 @@ class HomeFragment : Fragment() {
 
         val pref = PreferenceUser(requireContext())
         val token = pref.getToken()
+        nutripalViewModel.getHistoryAktifitas(token.toString())
 
         if (token.isNullOrEmpty()) {
             val intent = Intent(requireContext(), AuthActivity::class.java)
@@ -53,8 +62,26 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+
         nutripalViewModel.getUserPreference(token.toString())
         nutripalViewModel.getDatadiri(token.toString())
+        nutripalViewModel.history.observe(viewLifecycleOwner) { history ->
+            when (history) {
+                is ApiResult.Success -> {
+                    responsHistory = history.data
+                    showDialogLoading(false)
+                }
+
+                is ApiResult.Loading -> {
+                    showDialogLoading(true)
+                }
+
+                is ApiResult.Error -> {
+
+                    showDialogLoading(false)
+                }
+            }
+        }
         nutripalViewModel.userPreference.observe(viewLifecycleOwner) { preference ->
             when (preference) {
                 is ApiResult.Success -> {
@@ -112,13 +139,10 @@ class HomeFragment : Fragment() {
                 is ApiResult.Success -> {
                     showDialogLoading(false)
                     setupRecylcerFoods(foods.data)
-
                 }
-
                 is ApiResult.Loading -> {
                     showDialogLoading(true)
                 }
-
                 is ApiResult.Error -> {
                     Log.e("FOODS",foods.errorMessage)
                     showDialogLoading(false)
@@ -134,9 +158,12 @@ class HomeFragment : Fragment() {
             FoodRecomendationAdapter(foods, object : FoodRecomendationAdapter.Recomendation {
                 override fun onKlik(food: ResponseFoodsItem) {
 
-                    val intent = Intent(requireContext(), DetailActivity::class.java)
+                    val intent = Intent(requireContext(),DetailActivity::class.java)
                     intent.putExtra("DATA",food.foodId)
                     startActivity(intent)
+//                    val action = HomeFragmentDirections.actionNavigationHomeToNavigationDetail(food.foodId)
+//                    findNavController().navigate(action)
+
                 }
 
             })
@@ -147,7 +174,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getDashboard(preference: ListUserPreferences){
-        val calorie:Double = getCalories(preference)
+         calorie = getCalories(preference)
         val percen = getPercenCalori(calorie,1000)
         binding.tvPercen.text = percen.toString()+"%"
         binding.circularProgressBar.progress = 1000f

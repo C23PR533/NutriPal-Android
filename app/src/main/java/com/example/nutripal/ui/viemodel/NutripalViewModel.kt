@@ -12,6 +12,7 @@ import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
 import com.example.nutripal.network.response.food.ResponseFoods
 import com.example.nutripal.network.response.foodid.ResponseFoodId
+import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
 import com.example.nutripal.network.response.search.ResponseSearch
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
 import com.google.firebase.auth.FirebaseAuth
@@ -35,10 +36,49 @@ class NutripalViewModel: ViewModel() {
     val food : LiveData<ApiResult<ResponseFoodId>> = _food
     private val _searchFood = MutableLiveData<ApiResult<ResponseSearch>>()
     val searchFood : LiveData<ApiResult<ResponseSearch>> = _searchFood
+    private val _history = MutableLiveData<ApiResult<ListHistoryActivity>>()
+    val history : LiveData<ApiResult<ListHistoryActivity>> = _history
 
 init {
     getListFoods()
 }
+
+    fun getHistoryAktifitas(id_user: String){
+        viewModelScope.launch {
+            _history.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().getHistoryAktifitas(id_user)
+                if (response.isSuccessful){
+                    val result = response.body()!!.listHistoryActivity
+                    _history.value = ApiResult.Success(result)
+                }else{
+                    _history.value = response.body()?.let { ApiResult.Error(it.message) }
+                }
+
+            }catch (e:Exception){
+                _history.value = ApiResult.Error(e.toString())
+            }
+
+
+        }
+    }
+    fun postHistoryAktifitas(id_user:String, tanggal:String, kalori_harian:String,sisa_kalori:String,  id_makanan:String, nama_makanan:String, kalori:String,waktu:String
+    ){
+        viewModelScope.launch {
+            _responRegister.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().postHistoryAktifitas(id_user,tanggal,sisa_kalori,kalori_harian,id_makanan,nama_makanan,kalori,waktu)
+                if (response.isSuccessful){
+                    val result = response.body()!!
+                    _responRegister.value = ApiResult.Success(result)
+                }else{
+                    _responRegister.value = response.body()?.let { ApiResult.Error(it.message) }
+                }
+            }catch (e:Exception){
+                _responRegister.value = ApiResult.Error(e.toString())
+            }
+        }
+    }
 
     fun getSearchFood(food_name:String?){
         viewModelScope.launch {

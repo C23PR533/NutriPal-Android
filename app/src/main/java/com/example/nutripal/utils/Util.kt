@@ -7,6 +7,8 @@ import android.widget.TextView
 import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -62,6 +64,10 @@ object Util {
 
      fun setupDatePicker(context: Context,textView: TextView) {
         val cal = Calendar.getInstance()
+         val dateNow = Calendar.getInstance().time
+         val mySdf = SimpleDateFormat("dd-MM-yyyy")
+         val now = mySdf.format(dateNow)
+         textView.text = now
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, monthOfYear)
