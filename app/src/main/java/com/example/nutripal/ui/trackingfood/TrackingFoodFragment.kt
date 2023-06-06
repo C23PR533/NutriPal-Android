@@ -1,9 +1,7 @@
 package com.example.nutripal.ui.trackingfood
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.nutripal.MainActivity
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentTrackingFoodBinding
 import com.example.nutripal.network.response.ApiResult
@@ -20,12 +17,11 @@ import com.example.nutripal.network.response.historiaktifitas.History
 import com.example.nutripal.network.response.historiaktifitas.KaloriMasuk
 import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
 import com.example.nutripal.savepreference.PreferenceUser
-import com.example.nutripal.ui.home.HomeFragment
 import com.example.nutripal.ui.home.HomeFragment.Companion.calorie
 import com.example.nutripal.ui.viemodel.NutripalViewModel
-import com.example.nutripal.utils.Util.setupDatePicker
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class TrackingFoodFragment : Fragment() {
@@ -33,8 +29,13 @@ class TrackingFoodFragment : Fragment() {
     private val nutripalViewModel:NutripalViewModel by viewModels()
     private var _binding: FragmentTrackingFoodBinding? = null
     private val binding get() = _binding!!
-    var tvDate = ""
-    private val responsHistory = HomeFragment.responsHistory
+    var token = ""
+    companion object{
+        var sumSarapan=0
+        var sumSiang=0
+        var sumMalam=0
+        var sumCemilan=0
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,77 +49,62 @@ class TrackingFoodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
          val pref = PreferenceUser(requireContext())
-         val token = pref.getToken().toString()
-        tvDate = binding.tvDate.text.toString()
-
-//        setupDatePicker(requireContext(),binding.tvDate)
+         token = pref.getToken().toString()
         setupDatePicker()
         setupAddBtn()
 
-        nutripalViewModel.getHistoryAktifitas(token)
-//        nutripalViewModel.history.observe(viewLifecycleOwner){history->
-//            when(history){
-//                is ApiResult.Loading->{
-//
-//                }
-//                is ApiResult.Error->{
-//                    Log.e("TRACK",history.errorMessage)
-//                }
-//                is ApiResult.Success->{
-//
-//                    responseHistory = history.data
-//                    Log.e("DATE",tvDate)
-//                    lateinit var h:History
-//                    for (i in history.data.History.indices){
-//                        if (history.data.History[i].tanggal==tvDate){
-//                            h=history.data.History[i]
-//                        }
-//                    }
-//
-//                    setHeader(h.kalori_harian,h.total_kalori.toString(),h.sisa_kalori)
-//                    filterData(tvDate,history.data)
-//
-//                }
-//            }
-//        }
+
+        nutripalViewModel.history.observe(viewLifecycleOwner){history->
+            when(history){
+                is ApiResult.Loading->{
+                    showProgressBar(true)
+                }
+                is ApiResult.Error->{
+                    showProgressBar(false)
+                    setHeader(calorie.toInt().toString(),"0",calorie.toInt().toString())
+                    setupRcListSarapan(emptyList())
+                    setupRcListMakanSiang(emptyList())
+                    setupRcListMakanMalam(emptyList())
+                    setupRcListCemilan(emptyList())
+                }
+                is ApiResult.Success->{
+                    showProgressBar(false)
+                    filterData(history.data)
+                }
+            }
+        }
 
 
 
     }
-    private fun filterData(tgl:String){
-        val result = responsHistory.History
-        lateinit var history :History
-        var listKaloriMasuk= emptyList<KaloriMasuk>()
-        for (i in result.indices){
-            if (result[i].tanggal==tgl){
-                 listKaloriMasuk=result[i].aktifitas.kalori_masuk
-                history = result[i]
-            }
-        }
-        if (listKaloriMasuk.isEmpty()){
-            setHeader(calorie.toInt().toString(),"0","${calorie.toInt()}")
-            setupRcListSarapan(emptyList())
-            setupRcListMakanSiang(emptyList())
-            setupRcListMakanMalam(emptyList())
-            setupRcListCemilan(emptyList())
+
+    private fun showProgressBar(show:Boolean) {
+        if (show){
+            binding.pbBar.visibility = View.VISIBLE
         }else{
-            setHeader(history.kalori_harian,history.total_kalori.toString(),history.sisa_kalori)
-            setupRcListSarapan(listKaloriMasuk)
-            setupRcListMakanSiang(listKaloriMasuk)
-            setupRcListMakanMalam(listKaloriMasuk)
-            setupRcListCemilan(listKaloriMasuk)
+            binding.pbBar.visibility = View.GONE
         }
 
+    }
+
+    private fun filterData(listHistory:ListHistoryActivity){
+        val result =listHistory.History
+        val listKaloriMasuk = result[0].aktifitas.kalori_masuk
+        val history = result[0]
+        setHeader(history.kalori_harian,history.total_kalori.toString(),history.sisa_kalori)
+        setupRcListSarapan(listKaloriMasuk)
+        setupRcListMakanSiang(listKaloriMasuk)
+        setupRcListMakanMalam(listKaloriMasuk)
+        setupRcListCemilan(listKaloriMasuk)
 
     }
     private fun setupDatePicker() {
+        val currentDate = Date()
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val now=  dateFormat.format(currentDate)
         val cal = Calendar.getInstance()
-        val dateNow = Calendar.getInstance().time
-        val mySdf = SimpleDateFormat("dd-MM-yyyy")
-        val now = mySdf.format(dateNow)
         binding.tvDate.text = now
-        filterData(now)
-
+        nutripalViewModel.getHistoryAktifitas(token,now)
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, monthOfYear)
@@ -126,30 +112,25 @@ class TrackingFoodFragment : Fragment() {
             val myFormat = "dd-MM-yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
             binding.tvDate.text = sdf.format(cal.time)
-            tvDate=sdf.format(cal.time)
-            filterData(sdf.format(cal.time))
-
-
+            nutripalViewModel.getHistoryAktifitas(token,sdf.format(cal.time))
         }
-
         binding.tvDate.setOnClickListener {
             DatePickerDialog(requireContext(), dateSetListener,
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)).show()
-
         }
     }
 
 
     private fun setupRcListSarapan(listMakanan:List<KaloriMasuk>){
         val sarapan = listMakanan.filter {
-            it.waktu == "Sarapan"
+            it.waktu=="Sarapan"
         }
-        sumKalorimakan(sarapan,binding.tvTotalSarapan)
-        val adapter=TrackingFoodAdapter(sarapan)
+        sumSarapan=sumKalorimakan(sarapan,binding.tvTotalSarapan)
+        val adapterSarapan=TrackingFoodAdapter(sarapan)
         binding.apply {
-            rcListSarapan.adapter = adapter
+            rcListSarapan.adapter = adapterSarapan
             rcListSarapan.layoutManager = LinearLayoutManager(requireContext())
         }
     }
@@ -157,10 +138,10 @@ class TrackingFoodFragment : Fragment() {
         val makanSiang = listMakanan.filter {
             it.waktu == "Makan Siang"
         }
-        sumKalorimakan(makanSiang,binding.tvTotalMakanSiang)
-        val adapter=TrackingFoodAdapter(makanSiang)
+        sumSiang=sumKalorimakan(makanSiang,binding.tvTotalMakanSiang)
+        val adapterSiang=TrackingFoodAdapter(makanSiang)
         binding.apply {
-            rcListMakanSiang.adapter = adapter
+            rcListMakanSiang.adapter = adapterSiang
             rcListMakanSiang.layoutManager = LinearLayoutManager(requireContext())
         }
     }
@@ -168,10 +149,10 @@ class TrackingFoodFragment : Fragment() {
         val malam = listMakanan.filter {
             it.waktu == "Makan Malam"
         }
-        sumKalorimakan(malam,binding.tvTotalMakanMalam)
-        val adapter=TrackingFoodAdapter(malam)
+        sumMalam=sumKalorimakan(malam,binding.tvTotalMakanMalam)
+        val adapterMalam=TrackingFoodAdapter(malam)
         binding.apply {
-            rcListMakanMalam.adapter = adapter
+            rcListMakanMalam.adapter = adapterMalam
             rcListMakanMalam.layoutManager = LinearLayoutManager(requireContext())
         }
     }
@@ -179,21 +160,21 @@ class TrackingFoodFragment : Fragment() {
         val cemilan = listMakanan.filter {
             it.waktu == "Cemilan"
         }
-        sumKalorimakan(cemilan,binding.tvTotalCemilan)
-        val adapter=TrackingFoodAdapter(cemilan)
+        sumCemilan = sumKalorimakan(cemilan,binding.tvTotalCemilan)
+        val adapterCemilan=TrackingFoodAdapter(cemilan)
         binding.apply {
-            rcListCemilan.adapter = adapter
+            rcListCemilan.adapter = adapterCemilan
             rcListCemilan.layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
-    private fun sumKalorimakan(listMakanan:List<KaloriMasuk>,textView: TextView){
+    private fun sumKalorimakan(listMakanan:List<KaloriMasuk>,textView: TextView):Int{
         var result = 0
         for (i in listMakanan.indices){
             result+=listMakanan[i].kalori.toInt()
         }
-        textView.text = "${result}kkal"
-
+        textView.text = "${result} kkal"
+        return result
     }
 
     private fun setHeader(target:String,tercapai:String,sisa:String){

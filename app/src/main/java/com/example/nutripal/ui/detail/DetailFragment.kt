@@ -243,7 +243,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun uploadDataHistoryAktifitas(iduser:String,tanggal:String,kaloriHarian:String,sisaKalori:String,idMakanan:String,namaMakanan:String,kalori:String,waktu:String){
-        nutripalViewModel.postHistoryAktifitas(iduser,tanggal,sisaKalori,kaloriHarian,idMakanan,namaMakanan,kalori,waktu)
+//        nutripalViewModel.postHistoryAktifitas(iduser,tanggal,sisaKalori,kaloriHarian,idMakanan,namaMakanan,kalori,waktu)
     }
 
 

@@ -21,6 +21,10 @@ import com.example.nutripal.databinding.ActivityDetailBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.savepreference.PreferenceUser
+import com.example.nutripal.ui.trackingfood.TrackingFoodFragment.Companion.sumCemilan
+import com.example.nutripal.ui.trackingfood.TrackingFoodFragment.Companion.sumMalam
+import com.example.nutripal.ui.trackingfood.TrackingFoodFragment.Companion.sumSarapan
+import com.example.nutripal.ui.trackingfood.TrackingFoodFragment.Companion.sumSiang
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.Util
 import com.example.nutripal.utils.Util.getCalories
@@ -68,7 +72,15 @@ class DetailActivity : AppCompatActivity() {
         binding.apply {
             btnSave.setOnClickListener {
                 val food = foodId.listUserPreferences
-                uploadDataHistoryAktifitas(token,tvDateDetail.text.toString(),calorie.toInt().toString(),"0",food.foodId,food.foodName,food.servings.serving[0].calories,waktu)
+                uploadDataHistoryAktifitas(token,
+                    tvDateDetail.text.toString(),
+                    calorie.toInt().toString(),
+                    sumkaloriTercapai(food.servings.serving[0].calories),
+                    sumSisaKalori(food.servings.serving[0].calories),
+                    food.foodId,
+                    food.foodName,
+                    food.servings.serving[0].calories,
+                    waktu)
             }
         }
 
@@ -113,6 +125,17 @@ class DetailActivity : AppCompatActivity() {
 
 
 
+    }
+
+    private fun sumkaloriTercapai(kaloriMakananParam:String):String{
+        val result = sumCemilan+sumSarapan+sumSiang+sumMalam+kaloriMakananParam.toInt()
+        Log.e("TERCAPAI","$result")
+        return result.toString()
+    }
+    private fun sumSisaKalori(kaloriMakananParam:String):String{
+        val result =  calorie - (sumCemilan+sumSarapan+sumSiang+sumMalam+kaloriMakananParam.toInt())
+        Log.e("SISA","$result")
+        return result.toString()
     }
 
     private fun handleNullNutrition(nut:String?,textView:TextView,ll:LinearLayout,unit:String){
@@ -240,7 +263,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadDataHistoryAktifitas(iduser:String,tanggal:String,kaloriHarian:String,sisaKalori:String,idMakanan:String,namaMakanan:String,kalori:String,waktu:String){
-        nutripalViewModel.postHistoryAktifitas(iduser,tanggal,sisaKalori,kaloriHarian,idMakanan,namaMakanan,kalori,waktu)
+    private fun uploadDataHistoryAktifitas(iduser:String,tanggal:String,kaloriHarian:String,totalKalori:String,sisaKalori:String,idMakanan:String,namaMakanan:String,kalori:String,waktu:String){
+        nutripalViewModel.postHistoryAktifitas(iduser,tanggal,kaloriHarian,totalKalori,sisaKalori,idMakanan,namaMakanan,kalori,waktu)
     }
 }

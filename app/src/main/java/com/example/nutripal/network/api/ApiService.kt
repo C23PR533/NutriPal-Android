@@ -15,7 +15,7 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    @GET("foods")
+    @GET("foodss")
     suspend fun getListFood(): Response<ResponseFoods>
 
     @GET("foods/{food_id}")
@@ -78,17 +78,19 @@ interface ApiService {
     ):Response<ResponsStatus>
 
 
-    @GET("history_aktifitas/{id_user}")
+    @GET("history_aktifitas/{id_user}/{tgl}")
     suspend fun getHistoryAktifitas(
-        @Path("id_user")id_user: String
+        @Path("id_user")id_user: String,
+        @Path("tgl")tgl: String,
     ):Response<ResponseHistoryAktifitas>
     @FormUrlEncoded
     @POST("history_aktifitas")
     suspend fun postHistoryAktifitas(
         @Field("id_user")id_user:String,
         @Field("tanggal")tanggal:String,
-        @Field("sisa_kalori")sisa_kalori:String,
         @Field("kalori_harian")kalori_harian:String,
+        @Field("total_kalori")total_kalori:String,
+        @Field("sisa_kalori")sisa_kalori:String,
         @Field("id_makanan")id_makanan:String,
         @Field("nama_makanan")nama_makanan:String,
         @Field("kalori")kalori:String,

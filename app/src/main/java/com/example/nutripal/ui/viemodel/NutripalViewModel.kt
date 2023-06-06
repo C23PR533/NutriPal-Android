@@ -39,20 +39,22 @@ class NutripalViewModel: ViewModel() {
     private val _history = MutableLiveData<ApiResult<ListHistoryActivity>>()
     val history : LiveData<ApiResult<ListHistoryActivity>> = _history
 
-init {
-    getListFoods()
-}
 
-    fun getHistoryAktifitas(id_user: String){
+    fun getHistoryAktifitas(id_user: String,tgl:String){
         viewModelScope.launch {
             _history.value = ApiResult.Loading
             try {
-                val response = ApiConfig.getApiService().getHistoryAktifitas(id_user)
+                val response = ApiConfig.getApiService().getHistoryAktifitas(id_user,tgl)
                 if (response.isSuccessful){
-                    val result = response.body()!!.listHistoryActivity
-                    _history.value = ApiResult.Success(result)
+                    if (!response.body()!!.error){
+                        val result = response.body()!!.listHistoryActivity
+                        _history.value = ApiResult.Success(result)
+                    }else{
+                        _history.value = ApiResult.Error(response.body()!!.message)
+                    }
+
                 }else{
-                    _history.value = response.body()?.let { ApiResult.Error(it.message) }
+                    _history.value = ApiResult.Error(response.body()!!.message)
                 }
 
             }catch (e:Exception){
@@ -62,12 +64,12 @@ init {
 
         }
     }
-    fun postHistoryAktifitas(id_user:String, tanggal:String, kalori_harian:String,sisa_kalori:String,  id_makanan:String, nama_makanan:String, kalori:String,waktu:String
+    fun postHistoryAktifitas(id_user:String, tanggal:String, kalori_harian:String,total_kalori:String,sisa_kalori:String,  id_makanan:String, nama_makanan:String, kalori:String,waktu:String
     ){
         viewModelScope.launch {
             _responRegister.value = ApiResult.Loading
             try {
-                val response = ApiConfig.getApiService().postHistoryAktifitas(id_user,tanggal,sisa_kalori,kalori_harian,id_makanan,nama_makanan,kalori,waktu)
+                val response = ApiConfig.getApiService().postHistoryAktifitas(id_user,tanggal,kalori_harian,total_kalori,sisa_kalori,id_makanan,nama_makanan,kalori,waktu)
                 if (response.isSuccessful){
                     val result = response.body()!!
                     _responRegister.value = ApiResult.Success(result)
@@ -118,7 +120,7 @@ init {
         }
     }
 
-     private fun getListFoods(){
+      fun getListFoods(){
         viewModelScope.launch {
             _listFood.value = ApiResult.Loading
             try {
@@ -207,7 +209,6 @@ init {
                             viewModelScope.launch {
                                 val id = auth.currentUser?.uid.toString()
                                 _responLogin.value = ApiResult.Success(id)
-                                getUserPreference(id)
                             }
                         }else{
                             Log.e("LOGIN", it.exception?.message.toString())
@@ -228,10 +229,15 @@ init {
             try {
                 val response = ApiConfig.getApiService().getUserPreferences(id_user)
                 if (response.isSuccessful){
-                    val result = response.body()!!
-                    _userPrefernce.value = ApiResult.Success(result)
+                    if (!response.body()!!.error){
+                        val result = response.body()!!
+                        _userPrefernce.value = ApiResult.Success(result)
+                    }else{
+                        _userPrefernce.value = ApiResult.Error(response.body()!!.message)
+                    }
+
                 }else{
-                    _userPrefernce.value = ApiResult.Error(response.message())
+                    _userPrefernce.value = ApiResult.Error(response.body()!!.message)
                 }
             }catch (e:Exception){
                 _userPrefernce.value = ApiResult.Error(e.toString())

@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:text="2500 kkal"
+                android:text="0 kkal"
                 app:layout_constraintEnd_toStartOf="@+id/view6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -111,7 +111,7 @@
                 style="@style/Black14spBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="500 kkal"
+                android:text="0 kkal"
                 app:layout_constraintEnd_toStartOf="@+id/view7"
                 app:layout_constraintStart_toEndOf="@+id/view6"
                 app:layout_constraintTop_toTopOf="@+id/tvTarget" />
@@ -131,7 +131,7 @@
                 style="@style/Black14spBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2000 kkal"
+                android:text="0 kkal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view7"
                 app:layout_constraintTop_toTopOf="@+id/tvTercapai" />
@@ -171,7 +171,7 @@
                 android:id="@+id/tvTotalSarapan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="400 kkal"
+                android:text="0 kkal"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView18" />
@@ -231,7 +231,7 @@
                 android:id="@+id/tvTotalMakanSiang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="400 kkal"
+                android:text="0 kkal"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvTitleMakanSiang" />
@@ -289,7 +289,7 @@
                 android:id="@+id/tvTotalMakanMalam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="400 kkal"
+                android:text="0 kkal"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvTitleMakanMalam" />
@@ -347,7 +347,7 @@
                 android:id="@+id/tvTotalCemilan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="400 kkal"
+                android:text="0 kkal"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvTitleCemilan" />
@@ -372,6 +372,14 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
+<ProgressBar
+    android:visibility="gone"
+    android:id="@+id/pbBar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

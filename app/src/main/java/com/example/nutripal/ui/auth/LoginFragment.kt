@@ -3,6 +3,7 @@ package com.example.nutripal.ui.auth
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,15 +62,17 @@ class LoginFragment : Fragment() {
                     showDialogSuccesError(ERROR)
                 }
                 is ApiResult.Success->{
-
+                    Log.e("LOGIN",response.data)
                     showDialogSuccesError(SUCCESS)
                     pref.setToken(response.data)
+                    viewModel.getUserPreference(response.data)
                 }
             }
         }
         viewModel.userPreference.observe(viewLifecycleOwner){response->
             when(response){
                 is ApiResult.Loading->{
+                    showDialogLoading(true)
                 }
                 is ApiResult.Error->{
                     showDialogLoading(false)
@@ -77,7 +80,9 @@ class LoginFragment : Fragment() {
                 }
                 is ApiResult.Success->{
                     showDialogLoading(false)
-                    startActivity(Intent(requireContext(),MainActivity::class.java))
+                    val intent = Intent(requireContext(),MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
                 }
             }
         }

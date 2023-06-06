@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.nutripal.R
@@ -29,7 +27,6 @@ import com.example.nutripal.utils.Util.getPercenCalori
 class HomeFragment : Fragment() {
 
     companion object{
-        lateinit var responsHistory:ListHistoryActivity
          var calorie:Double = 0.0
     }
     private lateinit var builder: AlertDialog.Builder
@@ -54,7 +51,6 @@ class HomeFragment : Fragment() {
 
         val pref = PreferenceUser(requireContext())
         val token = pref.getToken()
-        nutripalViewModel.getHistoryAktifitas(token.toString())
 
         if (token.isNullOrEmpty()) {
             val intent = Intent(requireContext(), AuthActivity::class.java)
@@ -65,23 +61,7 @@ class HomeFragment : Fragment() {
 
         nutripalViewModel.getUserPreference(token.toString())
         nutripalViewModel.getDatadiri(token.toString())
-        nutripalViewModel.history.observe(viewLifecycleOwner) { history ->
-            when (history) {
-                is ApiResult.Success -> {
-                    responsHistory = history.data
-                    showDialogLoading(false)
-                }
-
-                is ApiResult.Loading -> {
-                    showDialogLoading(true)
-                }
-
-                is ApiResult.Error -> {
-
-                    showDialogLoading(false)
-                }
-            }
-        }
+//        nutripalViewModel.getListFoods()
         nutripalViewModel.userPreference.observe(viewLifecycleOwner) { preference ->
             when (preference) {
                 is ApiResult.Success -> {
