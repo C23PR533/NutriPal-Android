@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.databinding.FragmentProfileBinding
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.auth.AuthActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
+    private val auth = FirebaseAuth.getInstance()
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -29,8 +31,12 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val pref = PreferenceUser(requireContext())
+        val resultPref = pref.getDatadiri()
+        val nama = resultPref[0]
+        binding.tvNamaProfile.text = nama
         setupItemProfile()
         binding.btnLogout.setOnClickListener {
+            auth.signOut()
             pref.clearDataPrefrence()
             val intent = Intent(requireContext(),AuthActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

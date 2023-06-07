@@ -88,9 +88,7 @@ interface ApiService {
     suspend fun postHistoryAktifitas(
         @Field("id_user")id_user:String,
         @Field("tanggal")tanggal:String,
-        @Field("kalori_harian")kalori_harian:String,
-        @Field("total_kalori")total_kalori:String,
-        @Field("sisa_kalori")sisa_kalori:String,
+        @Field("kalori_harian")kalori_harian:Int,
         @Field("id_makanan")id_makanan:String,
         @Field("nama_makanan")nama_makanan:String,
         @Field("kalori")kalori:String,

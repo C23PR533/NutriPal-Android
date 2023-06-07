@@ -3,7 +3,6 @@ package com.example.nutripal.ui.home
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +21,7 @@ import com.example.nutripal.ui.auth.AuthActivity
 import com.example.nutripal.ui.detail.DetailActivity
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.Util.getCalories
+import com.example.nutripal.utils.Util.getDateNow
 import com.example.nutripal.utils.Util.getPercenCalori
 
 class HomeFragment : Fragment() {
@@ -57,16 +57,27 @@ class HomeFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
+        val resultPref = pref.getDatadiri()
+        val nama = resultPref[0]
+        binding.tvNameHome.text = "HI,$nama"
 
 
+        nutripalViewModel.getHistoryAktifitas(token.toString(), getDateNow())
         nutripalViewModel.getUserPreference(token.toString())
         nutripalViewModel.getDatadiri(token.toString())
 //        nutripalViewModel.getListFoods()
+
         nutripalViewModel.userPreference.observe(viewLifecycleOwner) { preference ->
             when (preference) {
                 is ApiResult.Success -> {
+                    val result =  preference.data.listUserPreferences
                     showDialogLoading(false)
-                    getDashboard(preference.data.listUserPreferences)
+                    val desease = convertListToString(result.disease)
+                    val fav = convertListToString(result.favoriteFood)
+                    pref.setDataPreference(
+                       result.goals,result.weight,result.height,result.gender,result.birthdate,result.activityLevel,desease,fav
+                    )
+                    getHitungKalori(preference.data.listUserPreferences)
                 }
 
                 is ApiResult.Loading -> {
@@ -79,7 +90,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-            nutripalViewModel.dataDiri.observe(viewLifecycleOwner){dataDiri->
+        nutripalViewModel.dataDiri.observe(viewLifecycleOwner){dataDiri->
                 when(dataDiri){
                     is ApiResult.Success->{
                         showDialogLoading(false)
@@ -92,12 +103,12 @@ class HomeFragment : Fragment() {
                             result.birthdate,
                             result.foto_profile
                             )
-                        val nama = if (dataDiri.data.data.nama.isNullOrEmpty()){
-                            ""
-                        }else{
-                            dataDiri.data.data.nama
-                        }
-                        binding.tvNameHome.text = "Hi, ${nama}"
+//                        val nama = if (dataDiri.data.data.nama.isNullOrEmpty()){
+//                            ""
+//                        }else{
+//                            dataDiri.data.data.nama
+//                        }
+//                        binding.tvNameHome.text = "Hi, ${nama}"
                         if (!dataDiri.data.data.foto_profile.isEmpty()){
                             Glide.with(requireContext())
                                 .load(dataDiri.data.data.foto_profile)
@@ -112,25 +123,50 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-
-
-        nutripalViewModel.listFood.observe(viewLifecycleOwner){foods->
-            when (foods) {
+        nutripalViewModel.history.observe(viewLifecycleOwner){history->
+            when (history) {
                 is ApiResult.Success -> {
+                    setupDashboard(history.data)
                     showDialogLoading(false)
-                    setupRecylcerFoods(foods.data)
                 }
                 is ApiResult.Loading -> {
                     showDialogLoading(true)
                 }
                 is ApiResult.Error -> {
-                    Log.e("FOODS",foods.errorMessage)
+                    binding.apply {
+                        tvPercen.text = "0%"
+                        circularProgressBar.progress = 0f
+                        circularProgressBar.progressMax = calorie.toFloat()
+                        tvKebKalori.text = calorie.toInt().toString()
+                        tvKaloriTerkonsumsi.text = "0"
+                        tvKaloriBelumTercapai.text = calorie.toInt().toString()
+                    }
                     showDialogLoading(false)
                 }
             }
         }
 
 
+//        nutripalViewModel.listFood.observe(viewLifecycleOwner){foods->
+//            when (foods) {
+//                is ApiResult.Success -> {
+//                    showDialogLoading(false)
+//                    setupRecylcerFoods(foods.data)
+//                }
+//                is ApiResult.Loading -> {
+//                    showDialogLoading(true)
+//                }
+//                is ApiResult.Error -> {
+//                    Log.e("FOODS",foods.errorMessage)
+//                    showDialogLoading(false)
+//                }
+//            }
+//        }
+
+
+    }
+    fun convertListToString(list: List<String>): String {
+        return list.joinToString(", ") // Menggabungkan elemen-elemen list dengan pemisah koma dan spasi
     }
 
     private fun setupRecylcerFoods(foods: List<ResponseFoodsItem>) {
@@ -153,13 +189,26 @@ class HomeFragment : Fragment() {
         binding.rcListHome.layoutManager = layoutManager
     }
 
-    private fun getDashboard(preference: ListUserPreferences){
+    private fun setupDashboard(history:ListHistoryActivity){
+        val percen = getPercenCalori(history.History[0].kalori_harian.toDouble(),history.History[0].total_kalori)
+        binding.apply {
+            circularProgressBar.progressMax = history.History[0].kalori_harian.toFloat()
+            circularProgressBar.progress = history.History[0].total_kalori.toFloat()
+            tvPercen.text = "$percen%"
+            tvKebKalori.text = "${calorie.toInt()} Kkal"
+            tvKaloriTerkonsumsi.text = "${history.History[0].total_kalori} Kkal"
+            tvKaloriBelumTercapai.text = "${history.History[0].sisa_kalori} Kkal"
+        }
+
+    }
+
+    private fun getHitungKalori(preference: ListUserPreferences){
          calorie = getCalories(preference)
-        val percen = getPercenCalori(calorie,1000)
-        binding.tvPercen.text = percen.toString()+"%"
-        binding.circularProgressBar.progress = 1000f
-        binding.circularProgressBar.progressMax = calorie.toFloat()
-        binding.tvKebKalori.text = calorie.toInt().toString()+" kkal"
+//        val percen = getPercenCalori(calorie,1000)
+//        binding.tvPercen.text = percen.toString()+"%"
+//        binding.circularProgressBar.progress = 1000f
+//        binding.circularProgressBar.progressMax = calorie.toFloat()
+//        binding.tvKebKalori.text = calorie.toInt().toString()+" kkal"
     }
 
     private fun setupDialogLoading(){

@@ -64,12 +64,12 @@ class NutripalViewModel: ViewModel() {
 
         }
     }
-    fun postHistoryAktifitas(id_user:String, tanggal:String, kalori_harian:String,total_kalori:String,sisa_kalori:String,  id_makanan:String, nama_makanan:String, kalori:String,waktu:String
+    fun postHistoryAktifitas(id_user:String, tanggal:String, kalori_harian:Int, id_makanan:String, nama_makanan:String, kalori:String,waktu:String
     ){
         viewModelScope.launch {
             _responRegister.value = ApiResult.Loading
             try {
-                val response = ApiConfig.getApiService().postHistoryAktifitas(id_user,tanggal,kalori_harian,total_kalori,sisa_kalori,id_makanan,nama_makanan,kalori,waktu)
+                val response = ApiConfig.getApiService().postHistoryAktifitas(id_user,tanggal,kalori_harian,id_makanan,nama_makanan,kalori,waktu)
                 if (response.isSuccessful){
                     val result = response.body()!!
                     _responRegister.value = ApiResult.Success(result)

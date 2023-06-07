@@ -25,7 +25,7 @@ class TrackingFoodAdapter(private val listAktifitas:List<KaloriMasuk>):RecyclerV
 
         holder.binding.apply {
             tvFoodName.text = food.nama_makanan
-            tvFoodCal.text = "${food.kalori} kkal"
+            tvFoodCal.text = "${food.kalori}"
         }
 
     }

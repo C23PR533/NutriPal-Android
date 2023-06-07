@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentTrackingFoodBinding
 import com.example.nutripal.network.response.ApiResult
-import com.example.nutripal.network.response.historiaktifitas.History
 import com.example.nutripal.network.response.historiaktifitas.KaloriMasuk
 import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
 import com.example.nutripal.savepreference.PreferenceUser
@@ -30,12 +29,6 @@ class TrackingFoodFragment : Fragment() {
     private var _binding: FragmentTrackingFoodBinding? = null
     private val binding get() = _binding!!
     var token = ""
-    companion object{
-        var sumSarapan=0
-        var sumSiang=0
-        var sumMalam=0
-        var sumCemilan=0
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +54,7 @@ class TrackingFoodFragment : Fragment() {
                 }
                 is ApiResult.Error->{
                     showProgressBar(false)
-                    setHeader(calorie.toInt().toString(),"0",calorie.toInt().toString())
+                    setHeader(calorie.toInt(),0,calorie.toInt())
                     setupRcListSarapan(emptyList())
                     setupRcListMakanSiang(emptyList())
                     setupRcListMakanMalam(emptyList())
@@ -91,7 +84,7 @@ class TrackingFoodFragment : Fragment() {
         val result =listHistory.History
         val listKaloriMasuk = result[0].aktifitas.kalori_masuk
         val history = result[0]
-        setHeader(history.kalori_harian,history.total_kalori.toString(),history.sisa_kalori)
+        setHeader(history.kalori_harian,history.total_kalori,history.sisa_kalori)
         setupRcListSarapan(listKaloriMasuk)
         setupRcListMakanSiang(listKaloriMasuk)
         setupRcListMakanMalam(listKaloriMasuk)
@@ -127,7 +120,7 @@ class TrackingFoodFragment : Fragment() {
         val sarapan = listMakanan.filter {
             it.waktu=="Sarapan"
         }
-        sumSarapan=sumKalorimakan(sarapan,binding.tvTotalSarapan)
+        sumKalorimakan(sarapan,binding.tvTotalSarapan)
         val adapterSarapan=TrackingFoodAdapter(sarapan)
         binding.apply {
             rcListSarapan.adapter = adapterSarapan
@@ -138,7 +131,7 @@ class TrackingFoodFragment : Fragment() {
         val makanSiang = listMakanan.filter {
             it.waktu == "Makan Siang"
         }
-        sumSiang=sumKalorimakan(makanSiang,binding.tvTotalMakanSiang)
+        sumKalorimakan(makanSiang,binding.tvTotalMakanSiang)
         val adapterSiang=TrackingFoodAdapter(makanSiang)
         binding.apply {
             rcListMakanSiang.adapter = adapterSiang
@@ -149,7 +142,7 @@ class TrackingFoodFragment : Fragment() {
         val malam = listMakanan.filter {
             it.waktu == "Makan Malam"
         }
-        sumMalam=sumKalorimakan(malam,binding.tvTotalMakanMalam)
+        sumKalorimakan(malam,binding.tvTotalMakanMalam)
         val adapterMalam=TrackingFoodAdapter(malam)
         binding.apply {
             rcListMakanMalam.adapter = adapterMalam
@@ -160,7 +153,7 @@ class TrackingFoodFragment : Fragment() {
         val cemilan = listMakanan.filter {
             it.waktu == "Cemilan"
         }
-        sumCemilan = sumKalorimakan(cemilan,binding.tvTotalCemilan)
+        sumKalorimakan(cemilan,binding.tvTotalCemilan)
         val adapterCemilan=TrackingFoodAdapter(cemilan)
         binding.apply {
             rcListCemilan.adapter = adapterCemilan
@@ -168,16 +161,15 @@ class TrackingFoodFragment : Fragment() {
         }
     }
 
-    private fun sumKalorimakan(listMakanan:List<KaloriMasuk>,textView: TextView):Int{
+    private fun sumKalorimakan(listMakanan:List<KaloriMasuk>,textView: TextView){
         var result = 0
         for (i in listMakanan.indices){
             result+=listMakanan[i].kalori.toInt()
         }
         textView.text = "${result} kkal"
-        return result
     }
 
-    private fun setHeader(target:String,tercapai:String,sisa:String){
+    private fun setHeader(target:Int,tercapai:Int,sisa:Int){
         binding.apply {
            tvTarget.text = "${target} kkal"
             tvTercapai.text = "${tercapai} kkal"

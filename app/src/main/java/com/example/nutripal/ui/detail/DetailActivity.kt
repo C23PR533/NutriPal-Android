@@ -3,6 +3,7 @@ package com.example.nutripal.ui.detail
 
 import android.R
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,21 +15,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.nutripal.MainActivity
 import com.example.nutripal.databinding.ActivityDetailBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.foodid.ResponseFoodId
+import com.example.nutripal.network.response.historiaktifitas.KaloriMasuk
 import com.example.nutripal.savepreference.PreferenceUser
-import com.example.nutripal.ui.trackingfood.TrackingFoodFragment.Companion.sumCemilan
-import com.example.nutripal.ui.trackingfood.TrackingFoodFragment.Companion.sumMalam
-import com.example.nutripal.ui.trackingfood.TrackingFoodFragment.Companion.sumSarapan
-import com.example.nutripal.ui.trackingfood.TrackingFoodFragment.Companion.sumSiang
 import com.example.nutripal.ui.viemodel.NutripalViewModel
-import com.example.nutripal.utils.Util
 import com.example.nutripal.utils.Util.getCalories
 import com.example.nutripal.utils.Util.setupDatePicker
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class DetailActivity : AppCompatActivity() {
 
@@ -39,7 +39,9 @@ class DetailActivity : AppCompatActivity() {
     private var waktu = ""
     lateinit var foodId:ResponseFoodId
     private var calorie:Double = 0.0
-    private var kaloriMakanan = ""
+    private var token = ""
+    private var kaloriTercapai=""
+    private var kaloriTersisa=""
 
 
 
@@ -48,63 +50,13 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val pref = PreferenceUser(this)
-        val token = pref.getToken().toString()
+         token = pref.getToken().toString()
 
-        nutripalViewModel.getUserPreference(token)
-        nutripalViewModel.userPreference.observe(this) { preference ->
-            when (preference) {
-                is ApiResult.Success -> {
-                    calorie = getCalories(preference.data.listUserPreferences)
-                    showDialogLoading(false)
-                }
-
-                is ApiResult.Loading -> {
-                    showDialogLoading(true)
-                }
-
-                is ApiResult.Error -> {
-                    showDialogLoading(false)
-                }
-            }
-        }
-
-
-        binding.apply {
-            btnSave.setOnClickListener {
-                val food = foodId.listUserPreferences
-                uploadDataHistoryAktifitas(token,
-                    tvDateDetail.text.toString(),
-                    calorie.toInt().toString(),
-                    sumkaloriTercapai(food.servings.serving[0].calories),
-                    sumSisaKalori(food.servings.serving[0].calories),
-                    food.foodId,
-                    food.foodName,
-                    food.servings.serving[0].calories,
-                    waktu)
-            }
-        }
-
-        setupDatePicker(this,binding.tvDateDetail)
+        setupDatePicker()
         setupSpinerMakan()
         setupDialogLoading()
         val foodIdReceive = intent.getStringExtra("DATA")
         nutripalViewModel.getFoodId(foodIdReceive.toString())
-
-        nutripalViewModel.food.observe(this){food->
-            when(food){
-                is ApiResult.Loading->{
-                    showDialogLoading(true)
-                }
-                is ApiResult.Error->{
-                    showDialogLoading(false)
-                }
-                is ApiResult.Success->{
-                    showDialogLoading(false)
-                    setupInformationNutirition(food.data)
-                    foodId = food.data
-                }
-            }
-        }
         nutripalViewModel.responRegister.observe(this){response->
             when(response){
                 is ApiResult.Loading->{
@@ -122,21 +74,119 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
+        nutripalViewModel.getUserPreference(token)
+        nutripalViewModel.userPreference.observe(this) { preference ->
+            when (preference) {
+                is ApiResult.Success -> {
+                    calorie = getCalories(preference.data.listUserPreferences)
+                    showDialogLoading(false)
+                }
+
+                is ApiResult.Loading -> {
+                    showDialogLoading(true)
+                }
+
+                is ApiResult.Error -> {
+                    showDialogLoading(false)
+                }
+            }
+        }
+        nutripalViewModel.food.observe(this){food->
+            when(food){
+                is ApiResult.Loading->{
+                    showDialogLoading(true)
+                }
+                is ApiResult.Error->{
+                    showDialogLoading(false)
+                }
+                is ApiResult.Success->{
+                    showDialogLoading(false)
+                    setupInformationNutirition(food.data)
+                    foodId = food.data
+                    nutripalViewModel.history.observe(this){history->
+                        when(history){
+                            is ApiResult.Loading->{
+                                Toast.makeText(this,"LOADING",Toast.LENGTH_LONG).show()
+                            }
+                            is ApiResult.Error->{
+                                kaloriTercapai=food.data.listUserPreferences.servings.serving[0].calories
+                                val result = calorie-food.data.listUserPreferences.servings.serving[0].calories.toInt()
+                                kaloriTersisa=result.toInt().toString()
+                            }
+                            is ApiResult.Success->{
+                                val listKalori = history.data.History[0].aktifitas.kalori_masuk
+                                kaloriTercapai=hitungJumlahKaloriTercapai(listKalori).toString()
+                                kaloriTersisa=(calorie-hitungJumlahKaloriTercapai(listKalori)).toInt().toString()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+        binding.apply {
+            btnSave.setOnClickListener {
+                val food = foodId.listUserPreferences
+                uploadDataHistoryAktifitas(token,
+                    tvDateDetail.text.toString(),
+                    calorie.toInt(),
+                    food.foodId,
+                    food.foodName,
+                    food.servings.serving[0].calories,
+                    waktu)
+            }
+        }
+
+
 
 
 
     }
 
-    private fun sumkaloriTercapai(kaloriMakananParam:String):String{
-        val result = sumCemilan+sumSarapan+sumSiang+sumMalam+kaloriMakananParam.toInt()
-        Log.e("TERCAPAI","$result")
-        return result.toString()
+
+
+
+
+
+
+
+
+    private fun hitungJumlahKaloriTercapai(listKalori:List<KaloriMasuk>):Int{
+        var result = 0
+        for (i in listKalori.indices){
+            result+=listKalori[i].kalori.toInt()
+        }
+        Log.e("TERCAPAI","$result"
+        )
+        return result
     }
-    private fun sumSisaKalori(kaloriMakananParam:String):String{
-        val result =  calorie - (sumCemilan+sumSarapan+sumSiang+sumMalam+kaloriMakananParam.toInt())
-        Log.e("SISA","$result")
-        return result.toString()
+    private fun setupDatePicker() {
+        val currentDate = Date()
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val now=  dateFormat.format(currentDate)
+        val cal = Calendar.getInstance()
+        binding.tvDateDetail.text = now
+        nutripalViewModel.getHistoryAktifitas(token,now)
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            val myFormat = "dd-MM-yyyy" // mention the format you need
+            val sdf = SimpleDateFormat(myFormat, Locale.US)
+            binding.tvDateDetail.text = sdf.format(cal.time)
+            nutripalViewModel.getHistoryAktifitas(token,sdf.format(cal.time))
+        }
+        binding.tvDateDetail.setOnClickListener {
+            DatePickerDialog(this, dateSetListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
     }
+
 
     private fun handleNullNutrition(nut:String?,textView:TextView,ll:LinearLayout,unit:String){
         if (nut.isNullOrEmpty()){
@@ -263,7 +313,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadDataHistoryAktifitas(iduser:String,tanggal:String,kaloriHarian:String,totalKalori:String,sisaKalori:String,idMakanan:String,namaMakanan:String,kalori:String,waktu:String){
-        nutripalViewModel.postHistoryAktifitas(iduser,tanggal,kaloriHarian,totalKalori,sisaKalori,idMakanan,namaMakanan,kalori,waktu)
+    private fun uploadDataHistoryAktifitas(iduser:String,tanggal:String,kaloriHarian:Int,idMakanan:String,namaMakanan:String,kalori:String,waktu:String){
+        nutripalViewModel.postHistoryAktifitas(iduser,tanggal,kaloriHarian,idMakanan,namaMakanan,kalori,waktu)
     }
 }
