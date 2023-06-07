@@ -4,6 +4,7 @@ package com.example.nutripal.network
 
 import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
+import com.example.nutripal.network.response.favorites.ResponseFoodsFavorite
 import com.example.nutripal.network.response.food.ResponseFoods
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.network.response.historiaktifitas.ResponseHistoryAktifitas
@@ -15,6 +16,32 @@ import retrofit2.http.*
 
 interface ApiService {
 
+    @GET("foodsFavorite/{id_user}/{id_food}")
+    suspend fun getFoodFavorite(
+        @Path("id_user")id_user:String,
+        @Path("id_food")id_food:String,
+    ):Response<ResponseFoodsFavorite>
+    @GET("foodsFavorite/{id_user}")
+    suspend fun getListFoodFavorite(
+        @Path("id_user")id_user:String,
+    ):Response<ResponseFoodsFavorite>
+
+
+    @FormUrlEncoded
+    @POST("foodsFavorite/{id_user}")
+    suspend fun postFavoriteFoods(
+        @Path("id_user")id_user:String,
+        @Field("food_id")food_id:String,
+        @Field("food_name")food_name:String,
+        @Field("calories")calories:String,
+    ):Response<ResponsStatus>
+
+    @DELETE("foodsFavorite/{id_user}/{id_food}")
+    suspend fun deleteFoodFav(
+        @Path("id_user")id_user:String,
+        @Path("id_food")id_food: String,
+    ):Response<ResponsStatus>
+
     @GET("foodss")
     suspend fun getListFood(): Response<ResponseFoods>
 
@@ -23,7 +50,7 @@ interface ApiService {
         @Path("food_id")food_id:String
     ): Response<ResponseFoodId>
 
-    @GET("foods/search/{food_name}")
+    @GET("foods/get-json-data/search/{food_name}")
     suspend fun getSearchFood(
         @Path("food_name")food_name:String
     ): Response<ResponseSearch>

@@ -77,7 +77,8 @@ class HomeFragment : Fragment() {
                     pref.setDataPreference(
                        result.goals,result.weight,result.height,result.gender,result.birthdate,result.activityLevel,desease,fav
                     )
-                    getHitungKalori(preference.data.listUserPreferences)
+                    pref.setCalorie( getHitungKalori(preference.data.listUserPreferences))
+
                 }
 
                 is ApiResult.Loading -> {
@@ -202,13 +203,9 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun getHitungKalori(preference: ListUserPreferences){
+    private fun getHitungKalori(preference: ListUserPreferences):Double{
          calorie = getCalories(preference)
-//        val percen = getPercenCalori(calorie,1000)
-//        binding.tvPercen.text = percen.toString()+"%"
-//        binding.circularProgressBar.progress = 1000f
-//        binding.circularProgressBar.progressMax = calorie.toFloat()
-//        binding.tvKebKalori.text = calorie.toInt().toString()+" kkal"
+        return calorie
     }
 
     private fun setupDialogLoading(){

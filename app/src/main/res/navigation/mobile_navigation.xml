@@ -10,41 +10,13 @@
         android:name="com.example.nutripal.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_navigation_home_to_navigation_detail"
-            app:destination="@id/navigation_detail" >
-            <argument
-                android:name="foodId"
-                app:argType="string"/>
-        </action>
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_detail"
-        android:name="com.example.nutripal.ui.detail.DetailFragment"
-        android:label="Detail"
-        tools:layout="@layout/fragment_detailfood">
-        <action
-            android:id="@+id/action_navigation_detail_to_navigation_tracking_food"
-            app:destination="@id/navigation_tracking_food"
-            app:launchSingleTop="false"
-            app:popUpTo="@id/navigation_detail"
-            app:popUpToInclusive="true"
-            />
-
-    </fragment>
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.nutripal.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_navigation_search_to_navigation_detail"
-            app:destination="@id/navigation_detail" >
-            <argument
-                android:name="foodId"
-                app:argType="string"/>
-        </action>
     </fragment>
 
     <fragment

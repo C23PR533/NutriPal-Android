@@ -33,8 +33,17 @@ class PreferenceUser(context: Context) {
         edit.putString(TOKEN,token)
         edit.apply()
     }
+
+    fun setCalorie(kalori:Double){
+        val edit = preference.edit()
+        edit.putString(CALORIE,kalori.toInt().toString())
+        edit.apply()
+    }
     fun getToken():String?{
         return preference.getString(TOKEN, null)
+    }
+    fun getCalorie():String?{
+        return preference.getString(CALORIE, null)
     }
 
     fun getDatadiri():List<String>{
@@ -67,5 +76,6 @@ class PreferenceUser(context: Context) {
         const val NOHP = "nohp"
         const val EMAIL = "email"
         const val FOTO = "foto"
+        const val CALORIE = "calorie"
     }
 }

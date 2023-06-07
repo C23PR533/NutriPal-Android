@@ -1,7 +1,7 @@
 package com.example.nutripal.ui.detail
 
 
-import android.R
+
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -15,16 +15,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import com.example.nutripal.MainActivity
+import com.example.nutripal.R
 import com.example.nutripal.databinding.ActivityDetailBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.foodid.ResponseFoodId
-import com.example.nutripal.network.response.historiaktifitas.KaloriMasuk
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.viemodel.NutripalViewModel
-import com.example.nutripal.utils.Util.getCalories
-import com.example.nutripal.utils.Util.setupDatePicker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -38,10 +36,9 @@ class DetailActivity : AppCompatActivity() {
     private val nutripalViewModel:NutripalViewModel by viewModels()
     private var waktu = ""
     lateinit var foodId:ResponseFoodId
-    private var calorie:Double = 0.0
     private var token = ""
-    private var kaloriTercapai=""
-    private var kaloriTersisa=""
+    private var isFav = false
+
 
 
 
@@ -49,8 +46,10 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val pref = PreferenceUser(this)
          token = pref.getToken().toString()
+        val calorie = pref.getCalorie().toString()
 
         setupDatePicker()
         setupSpinerMakan()
@@ -74,20 +73,18 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
-        nutripalViewModel.getUserPreference(token)
-        nutripalViewModel.userPreference.observe(this) { preference ->
-            when (preference) {
-                is ApiResult.Success -> {
-                    calorie = getCalories(preference.data.listUserPreferences)
-                    showDialogLoading(false)
-                }
-
-                is ApiResult.Loading -> {
+        nutripalViewModel.responseFoodFav.observe(this){response->
+            when(response){
+                is ApiResult.Loading->{
                     showDialogLoading(true)
                 }
-
-                is ApiResult.Error -> {
+                is ApiResult.Error->{
                     showDialogLoading(false)
+                    Log.e("ERROR",response.errorMessage)
+                }
+                is ApiResult.Success->{
+                    showDialogLoading(false)
+
                 }
             }
         }
@@ -103,31 +100,52 @@ class DetailActivity : AppCompatActivity() {
                     showDialogLoading(false)
                     setupInformationNutirition(food.data)
                     foodId = food.data
-                    nutripalViewModel.history.observe(this){history->
-                        when(history){
-                            is ApiResult.Loading->{
-                                Toast.makeText(this,"LOADING",Toast.LENGTH_LONG).show()
-                            }
-                            is ApiResult.Error->{
-                                kaloriTercapai=food.data.listUserPreferences.servings.serving[0].calories
-                                val result = calorie-food.data.listUserPreferences.servings.serving[0].calories.toInt()
-                                kaloriTersisa=result.toInt().toString()
-                            }
-                            is ApiResult.Success->{
-                                val listKalori = history.data.History[0].aktifitas.kalori_masuk
-                                kaloriTercapai=hitungJumlahKaloriTercapai(listKalori).toString()
-                                kaloriTersisa=(calorie-hitungJumlahKaloriTercapai(listKalori)).toInt().toString()
-                            }
-                        }
-                    }
+                    nutripalViewModel.getFoodFavorite(token,foodId.listUserPreferences.foodId)
+                }
+            }
+        }
+        nutripalViewModel.favoriteFoods.observe(this){fav->
+            when(fav){
+                is ApiResult.Loading->{
+                    showDialogLoading(true)
+                }
+                is ApiResult.Error->{
+                    isFav = false
+                    binding.ivFav.setImageDrawable(ContextCompat.getDrawable(this@DetailActivity, R.drawable.ic_favorite_border))
+                    showDialogLoading(false)
+                }
+                is ApiResult.Success->{
+                    isFav = true
+                    binding.ivFav.setImageDrawable(ContextCompat.getDrawable(this@DetailActivity, R.drawable.ic_favorite))
+
+                    showDialogLoading(false)
+
                 }
             }
         }
 
-
-
-
         binding.apply {
+            ivFav.setOnClickListener {
+                if (!isFav){
+                    isFav=true
+                    binding.ivFav.setImageDrawable(ContextCompat.getDrawable(this@DetailActivity, R.drawable.ic_favorite))
+                    nutripalViewModel.postFoodFavorite(
+                        token,
+                        foodId.listUserPreferences.foodId,
+                        foodId.listUserPreferences.foodName,
+                        foodId.listUserPreferences.servings.serving[0].calories)
+                }else{
+                    isFav=false
+                    binding.ivFav.setImageDrawable(ContextCompat.getDrawable(this@DetailActivity, R.drawable.ic_favorite_border))
+                    nutripalViewModel.deleteFoodFavorite(
+                        token,foodIdReceive.toString()
+                    )
+                }
+
+            }
+            ivBack.setOnClickListener {
+                finish()
+            }
             btnSave.setOnClickListener {
                 val food = foodId.listUserPreferences
                 uploadDataHistoryAktifitas(token,
@@ -142,27 +160,10 @@ class DetailActivity : AppCompatActivity() {
 
 
 
-
-
     }
 
 
 
-
-
-
-
-
-
-    private fun hitungJumlahKaloriTercapai(listKalori:List<KaloriMasuk>):Int{
-        var result = 0
-        for (i in listKalori.indices){
-            result+=listKalori[i].kalori.toInt()
-        }
-        Log.e("TERCAPAI","$result"
-        )
-        return result
-    }
     private fun setupDatePicker() {
         val currentDate = Date()
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
@@ -186,8 +187,6 @@ class DetailActivity : AppCompatActivity() {
                 cal.get(Calendar.DAY_OF_MONTH)).show()
         }
     }
-
-
     private fun handleNullNutrition(nut:String?,textView:TextView,ll:LinearLayout,unit:String){
         if (nut.isNullOrEmpty()){
             ll.visibility = View.GONE
@@ -217,7 +216,7 @@ class DetailActivity : AppCompatActivity() {
     private fun setupInformationNutirition(food: ResponseFoodId) {
         binding.apply {
             try {
-                toolBar.title = food.listUserPreferences.foodName
+                tvTitle.text = food.listUserPreferences.foodName
                 val serving = food.listUserPreferences.servings.serving[0]
                 tvTopCaolorie.text = decreaseZeroDecimal(serving.calories, "kkal")
                 tvTopKarb.text = decreaseZeroDecimal(serving.carbohydrate, "g")
@@ -277,11 +276,10 @@ class DetailActivity : AppCompatActivity() {
     }
     private fun setupDialogLoading(){
         builder = AlertDialog.Builder(this)
-        val view = layoutInflater.inflate(com.example.nutripal.R.layout.custom_dialog_loading,null)
+        val view = layoutInflater.inflate(R.layout.custom_dialog_loading,null)
         builder.setView(view)
         dialog = builder.create()
     }
-
     private fun showDialogLoading(isLoading:Boolean) {
         if (isLoading){
             dialog.show()
@@ -289,13 +287,12 @@ class DetailActivity : AppCompatActivity() {
             dialog.dismiss()
         }
     }
-
     private fun setupSpinerMakan() {
         val list = listOf(
             "Sarapan","Makan Siang","Makan Malam","Cemilan"
         )
-        val spinnerAdapter = ArrayAdapter(this, R.layout.simple_spinner_item, list)
-        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinerMakan.adapter = spinnerAdapter
         binding.spinerMakan.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -312,7 +309,6 @@ class DetailActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun uploadDataHistoryAktifitas(iduser:String,tanggal:String,kaloriHarian:Int,idMakanan:String,namaMakanan:String,kalori:String,waktu:String){
         nutripalViewModel.postHistoryAktifitas(iduser,tanggal,kaloriHarian,idMakanan,namaMakanan,kalori,waktu)
     }

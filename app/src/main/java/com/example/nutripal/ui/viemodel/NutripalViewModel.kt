@@ -10,6 +10,7 @@ import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
+import com.example.nutripal.network.response.favorites.ResponseFoodsFavorite
 import com.example.nutripal.network.response.food.ResponseFoods
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
@@ -28,6 +29,8 @@ class NutripalViewModel: ViewModel() {
     val dataDiri : LiveData<ApiResult<ResponseDataDiri>> = _dataDiri
     private val _responRegister = MutableLiveData<ApiResult<ResponsStatus>>()
     val responRegister : LiveData<ApiResult<ResponsStatus>> =_responRegister
+    private val _responseFoodFav = MutableLiveData<ApiResult<ResponsStatus>>()
+    val responseFoodFav : LiveData<ApiResult<ResponsStatus>> =_responseFoodFav
     private val _responLogin = MutableLiveData<ApiResult<String>>()
     val responLogin : LiveData<ApiResult<String>> =_responLogin
     private val _listFood = MutableLiveData<ApiResult<ResponseFoods>>()
@@ -38,8 +41,70 @@ class NutripalViewModel: ViewModel() {
     val searchFood : LiveData<ApiResult<ResponseSearch>> = _searchFood
     private val _history = MutableLiveData<ApiResult<ListHistoryActivity>>()
     val history : LiveData<ApiResult<ListHistoryActivity>> = _history
+    private val _favoriteFoods = MutableLiveData<ApiResult<ResponseFoodsFavorite>>()
+    val favoriteFoods : LiveData<ApiResult<ResponseFoodsFavorite>> = _favoriteFoods
 
 
+    fun deleteFoodFavorite(id_user: String,idFood: String){
+        viewModelScope.launch {
+            _responseFoodFav.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().deleteFoodFav(id_user,idFood)
+                if (response.isSuccessful){
+                    _responseFoodFav.value = ApiResult.Success(response.body()!!)
+                }else{
+                    _responseFoodFav.value = ApiResult.Error(response.body()!!.message)
+                }
+            }catch (e:Exception){
+                _responseFoodFav.value = ApiResult.Error(e.toString())
+            }
+        }
+    }
+    fun getlistFoodFavorite(id_user: String){
+        viewModelScope.launch {
+            _favoriteFoods.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().getListFoodFavorite(id_user)
+                if (response.isSuccessful){
+                    _favoriteFoods.value = ApiResult.Success(response.body()!!)
+                }else{
+                    _favoriteFoods.value = ApiResult.Error(response.body()!!.message)
+                }
+            }catch (e:Exception){
+                _favoriteFoods.value = ApiResult.Error(e.toString())
+            }
+        }
+    }
+    fun getFoodFavorite(id_user: String,idFood: String){
+        viewModelScope.launch {
+            _favoriteFoods.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().getFoodFavorite(id_user,idFood)
+                if (response.isSuccessful){
+                    _favoriteFoods.value = ApiResult.Success(response.body()!!)
+                }else{
+                    _favoriteFoods.value = ApiResult.Error(response.body()!!.message)
+                }
+            }catch (e:Exception){
+                _favoriteFoods.value = ApiResult.Error(e.toString())
+            }
+        }
+    }
+    fun postFoodFavorite(id_user: String,idFood:String,foodName:String,calorie:String){
+        viewModelScope.launch {
+            _responseFoodFav.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().postFavoriteFoods(id_user,idFood,foodName,calorie)
+                if (response.isSuccessful){
+                    _responseFoodFav.value = ApiResult.Success(response.body()!!)
+                }else{
+                    _responseFoodFav.value = ApiResult.Error(response.body()!!.message)
+                }
+            }catch (e:Exception){
+                _responseFoodFav.value = ApiResult.Error(e.toString())
+            }
+        }
+    }
     fun getHistoryAktifitas(id_user: String,tgl:String){
         viewModelScope.launch {
             _history.value = ApiResult.Loading
