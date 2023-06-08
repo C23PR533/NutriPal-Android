@@ -1,30 +1,59 @@
 package com.example.nutripal.network.response.search
 
+
+import com.google.gson.annotations.SerializedName
+
 data class Serving(
-    val added_sugars: String,
+    @SerializedName("added_sugars")
+    val addedSugars: String,
+    @SerializedName("calcium")
     val calcium: String,
+    @SerializedName("calories")
     val calories: String,
+    @SerializedName("carbohydrate")
     val carbohydrate: String,
+    @SerializedName("cholesterol")
     val cholesterol: String,
+    @SerializedName("fat")
     val fat: String,
+    @SerializedName("fiber")
     val fiber: String,
+    @SerializedName("iron")
     val iron: String,
-    val measurement_description: String,
-    val metric_serving_amount: String,
-    val metric_serving_unit: String,
-    val monounsaturated_fat: String,
-    val number_of_units: String,
-    val polyunsaturated_fat: String,
+    @SerializedName("measurement_description")
+    val measurementDescription: String,
+    @SerializedName("metric_serving_amount")
+    val metricServingAmount: String,
+    @SerializedName("metric_serving_unit")
+    val metricServingUnit: String,
+    @SerializedName("monounsaturated_fat")
+    val monounsaturatedFat: String,
+    @SerializedName("number_of_units")
+    val numberOfUnits: String,
+    @SerializedName("polyunsaturated_fat")
+    val polyunsaturatedFat: String,
+    @SerializedName("potassium")
     val potassium: String,
+    @SerializedName("protein")
     val protein: String,
-    val saturated_fat: String,
-    val serving_description: String,
-    val serving_id: String,
-    val serving_url: String,
+    @SerializedName("saturated_fat")
+    val saturatedFat: String,
+    @SerializedName("serving_description")
+    val servingDescription: String,
+    @SerializedName("serving_id")
+    val servingId: String,
+    @SerializedName("serving_url")
+    val servingUrl: String,
+    @SerializedName("sodium")
     val sodium: String,
+    @SerializedName("sugar")
     val sugar: String,
-    val trans_fat: String,
-    val vitamin_a: String,
-    val vitamin_c: String,
-    val vitamin_d: String
+    @SerializedName("trans_fat")
+    val transFat: String,
+    @SerializedName("vitamin_a")
+    val vitaminA: String,
+    @SerializedName("vitamin_c")
+    val vitaminC: String,
+    @SerializedName("vitamin_d")
+    val vitaminD: String
 )

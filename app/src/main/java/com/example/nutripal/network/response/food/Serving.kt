@@ -1,12 +1,11 @@
 package com.example.nutripal.network.response.food
 
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class Serving(
+    @SerializedName("added_sugars")
+    val addedSugars: String,
     @SerializedName("calcium")
     val calcium: String,
     @SerializedName("calories")
@@ -54,5 +53,7 @@ data class Serving(
     @SerializedName("vitamin_a")
     val vitaminA: String,
     @SerializedName("vitamin_c")
-    val vitaminC: String
-):Parcelable
+    val vitaminC: String,
+    @SerializedName("vitamin_d")
+    val vitaminD: String
+)

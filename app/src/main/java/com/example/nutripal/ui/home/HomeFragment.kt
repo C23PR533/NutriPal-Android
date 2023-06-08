@@ -3,6 +3,7 @@ package com.example.nutripal.ui.home
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentHomeBinding
 import com.example.nutripal.network.response.ApiResult
-import com.example.nutripal.network.response.food.ResponseFoodsItem
+import com.example.nutripal.network.response.food.Data
 import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
 import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import com.example.nutripal.savepreference.PreferenceUser
@@ -65,7 +66,7 @@ class HomeFragment : Fragment() {
         nutripalViewModel.getHistoryAktifitas(token.toString(), getDateNow())
         nutripalViewModel.getUserPreference(token.toString())
         nutripalViewModel.getDatadiri(token.toString())
-//        nutripalViewModel.getListFoods()
+        nutripalViewModel.getListFoods()
 
         nutripalViewModel.userPreference.observe(viewLifecycleOwner) { preference ->
             when (preference) {
@@ -148,21 +149,21 @@ class HomeFragment : Fragment() {
         }
 
 
-//        nutripalViewModel.listFood.observe(viewLifecycleOwner){foods->
-//            when (foods) {
-//                is ApiResult.Success -> {
-//                    showDialogLoading(false)
-//                    setupRecylcerFoods(foods.data)
-//                }
-//                is ApiResult.Loading -> {
-//                    showDialogLoading(true)
-//                }
-//                is ApiResult.Error -> {
-//                    Log.e("FOODS",foods.errorMessage)
-//                    showDialogLoading(false)
-//                }
-//            }
-//        }
+        nutripalViewModel.listFood.observe(viewLifecycleOwner){foods->
+            when (foods) {
+                is ApiResult.Success -> {
+                    showDialogLoading(false)
+                    setupRecylcerFoods(foods.data.data)
+                }
+                is ApiResult.Loading -> {
+                    showDialogLoading(true)
+                }
+                is ApiResult.Error -> {
+                    Log.e("FOODS",foods.errorMessage)
+                    showDialogLoading(false)
+                }
+            }
+        }
 
 
     }
@@ -170,10 +171,10 @@ class HomeFragment : Fragment() {
         return list.joinToString(", ") // Menggabungkan elemen-elemen list dengan pemisah koma dan spasi
     }
 
-    private fun setupRecylcerFoods(foods: List<ResponseFoodsItem>) {
+    private fun setupRecylcerFoods(foods: List<Data>) {
         val adapter =
-            FoodRecomendationAdapter(foods, object : FoodRecomendationAdapter.Recomendation {
-                override fun onKlik(food: ResponseFoodsItem) {
+            FoodRecomendationAdapter(requireContext(),foods, object : FoodRecomendationAdapter.Recomendation {
+                override fun onKlik(food: Data) {
 
                     val intent = Intent(requireContext(),DetailActivity::class.java)
                     intent.putExtra("DATA",food.foodId)

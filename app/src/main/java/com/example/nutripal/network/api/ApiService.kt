@@ -5,7 +5,7 @@ package com.example.nutripal.network
 import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
 import com.example.nutripal.network.response.favorites.ResponseFoodsFavorite
-import com.example.nutripal.network.response.food.ResponseFoods
+import com.example.nutripal.network.response.food.ResponseFoodsAll
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.network.response.historiaktifitas.ResponseHistoryAktifitas
 import com.example.nutripal.network.response.search.ResponseSearch
@@ -42,10 +42,10 @@ interface ApiService {
         @Path("id_food")id_food: String,
     ):Response<ResponsStatus>
 
-    @GET("foodss")
-    suspend fun getListFood(): Response<ResponseFoods>
+    @GET("foods/get-json-data/search")
+    suspend fun getListFood(): Response<ResponseFoodsAll>
 
-    @GET("foods/{food_id}")
+    @GET("foods/get-json-data/search/food_id/{food_id}")
     suspend fun getFoodbyId(
         @Path("food_id")food_id:String
     ): Response<ResponseFoodId>

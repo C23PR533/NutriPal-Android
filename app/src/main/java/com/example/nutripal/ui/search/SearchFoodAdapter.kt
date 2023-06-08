@@ -21,7 +21,7 @@ class SearchFoodAdapter(private val listFood:List<Data>, private val listner:Lis
         val food = listFood[position]
         val serving = food.servings.serving[0]
         holder.binding.apply {
-            tvTitle.text = food.food_name
+            tvTitle.text = food.foodName
             tvCal.text = "${serving.calories} kkal"
         }
         holder.itemView.setOnClickListener {

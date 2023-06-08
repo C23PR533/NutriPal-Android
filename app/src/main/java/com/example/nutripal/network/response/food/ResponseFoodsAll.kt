@@ -1,9 +1,9 @@
-package com.example.nutripal.network.response.search
+package com.example.nutripal.network.response.food
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ResponseSearch(
+data class ResponseFoodsAll(
     @SerializedName("code")
     val code: Int,
     @SerializedName("data")

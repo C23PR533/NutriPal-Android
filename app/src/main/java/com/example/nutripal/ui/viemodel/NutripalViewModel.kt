@@ -11,7 +11,7 @@ import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
 import com.example.nutripal.network.response.favorites.ResponseFoodsFavorite
-import com.example.nutripal.network.response.food.ResponseFoods
+import com.example.nutripal.network.response.food.ResponseFoodsAll
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
 import com.example.nutripal.network.response.search.ResponseSearch
@@ -33,8 +33,8 @@ class NutripalViewModel: ViewModel() {
     val responseFoodFav : LiveData<ApiResult<ResponsStatus>> =_responseFoodFav
     private val _responLogin = MutableLiveData<ApiResult<String>>()
     val responLogin : LiveData<ApiResult<String>> =_responLogin
-    private val _listFood = MutableLiveData<ApiResult<ResponseFoods>>()
-    val listFood : LiveData<ApiResult<ResponseFoods>> = _listFood
+    private val _listFood = MutableLiveData<ApiResult<ResponseFoodsAll>>()
+    val listFood : LiveData<ApiResult<ResponseFoodsAll>> = _listFood
     private val _food = MutableLiveData<ApiResult<ResponseFoodId>>()
     val food : LiveData<ApiResult<ResponseFoodId>> = _food
     private val _searchFood = MutableLiveData<ApiResult<ResponseSearch>>()

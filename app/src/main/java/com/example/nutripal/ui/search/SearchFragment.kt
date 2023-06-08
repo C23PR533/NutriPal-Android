@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.databinding.FragmentSearchBinding
 import com.example.nutripal.network.response.ApiResult
@@ -74,7 +73,7 @@ class SearchFragment : Fragment() {
         val adapter=SearchFoodAdapter(listSearch,object:SearchFoodAdapter.ListenerSearch{
             override fun onKlik(food: Data) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
-                intent.putExtra("DATA",food.food_id)
+                intent.putExtra("DATA",food.foodId)
                 startActivity(intent)
 //                val action = SearchFragmentDirections.actionNavigationSearchToNavigationDetail(food.food_id)
 //                findNavController().navigate(action)

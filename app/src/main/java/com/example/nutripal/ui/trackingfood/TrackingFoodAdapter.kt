@@ -3,11 +3,7 @@ package com.example.nutripal.ui.trackingfood
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nutripal.databinding.ItemRecomendationBinding
 import com.example.nutripal.databinding.ItemTrackingFoodBinding
-import com.example.nutripal.network.response.food.ResponseFoodsItem
-import com.example.nutripal.network.response.food.Serving
-import com.example.nutripal.network.response.historiaktifitas.Aktifitas
 import com.example.nutripal.network.response.historiaktifitas.KaloriMasuk
 
 class TrackingFoodAdapter(private val listAktifitas:List<KaloriMasuk>):RecyclerView.Adapter<TrackingFoodAdapter.ViewHolder>() {

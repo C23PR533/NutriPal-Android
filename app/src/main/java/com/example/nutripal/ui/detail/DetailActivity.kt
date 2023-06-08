@@ -100,7 +100,7 @@ class DetailActivity : AppCompatActivity() {
                     showDialogLoading(false)
                     setupInformationNutirition(food.data)
                     foodId = food.data
-                    nutripalViewModel.getFoodFavorite(token,foodId.listUserPreferences.foodId)
+                    nutripalViewModel.getFoodFavorite(token,foodId.data[0].foodId)
                 }
             }
         }
@@ -131,9 +131,9 @@ class DetailActivity : AppCompatActivity() {
                     binding.ivFav.setImageDrawable(ContextCompat.getDrawable(this@DetailActivity, R.drawable.ic_favorite))
                     nutripalViewModel.postFoodFavorite(
                         token,
-                        foodId.listUserPreferences.foodId,
-                        foodId.listUserPreferences.foodName,
-                        foodId.listUserPreferences.servings.serving[0].calories)
+                        foodId.data[0].foodId,
+                        foodId.data[0].foodName,
+                        foodId.data[0].servings.serving[0].calories)
                 }else{
                     isFav=false
                     binding.ivFav.setImageDrawable(ContextCompat.getDrawable(this@DetailActivity, R.drawable.ic_favorite_border))
@@ -147,7 +147,7 @@ class DetailActivity : AppCompatActivity() {
                 finish()
             }
             btnSave.setOnClickListener {
-                val food = foodId.listUserPreferences
+                val food = foodId.data[0]
                 uploadDataHistoryAktifitas(token,
                     tvDateDetail.text.toString(),
                     calorie.toInt(),
@@ -216,8 +216,8 @@ class DetailActivity : AppCompatActivity() {
     private fun setupInformationNutirition(food: ResponseFoodId) {
         binding.apply {
             try {
-                tvTitle.text = food.listUserPreferences.foodName
-                val serving = food.listUserPreferences.servings.serving[0]
+                tvTitle.text = food.data[0].foodName
+                val serving = food.data[0].servings.serving[0]
                 tvTopCaolorie.text = decreaseZeroDecimal(serving.calories, "kkal")
                 tvTopKarb.text = decreaseZeroDecimal(serving.carbohydrate, "g")
                 tvTopLemak.text = decreaseZeroDecimal(serving.fat, "g")
