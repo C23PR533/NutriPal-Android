@@ -22,6 +22,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
+            <TextView
+                android:id="@+id/tvNameHome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/poppins"
+                android:text="HI,\nDoni  Ichan"
+                android:maxLines="3"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/circleImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/circleImageView" />
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImageView"
                 android:layout_width="50dp"
@@ -33,21 +50,6 @@
                 app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvNameHome"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:fontFamily="@font/poppins"
-                android:text="HI, Doni Ichan"
-                android:maxLines="2"
-                android:textColor="@color/white"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/circleImageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
 
             <View
                 android:id="@+id/imageView"
@@ -99,7 +101,7 @@
                 android:layout_marginStart="20dp"
                 app:cpb_background_progressbar_color="@android:color/transparent"
                 app:cpb_background_progressbar_width="40dp"
-                app:cpb_progress="60"
+                app:cpb_progress="0"
                 app:cpb_progress_direction="to_right"
                 app:cpb_progressbar_color="#ED7200"
                 app:cpb_progressbar_width="20dp"
@@ -112,7 +114,7 @@
                 android:id="@+id/tvPercen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50%"
+                android:text="0%"
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 android:textStyle="bold"

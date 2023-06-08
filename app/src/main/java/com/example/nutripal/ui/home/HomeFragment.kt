@@ -58,9 +58,6 @@ class HomeFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
-        val resultPref = pref.getDatadiri()
-        val nama = resultPref[0]
-        binding.tvNameHome.text = "HI,$nama"
 
 
         nutripalViewModel.getHistoryAktifitas(token.toString(), getDateNow())
@@ -98,22 +95,22 @@ class HomeFragment : Fragment() {
                         showDialogLoading(false)
                         val result = dataDiri.data.data
                         pref.setDataDiri(
-                            result.nama,
-                            result.email,
-                            result.nomor_hp,
-                            result.gender,
-                            result.birthdate,
-                            result.foto_profile
+                            result.nama.ifEmpty { "" },
+                            result.email.ifEmpty { "" },
+                            result.nomor_hp.ifEmpty { "" },
+                            result.gender.ifEmpty { "" },
+                            result.birthdate.ifEmpty { "" },
+                            result.foto_profile.ifEmpty { "" }
                             )
-//                        val nama = if (dataDiri.data.data.nama.isNullOrEmpty()){
-//                            ""
-//                        }else{
-//                            dataDiri.data.data.nama
-//                        }
-//                        binding.tvNameHome.text = "Hi, ${nama}"
-                        if (!dataDiri.data.data.foto_profile.isEmpty()){
+                        val nama = if (result.nama.isEmpty()){
+                            ""
+                        }else{
+                            result.nama
+                        }
+                        binding.tvNameHome.text = "Hi,\n${nama}"
+                        if(result.foto_profile.isNotEmpty()){
                             Glide.with(requireContext())
-                                .load(dataDiri.data.data.foto_profile)
+                                .load(result.foto_profile)
                                 .into(binding.circleImageView)
                         }
                     }
@@ -139,9 +136,9 @@ class HomeFragment : Fragment() {
                         tvPercen.text = "0%"
                         circularProgressBar.progress = 0f
                         circularProgressBar.progressMax = calorie.toFloat()
-                        tvKebKalori.text = calorie.toInt().toString()
-                        tvKaloriTerkonsumsi.text = "0"
-                        tvKaloriBelumTercapai.text = calorie.toInt().toString()
+                        tvKebKalori.text = calorie.toInt().toString()+"kkal"
+                        tvKaloriTerkonsumsi.text = "0 kkal"
+                        tvKaloriBelumTercapai.text = calorie.toInt().toString()+"kkal"
                     }
                     showDialogLoading(false)
                 }
@@ -168,7 +165,7 @@ class HomeFragment : Fragment() {
 
     }
     fun convertListToString(list: List<String>): String {
-        return list.joinToString(", ") // Menggabungkan elemen-elemen list dengan pemisah koma dan spasi
+        return list.joinToString(", ")
     }
 
     private fun setupRecylcerFoods(foods: List<Data>) {
