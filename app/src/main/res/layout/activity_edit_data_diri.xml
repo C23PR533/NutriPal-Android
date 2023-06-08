@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_transaparent20">
+
+
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:id="@+id/ivBack"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_next"
+        android:rotation="180"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:text="Edit Data Diri"
+        android:paddingTop="5dp"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+        app:layout_constraintStart_toEndOf="@id/ivBack"
+        app:layout_constraintTop_toTopOf="@+id/ivBack" />
+
+    <View
+        android:id="@+id/view17"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view17">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageView2"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile_white"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="4dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etNama"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/bg_white_round_25"
+            android:backgroundTint="@null"
+            android:hint="Nama"
+            android:paddingStart="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#969696" />
+
+        <EditText
+            android:id="@+id/etNohp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/bg_white_round_25"
+            android:backgroundTint="@null"
+            android:hint="No Hp"
+            android:paddingLeft="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#969696" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Birthdate :"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_white_round_25"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="15dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/ic_date"
+            tools:text="12-05-2023" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Gender :"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/gender_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/male_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/female_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_black_round_25"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,15 +46,17 @@ class ProfileFragment : Fragment() {
 
     private fun setupItemProfile() {
         val listTitle = listOf(
-            "Data diri",
-            "Data Preference",
-            "Bantuan",
-            "Privacy"
+            DataIntentProfile("Data diri",Intent(requireContext(),EditDataDiriActivity::class.java)),
+            DataIntentProfile("Data Preference",Intent(requireContext(),EditDataDiriActivity::class.java)),
+            DataIntentProfile("Bantuan",Intent(requireContext(),EditDataDiriActivity::class.java)),
+            DataIntentProfile("Privasi",Intent(requireContext(),EditDataDiriActivity::class.java)),
+
         )
         val adapter = ProfileAdapter(listTitle,object:ProfileAdapter.ProfileListener{
-            override fun onKlik(title: String) {
-                Toast.makeText(requireContext(),title,Toast.LENGTH_SHORT).show()
+            override fun onKlik(intent: Intent) {
+                startActivity(intent)
             }
+
         })
         val lm = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
        binding.rcListProfile.adapter = adapter

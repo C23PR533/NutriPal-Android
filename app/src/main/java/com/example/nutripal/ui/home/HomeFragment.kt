@@ -88,7 +88,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
         nutripalViewModel.dataDiri.observe(viewLifecycleOwner){dataDiri->
                 when(dataDiri){
                     is ApiResult.Success->{
@@ -144,8 +143,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
-
         nutripalViewModel.listFood.observe(viewLifecycleOwner){foods->
             when (foods) {
                 is ApiResult.Success -> {

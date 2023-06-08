@@ -1,11 +1,12 @@
 package com.example.nutripal.ui.profile
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutripal.databinding.ItemProfileBinding
 
-class ProfileAdapter(private val listTitle:List<String>, private val listner:ProfileListener):RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
+class ProfileAdapter(private val listTitle:List<DataIntentProfile>, private val listner:ProfileListener):RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemProfileBinding
@@ -20,15 +21,15 @@ class ProfileAdapter(private val listTitle:List<String>, private val listner:Pro
         val list = listTitle[position]
 
         holder.binding.apply {
-            tvTitle.text = list
+            tvTitle.text = list.title
         }
         holder.itemView.setOnClickListener {
-            listner.onKlik(list)
+            listner.onKlik(list.intent)
         }
     }
     class ViewHolder(val binding:ItemProfileBinding):RecyclerView.ViewHolder(binding.root)
 
     interface ProfileListener{
-        fun onKlik(title:String)
+        fun onKlik(intent: Intent)
     }
 }

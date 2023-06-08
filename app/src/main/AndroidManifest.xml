@@ -24,6 +24,9 @@
             android:name=".ui.auth.AuthActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.profile.EditDataDiriActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.detail.DetailActivity"
             android:exported="false" />
         <activity
