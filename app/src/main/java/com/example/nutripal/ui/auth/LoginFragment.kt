@@ -3,6 +3,8 @@ package com.example.nutripal.ui.auth
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +24,7 @@ import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.userpreference.UserPreferencesActivity
 import com.example.nutripal.ui.viemodel.NutripalViewModel
+import com.example.nutripal.utils.DialogUtil
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : Fragment() {
@@ -58,14 +61,30 @@ class LoginFragment : Fragment() {
                     showDialogLoading(true)
                 }
                 is ApiResult.Error->{
-                    showDialogLoading(false)
-                    showDialogSuccesError(ERROR)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        showDialogLoading(false)
+                        DialogUtil.showDialogSuccesError(
+                            RegisterFragment.ERROR,
+                            requireContext(),
+                            response.errorMessage,
+                            ""
+                        )
+                    },2000)
                 }
                 is ApiResult.Success->{
                     Log.e("LOGIN",response.data)
-                    showDialogSuccesError(SUCCESS)
-                    pref.setToken(response.data)
-                    viewModel.getUserPreference(response.data)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        showDialogLoading(false)
+                        DialogUtil.showDialogSuccesError(
+                            RegisterFragment.SUCCESS,
+                            requireContext(),
+                            "",
+                            "LOGIN"
+                        )
+                        pref.setToken(response.data)
+                        viewModel.getUserPreference(response.data)
+                    },2000)
+
                 }
             }
         }
@@ -126,50 +145,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun showDialogSuccesError(mode:String) {
-        val builder = AlertDialog.Builder(activity)
-        val view = layoutInflater.inflate(R.layout.custom_dialog_success, null)
-        val tvPertama = view.findViewById<TextView>(R.id.tvPertama)
-        val tvKedua = view.findViewById<TextView>(R.id.tvKedua)
-        val ivDialog = view.findViewById<ImageView>(R.id.ivDialog)
-        val close = view.findViewById<Button>(R.id.btn_close)
 
-        if (mode == SUCCESS) {
-            val title = RegisterFragment.SUCCESS
-            val message = "Login berhasil"
-            ivDialog.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.undraw_completed_03xt
-                )
-            )
-            tvPertama.text = title
-            tvKedua.text = message
-            builder.setView(view)
-            val dia = builder.create()
-            dia.show()
-            close.setOnClickListener {
-                dia.dismiss()
-            }
-        } else if (mode == ERROR) {
-            val title = RegisterFragment.ERROR
-            val message = "Login Gagal, coba lagi"
-            ivDialog.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.undraw_page_not_found_re_e9o6
-                )
-            )
-            tvPertama.text = title
-            tvKedua.text = message
-            builder.setView(view)
-            val dia = builder.create()
-            dia.show()
-            close.setOnClickListener {
-                dia.dismiss()
-            }
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

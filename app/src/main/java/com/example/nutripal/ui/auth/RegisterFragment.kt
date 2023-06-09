@@ -1,7 +1,10 @@
 package com.example.nutripal.ui.auth
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +19,7 @@ import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentRegisterBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.ui.viemodel.NutripalViewModel
+import com.example.nutripal.utils.DialogUtil.showDialogSuccesError
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import java.util.Timer
@@ -23,8 +27,8 @@ import java.util.TimerTask
 
 class RegisterFragment : Fragment() {
     companion object{
-        const val SUCCESS = "success"
-        const val ERROR = "error"
+        const val SUCCESS = "SUCCESS"
+        const val ERROR = "ERROR"
     }
     private lateinit var auth: FirebaseAuth
     private var _binding: FragmentRegisterBinding? = null
@@ -55,12 +59,18 @@ class RegisterFragment : Fragment() {
                     showDialogLoading(true)
                 }
                 is ApiResult.Error->{
-                    showDialogLoading(false)
-                    showDialogSuccesError(ERROR)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        showDialogLoading(false)
+                        showDialogSuccesError(ERROR,requireContext(),"Registration failed","")
+                    },2000)
                 }
                 is ApiResult.Success->{
-                    showDialogLoading(false)
-                    showDialogSuccesError(SUCCESS)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        showDialogLoading(false)
+                        showDialogSuccesError(SUCCESS,requireContext(),"","Registration success")
+                      findNavController().navigate(R.id.action_navigation_register_to_navigation_login)
+                    },2000)
+
                 }
             }
         }
@@ -112,42 +122,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun showDialogSuccesError(mode:String) {
-        val builder = AlertDialog.Builder(activity)
-        val view = layoutInflater.inflate(R.layout.custom_dialog_success,null)
-        val tvPertama = view.findViewById<TextView>(R.id.tvPertama)
-        val tvKedua = view.findViewById<TextView>(R.id.tvKedua)
-        val ivDialog = view.findViewById<ImageView>(R.id.ivDialog)
-        val close = view.findViewById<Button>(R.id.btn_close)
 
-        if (mode== SUCCESS){
-            val title = SUCCESS
-            val message = "Register berhasil"
-            ivDialog.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.undraw_completed_03xt))
-            tvPertama.text = title
-            tvKedua.text = message
-            builder.setView(view)
-            val dia = builder.create()
-            dia.show()
-            close.setOnClickListener {
-                dia.dismiss()
-                findNavController().navigate(R.id.action_navigation_register_to_navigation_login)
-            }
-        }else if (mode== ERROR){
-            val title = ERROR
-            val message = "Register Gagal, coba lagi"
-            ivDialog.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.undraw_page_not_found_re_e9o6))
-            tvPertama.text = title
-            tvKedua.text = message
-            builder.setView(view)
-            val dia = builder.create()
-            dia.show()
-            close.setOnClickListener {
-                dia.dismiss()
-            }
-        }
-
-    }
 
 
     override fun onDestroyView() {
