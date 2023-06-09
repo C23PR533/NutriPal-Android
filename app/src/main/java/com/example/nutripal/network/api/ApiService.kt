@@ -103,6 +103,20 @@ interface ApiService {
         @Field("disease")disease:List<String>,
         @Field("favoriteFood")favoriteFood:List<String>,
     ):Response<ResponsStatus>
+    @FormUrlEncoded
+    @PUT("userpreferences/{id_user}")
+    suspend fun editUserPreferences(
+        @Path("id_user")id_user:String,
+        @Field("id_user")id:String,
+        @Field("goals")goals:String,
+        @Field("height")height:String,
+        @Field("weight")weight:String,
+        @Field("birthdate")birthdate:String,
+        @Field("gender")gender:String,
+        @Field("activityLevel")activityLevel:String,
+        @Field("disease")disease:List<String>,
+        @Field("favoriteFood")favoriteFood:List<String>,
+    ):Response<ResponsStatus>
 
 
     @GET("history_aktifitas/{id_user}/{tgl}")

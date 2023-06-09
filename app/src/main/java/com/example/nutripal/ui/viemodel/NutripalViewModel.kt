@@ -300,7 +300,6 @@ class NutripalViewModel: ViewModel() {
                     }else{
                         _userPrefernce.value = ApiResult.Error(response.body()!!.message)
                     }
-
                 }else{
                     _userPrefernce.value = ApiResult.Error(response.body()!!.message)
                 }
@@ -316,6 +315,27 @@ class NutripalViewModel: ViewModel() {
         viewModelScope.launch {
             val response = ApiConfig.getApiService().postUserPreferences(
                 userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
+            )
+            try {
+                if (response.isSuccessful){
+                    val result = response.body()!!
+                    _responRegister.value = ApiResult.Success(result)
+                }else{
+                    _responRegister.value = response.body()?.let { ApiResult.Error(it.message) }
+                }
+            }catch (e:Exception){
+                _responRegister.value = ApiResult.Error(e.toString())
+            }
+
+        }
+
+    }
+
+    fun editUserPreference(userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
+        _responRegister.value = ApiResult.Loading
+        viewModelScope.launch {
+            val response = ApiConfig.getApiService().editUserPreferences(
+                userId,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
             )
             try {
                 if (response.isSuccessful){

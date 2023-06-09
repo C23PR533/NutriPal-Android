@@ -47,7 +47,7 @@ class ProfileFragment : Fragment() {
     private fun setupItemProfile() {
         val listTitle = listOf(
             DataIntentProfile("Data diri",Intent(requireContext(),EditDataDiriActivity::class.java)),
-            DataIntentProfile("Data Preference",Intent(requireContext(),EditDataDiriActivity::class.java)),
+            DataIntentProfile("Data Preference",Intent(requireContext(),EditPreferenceUserActivity::class.java)),
             DataIntentProfile("Bantuan",Intent(requireContext(),EditDataDiriActivity::class.java)),
             DataIntentProfile("Privasi",Intent(requireContext(),EditDataDiriActivity::class.java)),
 

@@ -23,6 +23,7 @@ import com.example.nutripal.utils.DialogUtil.showDialogSuccesError
 import com.example.nutripal.utils.Util.setupDatePicker
 
 class UserPreferencesActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityUserPreferencesBinding
     companion object{
         const val SUCCESS = "SUCCESS"
         const val ERROR = "ERROR"
@@ -30,7 +31,7 @@ class UserPreferencesActivity : AppCompatActivity() {
     private lateinit var builder:AlertDialog.Builder
     private lateinit var dialog:AlertDialog
     private val viewModel:NutripalViewModel by viewModels()
-    private lateinit var binding: ActivityUserPreferencesBinding
+
     private val alergiList = ArrayList<String>()
     private val favoritFoodList = ArrayList<String>()
     var goal = ""
@@ -197,8 +198,6 @@ class UserPreferencesActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     private fun setupRadioGender() {
         binding.genderRadioGroup.setOnCheckedChangeListener { group, checkedId ->
