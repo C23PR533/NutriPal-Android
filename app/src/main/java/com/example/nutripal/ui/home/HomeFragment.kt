@@ -126,10 +126,8 @@ class HomeFragment : Fragment() {
                             result.birthdate.ifEmpty { "" },
                             result.foto_profile.ifEmpty { "" }
                             )
-                        val nama = if (result.nama.isEmpty()){
+                        val nama = result.nama.ifEmpty {
                             ""
-                        }else{
-                            result.nama
                         }
                         binding.tvNameHome.text = "Hi,\n${nama}"
                         if(result.foto_profile.isNotEmpty()){

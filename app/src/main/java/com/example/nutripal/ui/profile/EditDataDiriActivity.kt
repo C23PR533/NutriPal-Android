@@ -2,43 +2,35 @@ package com.example.nutripal.ui.profile
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.example.nutripal.MainActivity
-
 import com.example.nutripal.databinding.ActivityEditDataDiriBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.DialogUtil.showDialogSuccesError
+import com.example.nutripal.utils.Util.setupDatePicker
 import com.example.nutripal.utils.Util.uriToFile
 import com.github.dhaval2404.imagepicker.ImagePicker
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 
 class EditDataDiriActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditDataDiriBinding
     private val nutripalViewModel:NutripalViewModel by viewModels()
     private var token = ""
+    private var url = ""
+    private var email = ""
 
 
     @SuppressLint("CheckResult")
@@ -48,9 +40,8 @@ class EditDataDiriActivity : AppCompatActivity() {
         setContentView(binding.root)
         val pref = PreferenceUser(this)
          token = pref.getToken().toString()
-        val datadiri = pref.getDatadiri()
-        var email = datadiri[1]
-        var url = datadiri[5]
+
+        setupDatePicker(this,binding.date)
 
         nutripalViewModel.getDatadiri(token)
         nutripalViewModel.dataDiri.observe(this){datadiri->
@@ -75,7 +66,9 @@ class EditDataDiriActivity : AppCompatActivity() {
                             maleRadioButton.isChecked = true
                         }
                         if (result.foto_profile.isNotEmpty()){
-                            Glide.with(this@EditDataDiriActivity).load(result.foto_profile)
+                            Glide.with(this@EditDataDiriActivity)
+                                .load(result.foto_profile)
+                                .into(circleImageView2)
                         }
 
                     }

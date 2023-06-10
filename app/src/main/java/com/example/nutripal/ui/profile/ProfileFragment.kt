@@ -10,16 +10,21 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.nutripal.MainActivity
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentProfileBinding
+import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.auth.AuthActivity
+import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
+    private val nutripalViewModel:NutripalViewModel by viewModels()
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -35,10 +40,31 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val pref = PreferenceUser(requireContext())
-        val resultPref = pref.getDatadiri()
-        val nama = resultPref[0]
-        binding.tvNamaProfile.text = nama
+        val token = pref.getToken().toString()
+
+
         setupItemProfile()
+        nutripalViewModel.getDatadiri(token)
+
+        nutripalViewModel.dataDiri.observe(viewLifecycleOwner){datadiri->
+            when(datadiri){
+                is ApiResult.Loading->{
+
+                }
+                is ApiResult.Error->{
+
+                }
+                is ApiResult.Success->{
+                    binding.apply {
+                        tvNamaProfile.text = datadiri.data.data.nama
+                        Glide.with(requireContext())
+                            .load(datadiri.data.data.foto_profile)
+                            .into(circleImageView2)
+                    }
+
+                }
+            }
+        }
 
         binding.btnLogout.setOnClickListener {
             auth.signOut()

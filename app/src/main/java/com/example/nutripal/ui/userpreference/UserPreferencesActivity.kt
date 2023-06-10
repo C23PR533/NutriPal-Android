@@ -203,7 +203,6 @@ class UserPreferencesActivity : AppCompatActivity() {
         binding.genderRadioGroup.setOnCheckedChangeListener { group, checkedId ->
             val selectedRadioButton: RadioButton = findViewById(checkedId)
             val selectedGender = selectedRadioButton.text.toString()
-            Toast.makeText(applicationContext,selectedGender,Toast.LENGTH_LONG).show()
         }
     }
 

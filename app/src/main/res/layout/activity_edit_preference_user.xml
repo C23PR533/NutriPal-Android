@@ -67,6 +67,7 @@
                         android:id="@+id/etHeight"
                         android:paddingLeft="5dp"
                         android:hint="Cm"
+                        android:inputType="number"
                         android:textColor="@color/black"
                         android:layout_marginTop="5dp"
                         android:layout_width="114dp"
@@ -87,6 +88,7 @@
                         android:layout_height="wrap_content"
                         android:text="Weight :"/>
                     <EditText
+                        android:inputType="number"
                         android:id="@+id/etWeight"
                         android:paddingLeft="5dp"
                         android:hint="Kg"

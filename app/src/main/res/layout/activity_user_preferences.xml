@@ -85,11 +85,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
+
                         android:textSize="18sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Height :"/>
                     <EditText
+                        android:inputType="number"
                         android:id="@+id/etHeight"
                         android:paddingLeft="5dp"
                         android:hint="Cm"
@@ -113,6 +115,7 @@
                         android:layout_height="wrap_content"
                         android:text="Weight :"/>
                     <EditText
+                        android:inputType="number"
                         android:id="@+id/etWeight"
                         android:paddingLeft="5dp"
                         android:hint="Kg"

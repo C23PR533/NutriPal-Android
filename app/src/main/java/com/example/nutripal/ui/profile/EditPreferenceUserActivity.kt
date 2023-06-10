@@ -46,7 +46,6 @@ class EditPreferenceUserActivity : AppCompatActivity() {
         val pref = PreferenceUser(this)
         val token = pref.getToken().toString()
         setupSpinerWeightGoal()
-        setupRadioGender()
         Util.setupDatePicker(this, binding.date)
         setupSpinerLevelActivity()
         setupDialogLoading()
@@ -305,16 +304,6 @@ class EditPreferenceUserActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun setupRadioGender() {
-        binding.genderRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            val selectedRadioButton: RadioButton = findViewById(checkedId)
-            val selectedGender = selectedRadioButton.text.toString()
-            Toast.makeText(applicationContext,selectedGender, Toast.LENGTH_LONG).show()
-        }
-    }
-
-
 
     private fun setupSpinerWeightGoal() {
         val spinerItemWeightGoal = listOf(
