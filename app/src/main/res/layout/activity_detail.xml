@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.MaterialComponents.Light.DarkActionBar"
     android:background="@drawable/bg_transaparent20"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -31,9 +32,10 @@
                 android:rotation="180"/>
 
             <TextView
+                android:gravity="center_horizontal"
                 android:maxLines="2"
                 android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:text="Nasi Goreng"
@@ -241,7 +243,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/view14" />
         <Spinner
-
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@color/black"
@@ -252,9 +253,8 @@
             android:id="@+id/spinerMakan"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:drawableEnd="@drawable/ic_next"
             android:layout_marginHorizontal="20dp"
-            android:background="@drawable/bg_white_round_5"
+            android:background="@drawable/spiner_item_cus"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvDateDetail" />

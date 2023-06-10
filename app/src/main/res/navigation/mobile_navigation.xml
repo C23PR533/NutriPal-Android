@@ -10,6 +10,13 @@
         android:name="com.example.nutripal.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_profile"
+            app:destination="@id/navigation_profile"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/navigation_home"
+            />
     </fragment>
 
     <fragment
@@ -38,4 +45,9 @@
         android:name="com.example.nutripal.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.example.nutripal.ui.favorite.FavoriteFragment"
+        android:label="Favorite Food"
+        tools:layout="@layout/fragment_favorite"/>
 </navigation>

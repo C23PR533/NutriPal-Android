@@ -112,6 +112,9 @@ class EditPreferenceUserActivity : AppCompatActivity() {
         }
 
         binding.apply {
+            toolbar.setNavigationOnClickListener {
+                finish()
+            }
             val radioGroup = genderRadioGroup
 
 
@@ -143,11 +146,8 @@ class EditPreferenceUserActivity : AppCompatActivity() {
                         favoritFoodList
                     )
                 }
+            }
 
-            }
-            ivBack.setOnClickListener {
-                finish()
-            }
             val listCbAlergi = listOf(
                 cbDiabetes,cbHipertensi,cbJantung,cbObesitas
             )

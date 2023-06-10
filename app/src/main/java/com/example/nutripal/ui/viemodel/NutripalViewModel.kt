@@ -10,6 +10,7 @@ import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
+import com.example.nutripal.network.response.datadiri.ResponseUploadFoto
 import com.example.nutripal.network.response.favorites.ResponseFoodsFavorite
 import com.example.nutripal.network.response.food.ResponseFoodsAll
 import com.example.nutripal.network.response.foodid.ResponseFoodId
@@ -18,6 +19,7 @@ import com.example.nutripal.network.response.search.ResponseSearch
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import java.util.Timer
 import java.util.TimerTask
 
@@ -43,6 +45,8 @@ class NutripalViewModel: ViewModel() {
     val history : LiveData<ApiResult<ListHistoryActivity>> = _history
     private val _favoriteFoods = MutableLiveData<ApiResult<ResponseFoodsFavorite>>()
     val favoriteFoods : LiveData<ApiResult<ResponseFoodsFavorite>> = _favoriteFoods
+    private val _responseUpload = MutableLiveData<ApiResult<ResponseUploadFoto>>()
+    val responseUpload : LiveData<ApiResult<ResponseUploadFoto>> =_responseUpload
 
 
     fun deleteFoodFavorite(id_user: String,idFood: String){
@@ -351,6 +355,25 @@ class NutripalViewModel: ViewModel() {
         }
 
     }
+
+    fun uploadFoto(token:String,file: MultipartBody.Part){
+        viewModelScope.launch {
+            _responseUpload.value = ApiResult.Loading
+            try {
+                val response = ApiConfig.getApiService().uploadFoto(token,file)
+                if (response.isSuccessful){
+                   _responseUpload.value = ApiResult.Success(response.body()!!)
+
+                }else{
+                    _responseUpload.value = ApiResult.Error("Error: ${response.body()!!.message}")
+                }
+            }catch (e:Exception){
+                _responseUpload.value = ApiResult.Error(e.message.toString())
+            }
+        }
+
+    }
+
 
 
 

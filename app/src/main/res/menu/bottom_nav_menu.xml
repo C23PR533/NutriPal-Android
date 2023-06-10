@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/home_filled"
         android:title="@string/title_home" />
 
     <item
@@ -15,6 +15,10 @@
         android:id="@+id/navigation_tracking_food"
         android:icon="@drawable/ic_food"
         android:title="@string/title_tracking_food" />
+    <item
+        android:id="@+id/navigation_favorite"
+        android:icon="@drawable/recommended_food"
+        android:title="@string/favorite_food" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_profile"

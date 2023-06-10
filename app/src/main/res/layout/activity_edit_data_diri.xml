@@ -8,40 +8,22 @@
     android:background="@drawable/bg_transaparent20">
 
 
-
-    <ImageView
-        android:layout_marginTop="10dp"
-        android:id="@+id/ivBack"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_next"
-        android:rotation="180"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins"
-        android:text="Edit Data Diri"
-        android:paddingTop="5dp"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/ivBack"
-        app:layout_constraintStart_toEndOf="@id/ivBack"
-        app:layout_constraintTop_toTopOf="@+id/ivBack" />
-
-    <View
-        android:id="@+id/view17"
+    <androidx.appcompat.widget.Toolbar
+        android:paddingVertical="5dp"
+        app:navigationIcon="@drawable/ic_back_white"
+        android:gravity="center"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/white"
+        android:layout_height="0dp"
+        app:title="Edit Data Diri"
+        app:titleTextColor="@color/white"
+        android:layout_marginBottom="24dp"
+        android:background="@color/tealCustom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
 
     <LinearLayout
         android:id="@+id/linearLayout5"
@@ -50,13 +32,13 @@
         android:orientation="vertical"
         android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view17">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageView2"
             android:padding="20dp"
             android:background="@drawable/shape_circle_dot"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_marginTop="50dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"

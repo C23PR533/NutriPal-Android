@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nutripal.MainActivity
+import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentProfileBinding
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.auth.AuthActivity
@@ -35,6 +39,7 @@ class ProfileFragment : Fragment() {
         val nama = resultPref[0]
         binding.tvNamaProfile.text = nama
         setupItemProfile()
+
         binding.btnLogout.setOnClickListener {
             auth.signOut()
             pref.clearDataPrefrence()
@@ -42,6 +47,13 @@ class ProfileFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
+
+
+    }
+
+    private fun toolbarProfile() {
+        val toolbar = activity?.findViewById<Toolbar>(R.id.toolbar)
+        toolbar?.visibility = View.GONE
     }
 
     private fun setupItemProfile() {
@@ -63,8 +75,19 @@ class ProfileFragment : Fragment() {
         binding.rcListProfile.layoutManager = lm
     }
 
+    override fun onResume() {
+        super.onResume()
+        toolbarProfile()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        toolbarProfile()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        val toolbar = activity?.findViewById<Toolbar>(R.id.toolbar)
+        toolbar?.visibility = View.VISIBLE
     }
 }

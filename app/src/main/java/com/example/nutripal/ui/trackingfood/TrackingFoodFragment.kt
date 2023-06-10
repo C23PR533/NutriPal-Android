@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nutripal.MainActivity
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentTrackingFoodBinding
 import com.example.nutripal.network.response.ApiResult
@@ -41,6 +43,7 @@ class TrackingFoodFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).toolbarTracking()
          val pref = PreferenceUser(requireContext())
          token = pref.getToken().toString()
         setupDatePicker()
@@ -195,8 +198,25 @@ class TrackingFoodFragment : Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        toolbarTracking()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toolbarTracking()
+    }
+    private fun toolbarTracking(){
+        val toolbar = activity?.findViewById<Toolbar>(R.id.toolbar)
+        val title = toolbar?.findViewById<TextView>(R.id.titleBar)
+        title?.text = "Tracking Food"
+        toolbar?.title=""
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        val toolbar = activity?.findViewById<Toolbar>(R.id.toolbar)
+        toolbar?.visibility = View.VISIBLE
     }
 }

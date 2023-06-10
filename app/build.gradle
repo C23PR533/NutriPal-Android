@@ -68,6 +68,9 @@ dependencies {
     def lottieVersion = "3.4.4"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+    implementation "androidx.activity:activity-ktx:1.7.2"
+
 
 
 

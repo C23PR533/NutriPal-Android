@@ -1,16 +1,20 @@
 package com.example.nutripal.ui.home
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.nutripal.MainActivity
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentHomeBinding
 import com.example.nutripal.network.response.ApiResult
@@ -25,7 +29,9 @@ import com.example.nutripal.utils.Util.getCalories
 import com.example.nutripal.utils.Util.getDateNow
 import com.example.nutripal.utils.Util.getPercenCalori
 
+
 class HomeFragment : Fragment() {
+
 
     companion object{
          var calorie:Double = 0.0
@@ -33,7 +39,7 @@ class HomeFragment : Fragment() {
     private lateinit var builder: AlertDialog.Builder
     private lateinit var dialog: AlertDialog
     private var _binding: FragmentHomeBinding? = null
-    val  nutripalViewModel: NutripalViewModel by viewModels()
+    private val  nutripalViewModel: NutripalViewModel by viewModels()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -41,13 +47,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        hideToolbar()
         setupDialogLoading()
 
         val pref = PreferenceUser(requireContext())
@@ -60,23 +67,20 @@ class HomeFragment : Fragment() {
         }
 
 
-        nutripalViewModel.getHistoryAktifitas(token.toString(), getDateNow())
         nutripalViewModel.getUserPreference(token.toString())
-        nutripalViewModel.getDatadiri(token.toString())
-        nutripalViewModel.getListFoods()
 
         nutripalViewModel.userPreference.observe(viewLifecycleOwner) { preference ->
             when (preference) {
                 is ApiResult.Success -> {
                     val result =  preference.data.listUserPreferences
-                    showDialogLoading(false)
                     val desease = convertListToString(result.disease)
                     val fav = convertListToString(result.favoriteFood)
                     pref.setDataPreference(
-                       result.goals,result.weight,result.height,result.gender,result.birthdate,result.activityLevel,desease,fav
+                        result.goals,result.weight,result.height,result.gender,result.birthdate,result.activityLevel,desease,fav
                     )
                     pref.setCalorie( getHitungKalori(preference.data.listUserPreferences))
-
+                    showDialogLoading(false)
+                    nutripalViewModel.getHistoryAktifitas(token.toString(), getDateNow())
                 }
 
                 is ApiResult.Loading -> {
@@ -88,39 +92,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        nutripalViewModel.dataDiri.observe(viewLifecycleOwner){dataDiri->
-                when(dataDiri){
-                    is ApiResult.Success->{
-                        showDialogLoading(false)
-                        val result = dataDiri.data.data
-                        pref.setDataDiri(
-                            result.nama.ifEmpty { "" },
-                            result.email.ifEmpty { "" },
-                            result.nomor_hp.ifEmpty { "" },
-                            result.gender.ifEmpty { "" },
-                            result.birthdate.ifEmpty { "" },
-                            result.foto_profile.ifEmpty { "" }
-                            )
-                        val nama = if (result.nama.isEmpty()){
-                            ""
-                        }else{
-                            result.nama
-                        }
-                        binding.tvNameHome.text = "Hi,\n${nama}"
-                        if(result.foto_profile.isNotEmpty()){
-                            Glide.with(requireContext())
-                                .load(result.foto_profile)
-                                .into(binding.circleImageView)
-                        }
-                    }
-                    is ApiResult.Loading->{
-                        showDialogLoading(true)
-                    }
-                    is ApiResult.Error->{
-                        showDialogLoading(false)
-                    }
-                }
-            }
         nutripalViewModel.history.observe(viewLifecycleOwner){history->
             when (history) {
                 is ApiResult.Success -> {
@@ -143,11 +114,45 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+        nutripalViewModel.dataDiri.observe(viewLifecycleOwner){dataDiri->
+                when(dataDiri){
+                    is ApiResult.Success->{
+                        val result = dataDiri.data.data
+                        pref.setDataDiri(
+                            result.nama.ifEmpty { "" },
+                            result.email.ifEmpty { "" },
+                            result.nomor_hp.ifEmpty { "" },
+                            result.gender.ifEmpty { "" },
+                            result.birthdate.ifEmpty { "" },
+                            result.foto_profile.ifEmpty { "" }
+                            )
+                        val nama = if (result.nama.isEmpty()){
+                            ""
+                        }else{
+                            result.nama
+                        }
+                        binding.tvNameHome.text = "Hi,\n${nama}"
+                        if(result.foto_profile.isNotEmpty()){
+                            Glide.with(requireContext())
+                                .load(result.foto_profile)
+                                .into(binding.circleImageView)
+                        }
+                        showDialogLoading(false)
+
+                    }
+                    is ApiResult.Loading->{
+                        showDialogLoading(true)
+                    }
+                    is ApiResult.Error->{
+                        showDialogLoading(false)
+                    }
+                }
+            }
         nutripalViewModel.listFood.observe(viewLifecycleOwner){foods->
             when (foods) {
                 is ApiResult.Success -> {
-                    showDialogLoading(false)
                     setupRecylcerFoods(foods.data.data)
+                    showDialogLoading(false)
                 }
                 is ApiResult.Loading -> {
                     showDialogLoading(true)
@@ -158,9 +163,21 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+        nutripalViewModel.getDatadiri(token.toString())
+        nutripalViewModel.getListFoods()
+
+        binding.circleImageView.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_profile)
+        }
 
 
     }
+
+    private fun hideToolbar() {
+        val toolbar = activity?.findViewById<Toolbar>(R.id.toolbar)
+        toolbar?.visibility = View.GONE
+    }
+
     fun convertListToString(list: List<String>): String {
         return list.joinToString(", ")
     }
@@ -169,12 +186,9 @@ class HomeFragment : Fragment() {
         val adapter =
             FoodRecomendationAdapter(requireContext(),foods, object : FoodRecomendationAdapter.Recomendation {
                 override fun onKlik(food: Data) {
-
                     val intent = Intent(requireContext(),DetailActivity::class.java)
                     intent.putExtra("DATA",food.foodId)
                     startActivity(intent)
-//                    val action = HomeFragmentDirections.actionNavigationHomeToNavigationDetail(food.foodId)
-//                    findNavController().navigate(action)
 
                 }
 
@@ -218,9 +232,20 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        hideToolbar()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        hideToolbar()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        val toolbar = activity?.findViewById<Toolbar>(R.id.toolbar)
+        toolbar?.visibility = View.VISIBLE
     }
 }

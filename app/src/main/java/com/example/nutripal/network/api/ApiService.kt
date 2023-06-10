@@ -4,12 +4,14 @@ package com.example.nutripal.network
 
 import com.example.nutripal.network.response.ResponsStatus
 import com.example.nutripal.network.response.datadiri.ResponseDataDiri
+import com.example.nutripal.network.response.datadiri.ResponseUploadFoto
 import com.example.nutripal.network.response.favorites.ResponseFoodsFavorite
 import com.example.nutripal.network.response.food.ResponseFoodsAll
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.network.response.historiaktifitas.ResponseHistoryAktifitas
 import com.example.nutripal.network.response.search.ResponseSearch
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -135,6 +137,13 @@ interface ApiService {
         @Field("kalori")kalori:String,
         @Field("waktu")waktu:String,
     ):Response<ResponsStatus>
+
+    @Multipart
+    @POST("/datadiri/photoprofile/{id_user}")
+    suspend fun uploadFoto(
+        @Path("id_user")id_user:String,
+        @Part foto: MultipartBody.Part
+    ):Response<ResponseUploadFoto>
 
 
 
