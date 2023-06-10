@@ -1,139 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_auth">
-
-    <Button
-        android:id="@+id/buttonToLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:background="@drawable/bg_white_round_bottom_left_15"
-        android:paddingHorizontal="20dp"
-        android:text="Login"
-        android:textColor="@color/black"
-        app:backgroundTint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/view9"
+    android:background="@drawable/bg_auth"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="15dp"
-        android:alpha="0.3"
-        android:background="@drawable/bg_white_round_top_50"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+        android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="36sp"
-        android:text="Register"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonToLogin" />
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:maxLines="2"
-        android:text="Start living healthy \nby finding the right food for you"
-        app:layout_constraintStart_toStartOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:paddingHorizontal="16dp"
-        android:orientation="vertical"
-        android:paddingTop="56dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view9">
-        <EditText
-            android:textColor="@color/black"
-            android:id="@+id/etNama"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingLeft="20dp"
-            android:textColorHint="#969696"
-            android:layout_marginBottom="18dp"
-            android:backgroundTint="@null"
-            android:background="@drawable/bg_white_round_25"
-            android:hint="Nama"/>
-        <EditText
-            android:textColor="@color/black"
-            android:id="@+id/etNohp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingLeft="20dp"
-            android:textColorHint="#969696"
-            android:layout_marginBottom="18dp"
-            android:backgroundTint="@null"
-            android:background="@drawable/bg_white_round_25"
-            android:hint="No Hp"/>
-        <EditText
-            android:textColor="@color/black"
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingLeft="20dp"
-            android:textColorHint="#969696"
-            android:layout_marginBottom="18dp"
-            android:backgroundTint="@null"
-            android:background="@drawable/bg_white_round_25"
-            android:hint="Email"/>
-        <EditText
-            android:textColor="@color/black"
-            android:id="@+id/etPwd"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingLeft="20dp"
-            android:textColorHint="#969696"
-            android:layout_marginBottom="18dp"
-            android:backgroundTint="@null"
-            android:inputType="textPassword"
-            android:background="@drawable/bg_white_round_25"
-            android:hint="Password"/>
-        <EditText
-            android:textColor="@color/black"
-            android:id="@+id/etCpwd"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingLeft="20dp"
-            android:textColorHint="#969696"
-            android:inputType="textPassword"
-            android:layout_marginBottom="30dp"
-            android:backgroundTint="@null"
-            android:background="@drawable/bg_white_round_25"
-            android:hint="Confirm Password"/>
         <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:id="@+id/buttonToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:background="@drawable/bg_white_round_bottom_left_15"
+            android:paddingHorizontal="20dp"
+            android:text="Login"
+            android:textColor="@color/black"
             app:backgroundTint="@null"
-            android:text="Register"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view9"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:alpha="0.3"
+            android:background="@drawable/bg_white_round_top_50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"
             android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:background="@drawable/bg_black_round_25"/>
+            android:textStyle="bold"
+            android:textSize="36sp"
+            android:text="Register"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonToLogin" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:maxLines="2"
+            android:text="Start living healthy \nby finding the right food for you"
+            app:layout_constraintStart_toStartOf="@+id/textView19"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="100dp"
+            android:paddingHorizontal="16dp"
+            android:orientation="vertical"
+            android:paddingTop="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view9">
+            <EditText
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="10dp"
+                android:textColor="@color/black"
+                android:id="@+id/etNama"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingLeft="20dp"
+                android:textColorHint="#969696"
+                android:layout_marginBottom="18dp"
+                android:backgroundTint="@null"
+                android:background="@drawable/bg_white_round_25"
+                android:hint="Nama"/>
+            <EditText
+                android:drawableStart="@drawable/ic_phone"
+                android:drawablePadding="10dp"
+                android:textColor="@color/black"
+                android:id="@+id/etNohp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingLeft="20dp"
+                android:textColorHint="#969696"
+                android:layout_marginBottom="18dp"
+                android:backgroundTint="@null"
+                android:background="@drawable/bg_white_round_25"
+                android:hint="No Hp"/>
+            <EditText
+                android:drawableStart="@drawable/ic_email"
+                android:drawablePadding="10dp"
+                android:textColor="@color/black"
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingLeft="20dp"
+                android:textColorHint="#969696"
+                android:layout_marginBottom="18dp"
+                android:backgroundTint="@null"
+                android:background="@drawable/bg_white_round_25"
+                android:hint="Email"/>
+            <EditText
+                android:drawableStart="@drawable/ic_vpn"
+                android:drawablePadding="10dp"
+                android:textColor="@color/black"
+                android:id="@+id/etPwd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingLeft="20dp"
+                android:textColorHint="#969696"
+                android:layout_marginBottom="18dp"
+                android:backgroundTint="@null"
+                android:inputType="textPassword"
+                android:background="@drawable/bg_white_round_25"
+                android:hint="Password"/>
+            <EditText
+                android:drawableStart="@drawable/ic_replay"
+                android:drawablePadding="10dp"
+                android:textColor="@color/black"
+                android:id="@+id/etCpwd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingLeft="20dp"
+                android:textColorHint="#969696"
+                android:inputType="textPassword"
+                android:layout_marginBottom="30dp"
+                android:backgroundTint="@null"
+                android:background="@drawable/bg_white_round_25"
+                android:hint="Confirm Password"/>
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:backgroundTint="@null"
+                android:text="Register"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:background="@drawable/bg_black_round_25"/>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

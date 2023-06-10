@@ -31,6 +31,8 @@ class NutripalViewModel: ViewModel() {
     val dataDiri : LiveData<ApiResult<ResponseDataDiri>> = _dataDiri
     private val _responRegister = MutableLiveData<ApiResult<ResponsStatus>>()
     val responRegister : LiveData<ApiResult<ResponsStatus>> =_responRegister
+    private val _responPreference = MutableLiveData<ApiResult<ResponsStatus>>()
+    val responPreference: LiveData<ApiResult<ResponsStatus>> =_responPreference
     private val _responseFoodFav = MutableLiveData<ApiResult<ResponsStatus>>()
     val responseFoodFav : LiveData<ApiResult<ResponsStatus>> =_responseFoodFav
     private val _responLogin = MutableLiveData<ApiResult<String>>()
@@ -315,7 +317,7 @@ class NutripalViewModel: ViewModel() {
     }
 
     fun postUserPreference(userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
-        _responRegister.value = ApiResult.Loading
+        _responPreference.value = ApiResult.Loading
         viewModelScope.launch {
             val response = ApiConfig.getApiService().postUserPreferences(
                 userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
@@ -323,12 +325,12 @@ class NutripalViewModel: ViewModel() {
             try {
                 if (response.isSuccessful){
                     val result = response.body()!!
-                    _responRegister.value = ApiResult.Success(result)
+                    _responPreference.value = ApiResult.Success(result)
                 }else{
-                    _responRegister.value = response.body()?.let { ApiResult.Error(it.message) }
+                    _responPreference.value = ApiResult.Error(response.body()!!.message)
                 }
             }catch (e:Exception){
-                _responRegister.value = ApiResult.Error(e.toString())
+                _responPreference.value = ApiResult.Error(e.toString())
             }
 
         }
@@ -336,7 +338,7 @@ class NutripalViewModel: ViewModel() {
     }
 
     fun editUserPreference(userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
-        _responRegister.value = ApiResult.Loading
+        _responPreference.value = ApiResult.Loading
         viewModelScope.launch {
             val response = ApiConfig.getApiService().editUserPreferences(
                 userId,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
@@ -344,12 +346,12 @@ class NutripalViewModel: ViewModel() {
             try {
                 if (response.isSuccessful){
                     val result = response.body()!!
-                    _responRegister.value = ApiResult.Success(result)
+                    _responPreference.value = ApiResult.Success(result)
                 }else{
-                    _responRegister.value = response.body()?.let { ApiResult.Error(it.message) }
+                    _responPreference.value = ApiResult.Error(response.body()!!.message)
                 }
             }catch (e:Exception){
-                _responRegister.value = ApiResult.Error(e.toString())
+                _responPreference.value = ApiResult.Error(e.toString())
             }
 
         }

@@ -93,7 +93,7 @@ class EditPreferenceUserActivity : AppCompatActivity() {
                 }
             }
         }
-        nutripalviewModel.responRegister.observe(this){response->
+        nutripalviewModel.responPreference.observe(this){response->
             when(response){
                 is ApiResult.Loading-> {
                     showDialogLoading(true)

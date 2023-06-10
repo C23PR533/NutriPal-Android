@@ -78,7 +78,7 @@ class UserPreferencesActivity : AppCompatActivity() {
                 }
             }
         }
-        viewModel.responRegister.observe(this){response->
+        viewModel.responPreference.observe(this){response->
             when(response){
                 is ApiResult.Loading->{
                     showDialogLoading(true)

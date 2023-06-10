@@ -66,11 +66,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view9">
         <EditText
+            android:drawableStart="@drawable/ic_email"
             android:id="@+id/etEmail"
             android:drawablePadding="10dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
             android:textColor="@color/black"
             android:layout_marginBottom="18dp"
             android:backgroundTint="@null"
@@ -78,12 +79,14 @@
             android:background="@drawable/bg_white_round_25"
             android:hint="Email"/>
         <EditText
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_vpn"
             android:textColor="@color/black"
             android:textColorHint="#969696"
             android:id="@+id/etPwd"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
             android:layout_marginBottom="18dp"
             android:backgroundTint="@null"
             android:inputType="textPassword"
