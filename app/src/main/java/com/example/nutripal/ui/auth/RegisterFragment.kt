@@ -48,7 +48,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        showDialogSuccesError(ERROR,requireContext(),"Registration failed","")
         setupDialogLoading()
 
         auth = FirebaseAuth.getInstance()
@@ -67,8 +67,7 @@ class RegisterFragment : Fragment() {
                 is ApiResult.Success->{
                     Handler(Looper.getMainLooper()).postDelayed({
                         showDialogLoading(false)
-                        showDialogSuccesError(SUCCESS,requireContext(),"","Registration success")
-                      findNavController().navigate(R.id.action_navigation_register_to_navigation_login)
+                      findNavController().navigate(R.id.action_navigation_register_to_registerSuccessFragment)
                     },2000)
 
                 }

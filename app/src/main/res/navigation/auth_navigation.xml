@@ -22,8 +22,22 @@
         <action
             android:id="@+id/action_navigation_register_to_navigation_login"
             app:destination="@id/navigation_login" />
+        <action
+            android:id="@+id/action_navigation_register_to_registerSuccessFragment"
+            app:destination="@id/registerSuccessFragment" />
     </fragment>
-
+    <fragment
+        android:id="@+id/registerSuccessFragment"
+        tools:layout="@layout/fragment_register_success"
+        android:name="com.example.nutripal.ui.auth.RegisterSuccessFragment"
+        android:label="RegisterSuccessFragment" >
+        <action
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/navigation_register"
+            android:id="@+id/action_registerSuccessFragment_to_navigation_login"
+            app:destination="@id/navigation_login" />
+    </fragment>
 
 
 </navigation>
