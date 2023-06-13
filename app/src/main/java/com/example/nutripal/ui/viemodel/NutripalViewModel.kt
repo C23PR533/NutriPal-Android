@@ -15,6 +15,7 @@ import com.example.nutripal.network.response.favorites.ResponseFoodsFavorite
 import com.example.nutripal.network.response.food.ResponseFoodsAll
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
+import com.example.nutripal.network.response.login.ResponseLogin
 import com.example.nutripal.network.response.search.ResponseSearch
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
 import com.google.firebase.auth.FirebaseAuth
@@ -35,8 +36,8 @@ class NutripalViewModel: ViewModel() {
     val responPreference: LiveData<ApiResult<ResponsStatus>> =_responPreference
     private val _responseFoodFav = MutableLiveData<ApiResult<ResponsStatus>>()
     val responseFoodFav : LiveData<ApiResult<ResponsStatus>> =_responseFoodFav
-    private val _responLogin = MutableLiveData<ApiResult<String>>()
-    val responLogin : LiveData<ApiResult<String>> =_responLogin
+//    private val _responLogin = MutableLiveData<ApiResult<String>>()
+//    val responLogin : LiveData<ApiResult<String>> =_responLogin
     private val _listFood = MutableLiveData<ApiResult<ResponseFoodsAll>>()
     val listFood : LiveData<ApiResult<ResponseFoodsAll>> = _listFood
     private val _food = MutableLiveData<ApiResult<ResponseFoodId>>()
@@ -49,6 +50,8 @@ class NutripalViewModel: ViewModel() {
     val favoriteFoods : LiveData<ApiResult<ResponseFoodsFavorite>> = _favoriteFoods
     private val _responseUpload = MutableLiveData<ApiResult<ResponseUploadFoto>>()
     val responseUpload : LiveData<ApiResult<ResponseUploadFoto>> =_responseUpload
+    private var _responseLoginAuth = MutableLiveData<ApiResult<ResponseLogin>>()
+    val responseLoginAuth : LiveData<ApiResult<ResponseLogin>> = _responseLoginAuth
 
 
     fun deleteFoodFavorite(id_user: String,idFood: String){
@@ -276,35 +279,35 @@ class NutripalViewModel: ViewModel() {
                 _responRegister.value = ApiResult.Error(it.toString())
             }
     }
-     fun loginWithFirebase(auth:FirebaseAuth, email:String, pwd:String) {
-         _responLogin.value = ApiResult.Loading
-        Timer().schedule(object : TimerTask(){
-            override fun run() {
-                auth.signInWithEmailAndPassword(email, pwd)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            viewModelScope.launch {
-                                val id = auth.currentUser?.uid.toString()
-                                _responLogin.value = ApiResult.Success(id)
-                            }
-                        }else{
-                            Log.e("LOGIN", it.exception?.message.toString())
-                            _responLogin.value = ApiResult.Error(it.toString())
-                        }
-                    }
-                    .addOnFailureListener {
-                        Log.e("LOGIN", it.toString())
-                        _responLogin.value = ApiResult.Error(it.toString())
-                    }
-            }
-        },2000)
-    }
+//     fun loginWithFirebase(auth:FirebaseAuth, email:String, pwd:String) {
+//         _responLogin.value = ApiResult.Loading
+//        Timer().schedule(object : TimerTask(){
+//            override fun run() {
+//                auth.signInWithEmailAndPassword(email, pwd)
+//                    .addOnCompleteListener {
+//                        if (it.isSuccessful) {
+//                            viewModelScope.launch {
+//                                val id = auth.currentUser?.uid.toString()
+//                                _responLogin.value = ApiResult.Success(id)
+//                            }
+//                        }else{
+//                            Log.e("LOGIN", it.exception?.message.toString())
+//                            _responLogin.value = ApiResult.Error(it.toString())
+//                        }
+//                    }
+//                    .addOnFailureListener {
+//                        Log.e("LOGIN", it.toString())
+//                        _responLogin.value = ApiResult.Error(it.toString())
+//                    }
+//            }
+//        },2000)
+//    }
 
-      fun getUserPreference(id_user:String){
+      fun getUserPreference(token: String,id_user:String){
         viewModelScope.launch {
             _userPrefernce.value = ApiResult.Loading
             try {
-                val response = ApiConfig.getApiService().getUserPreferences(id_user)
+                val response = ApiConfig.getApiService().getUserPreferences(token,id_user)
                 if (response.isSuccessful){
                     val result = response.body()!!
                     _userPrefernce.value = ApiResult.Success(result)
@@ -318,12 +321,12 @@ class NutripalViewModel: ViewModel() {
 
     }
 
-    fun postUserPreference(userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
+    fun postUserPreference(token: String,userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
         _responPreference.value = ApiResult.Loading
         viewModelScope.launch {
             try {
                 val response = ApiConfig.getApiService().postUserPreferences(
-                    userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
+                    token,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
                 )
                 if (response.isSuccessful){
 
@@ -343,11 +346,11 @@ class NutripalViewModel: ViewModel() {
         }
     }
 
-    fun editUserPreference(userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
+    fun editUserPreference(token: String,userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
         _responPreference.value = ApiResult.Loading
         viewModelScope.launch {
             val response = ApiConfig.getApiService().editUserPreferences(
-                userId,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
+                token,userId,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
             )
             try {
                 if (response.isSuccessful){
@@ -380,6 +383,22 @@ class NutripalViewModel: ViewModel() {
             }
         }
 
+    }
+
+    fun login(email:String,pwd:String){
+        viewModelScope.launch {
+            try {
+                val response = ApiConfig.getApiService().login(email,pwd)
+                if (response.isSuccessful){
+                    _responseLoginAuth.value = ApiResult.Success(response.body()!!)
+                }else{
+                    _responseLoginAuth.value = ApiResult.Error(response.body()!!.message)
+                }
+
+            }catch (e:Exception){
+                _responseLoginAuth.value = ApiResult.Error(e.toString())
+            }
+        }
     }
 
 

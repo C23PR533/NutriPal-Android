@@ -33,6 +33,14 @@ class PreferenceUser(context: Context) {
         edit.putString(TOKEN,token)
         edit.apply()
     }
+    fun setTokenAuth(token:String){
+        val edit = preference.edit()
+        edit.putString(TOKENAUTH,token)
+        edit.apply()
+    }
+    fun getTokenAuth():String?{
+        return preference.getString(TOKENAUTH, null)
+    }
 
     fun setCalorie(kalori:Double){
         val edit = preference.edit()
@@ -64,6 +72,7 @@ class PreferenceUser(context: Context) {
     companion object {
         const val PREF_NAME = "login_pref"
         const val TOKEN = "token"
+        const val TOKENAUTH = "auth"
         const val GOAL = "goal"
         const val WEIGTH = "weight"
         const val HEIGHT = "height"

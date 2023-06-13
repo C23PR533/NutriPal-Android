@@ -9,6 +9,7 @@ import com.example.nutripal.network.response.favorites.ResponseFoodsFavorite
 import com.example.nutripal.network.response.food.ResponseFoodsAll
 import com.example.nutripal.network.response.foodid.ResponseFoodId
 import com.example.nutripal.network.response.historiaktifitas.ResponseHistoryAktifitas
+import com.example.nutripal.network.response.login.ResponseLogin
 import com.example.nutripal.network.response.search.ResponseSearch
 import com.example.nutripal.network.response.userpreference.ResponseUserPreferences
 import okhttp3.MultipartBody
@@ -64,6 +65,7 @@ interface ApiService {
 
     @GET("userpreferences/{id_user}")
     suspend fun getUserPreferences(
+        @Header("Authorization") token: String,
         @Path("id_user")id_user:String
     ): Response<ResponseUserPreferences>
 
@@ -95,6 +97,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("userpreferences")
     suspend fun postUserPreferences(
+        @Header("Authorization") token: String,
         @Field("id_user")id_user:String,
         @Field("goals")goals:String,
         @Field("height")height:String,
@@ -108,6 +111,7 @@ interface ApiService {
     @FormUrlEncoded
     @PUT("userpreferences/{id_user}")
     suspend fun editUserPreferences(
+        @Header("Authorization") token: String,
         @Path("id_user")id_user:String,
         @Field("id_user")id:String,
         @Field("goals")goals:String,
@@ -144,6 +148,13 @@ interface ApiService {
         @Path("id_user")id_user:String,
         @Part foto: MultipartBody.Part
     ):Response<ResponseUploadFoto>
+
+    @FormUrlEncoded
+    @POST("login")
+    suspend fun login(
+        @Field("email")email:String,
+        @Field("password")password:String,
+    ):Response<ResponseLogin>
 
 
 

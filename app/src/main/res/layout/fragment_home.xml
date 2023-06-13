@@ -215,7 +215,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:paddingBottom="60dp"
+
             android:paddingTop="40dp"
             android:paddingHorizontal="20dp"
             android:id="@+id/linearLayout"
@@ -235,6 +235,7 @@
                 android:textStyle="bold"
                 android:text="Recomendation for you "/>
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_gravity="center"
                 android:id="@+id/rcListHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

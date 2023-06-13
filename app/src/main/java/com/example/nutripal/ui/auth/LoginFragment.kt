@@ -55,8 +55,42 @@ class LoginFragment : Fragment() {
         setupDialogLoading()
         val pref = PreferenceUser(requireContext())
 
-        viewModel.responLogin.observe(viewLifecycleOwner){response->
-            when(response){
+//        viewModel.responLogin.observe(viewLifecycleOwner){response->
+//            when(response){
+//                is ApiResult.Loading->{
+//                    showDialogLoading(true)
+//                }
+//                is ApiResult.Error->{
+//                    Handler(Looper.getMainLooper()).postDelayed({
+//                        showDialogLoading(false)
+//                        DialogUtil.showDialogSuccesError(
+//                            RegisterFragment.ERROR,
+//                            requireContext(),
+//                            "Login Failed",
+//                            ""
+//                        )
+//                    },2000)
+//                }
+//                is ApiResult.Success->{
+//                    Log.e("LOGIN",response.data)
+//                    Handler(Looper.getMainLooper()).postDelayed({
+//                        showDialogLoading(false)
+//                        DialogUtil.showDialogSuccesError(
+//                            RegisterFragment.SUCCESS,
+//                            requireContext(),
+//                            "",
+//                            "LOGIN"
+//                        )
+//                        pref.setToken(response.data)
+//                        viewModel.getUserPreference(response.data)
+//                    },2000)
+//
+//                }
+//            }
+//        }
+
+        viewModel.responseLoginAuth.observe(viewLifecycleOwner){login->
+            when(login){
                 is ApiResult.Loading->{
                     showDialogLoading(true)
                 }
@@ -72,22 +106,19 @@ class LoginFragment : Fragment() {
                     },2000)
                 }
                 is ApiResult.Success->{
-                    Log.e("LOGIN",response.data)
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        showDialogLoading(false)
-                        DialogUtil.showDialogSuccesError(
-                            RegisterFragment.SUCCESS,
-                            requireContext(),
-                            "",
-                            "LOGIN"
-                        )
-                        pref.setToken(response.data)
-                        viewModel.getUserPreference(response.data)
-                    },2000)
-
+                    pref.setToken(login.data.data.uid)
+                    pref.setTokenAuth(login.data.data.idToken)
+                    val uid = pref.getToken().toString()
+                    val auth = pref.getTokenAuth().toString()
+                    Log.e("AUTH",login.data.data.uid)
+                    Log.e("AUTH",login.data.data.idToken)
+                    Log.e("AUTH",auth)
+                    showDialogLoading(false)
+                    viewModel.getUserPreference("Bearer ${auth}",uid)
                 }
             }
         }
+
         viewModel.userPreference.observe(viewLifecycleOwner){response->
             when(response){
                 is ApiResult.Loading->{
@@ -124,7 +155,7 @@ class LoginFragment : Fragment() {
                 }  else if (etPwd.text.length < 8) {
                     etPwd.error = "Password minimal 8 karakter"
                 } else {
-                    viewModel.loginWithFirebase(auth,email, pwd)
+                    viewModel.login(email, pwd)
                 }
             }
         }

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.nutripal.databinding.ItemRecomendationBinding
+import com.example.nutripal.databinding.ItemRecomendationGridBinding
 import com.example.nutripal.network.response.food.Data
 import com.example.nutripal.network.response.food.Serving
 
@@ -15,7 +16,7 @@ class FoodRecomendationAdapter(
     private val listner:Recomendation):RecyclerView.Adapter<FoodRecomendationAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemRecomendationBinding
+        val binding = ItemRecomendationGridBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
@@ -39,7 +40,7 @@ class FoodRecomendationAdapter(
             listner.onKlik(food)
         }
     }
-    class ViewHolder(val binding:ItemRecomendationBinding):RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding:ItemRecomendationGridBinding):RecyclerView.ViewHolder(binding.root)
 
     interface Recomendation{
         fun onKlik(food:Data)

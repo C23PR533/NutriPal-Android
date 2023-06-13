@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.nutripal.R
@@ -58,16 +59,19 @@ class HomeFragment : Fragment() {
 
         val pref = PreferenceUser(requireContext())
         val token = pref.getToken()
+        val auth = pref.getTokenAuth().toString()
 
         if (token.isNullOrEmpty()) {
             val intent = Intent(requireContext(), AuthActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
+        }else{
+            nutripalViewModel.getUserPreference("Bearer ${auth}",token.toString())
         }
 
 
 
-        nutripalViewModel.getUserPreference(token.toString())
+
         nutripalViewModel.userPreference.observe(viewLifecycleOwner) {preference->
             when (preference) {
                 is ApiResult.Loading -> {
@@ -202,8 +206,11 @@ class HomeFragment : Fragment() {
                 }
 
             })
+//        val layoutManager =
+//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            GridLayoutManager(requireContext(),2)
+
         binding.rcListHome.adapter = adapter
         binding.rcListHome.layoutManager = layoutManager
     }

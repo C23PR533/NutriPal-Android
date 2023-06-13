@@ -1,9 +1,12 @@
 package com.example.nutripal.ui.userpreference
 
 
+import android.R
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -13,16 +16,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutripal.MainActivity
-import android.R
-import android.os.Handler
-import android.os.Looper
 import com.example.nutripal.databinding.ActivityUserPreferencesBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.savepreference.PreferenceUser
-import com.example.nutripal.ui.auth.RegisterFragment
 import com.example.nutripal.ui.viemodel.NutripalViewModel
-import com.example.nutripal.utils.DialogUtil
 import com.example.nutripal.utils.DialogUtil.showDialogSuccesError
 import com.example.nutripal.utils.Util.setupDatePicker
 
@@ -60,6 +58,7 @@ class UserPreferencesActivity : AppCompatActivity() {
 
         val pref = PreferenceUser(this)
         val token = pref.getToken().toString()
+        val auth = pref.getTokenAuth().toString()
 
         viewModel.getDatadiri(token)
         viewModel.dataDiri.observe(this){dataDiri->
@@ -141,11 +140,8 @@ class UserPreferencesActivity : AppCompatActivity() {
                     val desease = if (alergiList.size<1) listOf("") else alergiList
                     val dataDiri = Data(birthDate,email,"",gender,idUser,nama,noHp)
                     viewModel.editDatari(dataDiri)
-                    viewModel.postUserPreference(token,goal,height,weight,genderRadio,birthDateTv,level,desease,favoritFoodList)
-
+                    viewModel.postUserPreference("Bearer ${auth}",token,goal,height,weight,genderRadio,birthDateTv,level,desease,favoritFoodList)
                 }
-
-
             }
         }
 
@@ -236,7 +232,6 @@ class UserPreferencesActivity : AppCompatActivity() {
                 val selectedItem = parent?.getItemAtPosition(position) as SpinerItemWeightGoal
                 goal = selectedItem.value.toString()
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Toast.makeText(applicationContext,"Pilih dahulu",Toast.LENGTH_LONG).show()
             }

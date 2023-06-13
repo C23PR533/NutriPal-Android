@@ -5,6 +5,7 @@ import android.R
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -45,6 +46,7 @@ class EditPreferenceUserActivity : AppCompatActivity() {
         setContentView(binding.root)
         val pref = PreferenceUser(this)
         val token = pref.getToken().toString()
+        val auth = pref.getTokenAuth().toString()
         setupSpinerWeightGoal()
         Util.setupDatePicker(this, binding.date)
         setupSpinerLevelActivity()
@@ -53,7 +55,7 @@ class EditPreferenceUserActivity : AppCompatActivity() {
 
 
 
-        nutripalviewModel.getUserPreference(token)
+        nutripalviewModel.getUserPreference("Bearer ${auth}",token)
         nutripalviewModel.userPreference.observe(this){userpreference->
             when(userpreference){
                 is ApiResult.Loading->{
@@ -133,7 +135,9 @@ class EditPreferenceUserActivity : AppCompatActivity() {
                     val weight = etWeight.text.toString()
                     val birthDateTv = date.text.toString()
                      genderRadio = selectedRadioButton.text.toString()
+                    Log.e("AUTH",auth)
                     nutripalviewModel.editUserPreference(
+                        "Bearer ${auth}",
                         token,
                         goal,
                         height,
