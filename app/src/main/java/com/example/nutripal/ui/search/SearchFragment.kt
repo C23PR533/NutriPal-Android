@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.MainActivity
 import com.example.nutripal.R
@@ -24,6 +25,7 @@ class SearchFragment : Fragment() {
     private val nutripalViewModel:NutripalViewModel by viewModels()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+    private var data = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +39,10 @@ class SearchFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).toolbarSearch()
+         data = arguments?.getString("makan").toString()
 
             binding.etSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-
                 return false
             }
 
@@ -78,6 +79,7 @@ class SearchFragment : Fragment() {
             override fun onKlik(food: Data) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra("DATA",food.foodId)
+                intent.putExtra("MAKAN",data)
                 startActivity(intent)
 //                val action = SearchFragmentDirections.actionNavigationSearchToNavigationDetail(food.food_id)
 //                findNavController().navigate(action)

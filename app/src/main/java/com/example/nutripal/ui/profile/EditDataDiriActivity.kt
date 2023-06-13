@@ -2,6 +2,7 @@ package com.example.nutripal.ui.profile
 
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.nutripal.R
 import com.example.nutripal.databinding.ActivityEditDataDiriBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.datadiri.Data
@@ -30,7 +32,11 @@ class EditDataDiriActivity : AppCompatActivity() {
     private val nutripalViewModel:NutripalViewModel by viewModels()
     private var token = ""
     private var url = ""
+    private var urlBaru = ""
     private var email = ""
+    private var isChange = false
+    private lateinit var builder: AlertDialog.Builder
+    private lateinit var dialog: AlertDialog
 
 
     @SuppressLint("CheckResult")
@@ -40,8 +46,8 @@ class EditDataDiriActivity : AppCompatActivity() {
         setContentView(binding.root)
         val pref = PreferenceUser(this)
          token = pref.getToken().toString()
-
         setupDatePicker(this,binding.date)
+        setupDialogLoading()
 
         nutripalViewModel.getDatadiri(token)
         nutripalViewModel.dataDiri.observe(this){datadiri->
@@ -96,14 +102,18 @@ class EditDataDiriActivity : AppCompatActivity() {
         nutripalViewModel.responseUpload.observe(this){upload->
             when(upload){
                 is ApiResult.Loading->{
-
+                showDialogLoading(true)
                 }
                 is ApiResult.Error->{
+                    showDialogLoading(false)
                     Log.e("FOTO",upload.errorMessage)
                 }
                 is ApiResult.Success->{
-                    url = upload.data.url
+                    urlBaru = upload.data.url
                     Log.e("FOTO",url)
+                    isChange = true
+                    showDialogLoading(false)
+
                 }
             }
         }
@@ -135,9 +145,9 @@ class EditDataDiriActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext,"Pilih Jenis Kelamin", Toast.LENGTH_SHORT).show()
                 }else{
                     val date = date.text.toString()
+                    val image = if(isChange) urlBaru else url
                     val genderRadio = selectedRadioButton.text.toString()
-                    val data= Data(date,email,url,genderRadio,token,nama,noHp)
-
+                    val data= Data(date,email,image,genderRadio,token,nama,noHp)
                     nutripalViewModel.editDatari(data)
 
                 }
@@ -162,8 +172,22 @@ class EditDataDiriActivity : AppCompatActivity() {
                 val requestFile = myFile.asRequestBody("image/*".toMediaTypeOrNull())
                 val multipart = MultipartBody.Part.createFormData("photo",myFile.name,requestFile)
                 nutripalViewModel.uploadFoto(token,multipart)
+
             }
         }
+    private fun setupDialogLoading(){
+        builder = AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.custom_dialog_loading,null)
+        builder.setView(view)
+        dialog = builder.create()
+    }
 
+    private fun showDialogLoading(isLoading:Boolean) {
+        if (isLoading){
+            dialog.show()
+        }else{
+            dialog.dismiss()
+        }
+    }
 
 }

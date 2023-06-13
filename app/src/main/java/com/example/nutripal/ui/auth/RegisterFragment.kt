@@ -48,11 +48,8 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showDialogSuccesError(ERROR,requireContext(),"Registration failed","")
         setupDialogLoading()
-
         auth = FirebaseAuth.getInstance()
-
         viewModel.responRegister.observe(viewLifecycleOwner){ response->
             when(response){
                 is ApiResult.Loading->{

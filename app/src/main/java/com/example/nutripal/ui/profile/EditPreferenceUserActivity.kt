@@ -164,7 +164,7 @@ class EditPreferenceUserActivity : AppCompatActivity() {
 
     }
 
-    private fun setupCbFromDb(result:ListUserPreferences){
+    private fun setupCbFromDb(result: ListUserPreferences){
         binding.apply {
             val favoriteFoods = result.favoriteFood
 

@@ -19,20 +19,11 @@
         android:drawableStart="@drawable/ic_search_blue"
         android:queryHint="Search"
         android:iconifiedByDefault="false"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:contentDescription="icon camera"
-        android:id="@+id/imageButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_white_round_5"
-        android:src="@drawable/ic_cam_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etSearch" />
+
 
 
     <androidx.recyclerview.widget.RecyclerView

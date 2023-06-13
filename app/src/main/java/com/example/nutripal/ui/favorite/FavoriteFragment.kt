@@ -1,36 +1,22 @@
 package com.example.nutripal.ui.favorite
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentFavoriteBinding
-import com.example.nutripal.databinding.FragmentHomeBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.favorites.Data
-import com.example.nutripal.network.response.favorites.FoodFavoriteAdapter
-import com.example.nutripal.network.response.historiaktifitas.ListHistoryActivity
-import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import com.example.nutripal.savepreference.PreferenceUser
-import com.example.nutripal.ui.auth.AuthActivity
-import com.example.nutripal.ui.detail.DetailActivity
-import com.example.nutripal.ui.home.FoodRecomendationAdapter
 import com.example.nutripal.ui.viemodel.NutripalViewModel
-import com.example.nutripal.utils.Util.getCalories
-import com.example.nutripal.utils.Util.getDateNow
-import com.example.nutripal.utils.Util.getPercenCalori
 
 class FavoriteFragment : Fragment() {
 
@@ -81,7 +67,7 @@ class FavoriteFragment : Fragment() {
     }
     private fun setupRecylcerFoods(foods: Data) {
         val adapter =
-            FoodFavoriteAdapter(requireContext(),foods.favoriteFoods, object : FoodFavoriteAdapter.FavoriteFoodsListener {
+            FoodFavoriteAdapter(foods.favoriteFoods, object : FoodFavoriteAdapter.FavoriteFoodsListener {
                 override fun onKlik(id: String) {
                     Log.e("KLIK",id)
                 }

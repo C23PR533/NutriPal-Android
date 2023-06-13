@@ -37,7 +37,14 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/navigation_tracking_food"
             app:popUpToInclusive="true"
-            />
+            >
+            <argument
+                android:name="makan"
+                android:defaultValue=""
+                app:argType="string"/>
+        </action>
+
+
 
     </fragment>
     <fragment

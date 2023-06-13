@@ -55,6 +55,23 @@ class DetailActivity : AppCompatActivity() {
         setupSpinerMakan()
         setupDialogLoading()
         val foodIdReceive = intent.getStringExtra("DATA")
+        val makan = intent.getStringExtra("MAKAN")
+        if (!makan.isNullOrEmpty()){
+            when(makan){
+                "Sarapan"->{
+                    binding.spinerMakan.setSelection(0)
+                }
+                "Makan Siang"->{
+                    binding.spinerMakan.setSelection(1)
+                }
+                "Makan Malam"->{
+                    binding.spinerMakan.setSelection(2)
+                }
+                "Cemilan"->{
+                    binding.spinerMakan.setSelection(3)
+                }
+            }
+        }
         nutripalViewModel.getFoodId(foodIdReceive.toString())
         nutripalViewModel.responRegister.observe(this){response->
             when(response){

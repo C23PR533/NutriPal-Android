@@ -57,11 +57,12 @@ class ProfileFragment : Fragment() {
                 is ApiResult.Success->{
                     binding.apply {
                         tvNamaProfile.text = datadiri.data.data.nama
-                        Glide.with(requireContext())
-                            .load(datadiri.data.data.foto_profile)
-                            .into(circleImageView2)
+                        if(datadiri.data.data.foto_profile.isNotEmpty()){
+                            Glide.with(requireContext())
+                                .load(datadiri.data.data.foto_profile)
+                                .into(circleImageView2)
+                        }
                     }
-
                 }
             }
         }

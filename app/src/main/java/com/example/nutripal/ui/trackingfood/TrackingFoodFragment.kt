@@ -2,6 +2,7 @@ package com.example.nutripal.ui.trackingfood
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +57,7 @@ class TrackingFoodFragment : Fragment() {
                     showProgressBar(true)
                 }
                 is ApiResult.Error->{
+                    Log.e("ERROR IN FR","HISTORI")
                     showProgressBar(false)
                     setHeader(calorie.toInt(),0,calorie.toInt())
                     setupRcListSarapan(emptyList())
@@ -184,16 +186,24 @@ class TrackingFoodFragment : Fragment() {
     private fun setupAddBtn() {
         binding.apply {
             imageView2.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_tracking_food_to_navigation_search)
+                val data = "Sarapan"
+                val action = TrackingFoodFragmentDirections.actionNavigationTrackingFoodToNavigationSearch(data)
+                findNavController().navigate(action)
             }
             ivAddMakanSiang.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_tracking_food_to_navigation_search)
+                val data = "Makan Siang"
+                val action = TrackingFoodFragmentDirections.actionNavigationTrackingFoodToNavigationSearch(data)
+                findNavController().navigate(action)
             }
             ivAddMakanMalam.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_tracking_food_to_navigation_search)
+                val data = "Makan Malam"
+                val action = TrackingFoodFragmentDirections.actionNavigationTrackingFoodToNavigationSearch(data)
+                findNavController().navigate(action)
             }
             ivAddCemilan.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_tracking_food_to_navigation_search)
+                val data = "Cemilan"
+                val action = TrackingFoodFragmentDirections.actionNavigationTrackingFoodToNavigationSearch(data)
+                findNavController().navigate(action)
             }
         }
     }

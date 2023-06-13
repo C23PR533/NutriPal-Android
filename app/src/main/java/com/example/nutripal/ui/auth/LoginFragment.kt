@@ -66,7 +66,7 @@ class LoginFragment : Fragment() {
                         DialogUtil.showDialogSuccesError(
                             RegisterFragment.ERROR,
                             requireContext(),
-                            response.errorMessage,
+                            "Login Failed",
                             ""
                         )
                     },2000)
@@ -94,14 +94,20 @@ class LoginFragment : Fragment() {
                     showDialogLoading(true)
                 }
                 is ApiResult.Error->{
-                    showDialogLoading(false)
-                    startActivity(Intent(requireContext(),UserPreferencesActivity::class.java))
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        showDialogLoading(false)
+                        startActivity(Intent(requireContext(),UserPreferencesActivity::class.java))
+                    },2000)
+
                 }
                 is ApiResult.Success->{
-                    showDialogLoading(false)
-                    val intent = Intent(requireContext(),MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        showDialogLoading(false)
+                        val intent = Intent(requireContext(),MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    },2000)
+
                 }
             }
         }

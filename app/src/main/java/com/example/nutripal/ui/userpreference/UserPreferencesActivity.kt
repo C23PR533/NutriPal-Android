@@ -14,11 +14,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutripal.MainActivity
 import android.R
+import android.os.Handler
+import android.os.Looper
 import com.example.nutripal.databinding.ActivityUserPreferencesBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.savepreference.PreferenceUser
+import com.example.nutripal.ui.auth.RegisterFragment
 import com.example.nutripal.ui.viemodel.NutripalViewModel
+import com.example.nutripal.utils.DialogUtil
 import com.example.nutripal.utils.DialogUtil.showDialogSuccesError
 import com.example.nutripal.utils.Util.setupDatePicker
 
@@ -65,7 +69,6 @@ class UserPreferencesActivity : AppCompatActivity() {
                 }
                 is ApiResult.Error->{
                     showDialogLoading(false)
-                    showDialogSuccesError(ERROR,this,dataDiri.errorMessage,"")
                 }
                 is ApiResult.Success->{
                     showDialogLoading(false)
@@ -84,13 +87,18 @@ class UserPreferencesActivity : AppCompatActivity() {
                     showDialogLoading(true)
                 }
                 is ApiResult.Error->{
-                    showDialogSuccesError(ERROR,this,response.errorMessage,"")
+                    showDialogLoading(false)
+                    showDialogSuccesError(ERROR,this,"Gagal menyimpan,\nSilahkan Ulangi !","")
                 }
                 is ApiResult.Success->{
-                    showDialogSuccesError(SUCCESS,this,"","Berhasil Menyimpan")
-                    val intent = Intent(this@UserPreferencesActivity,MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        showDialogLoading(false)
+                        showDialogSuccesError(SUCCESS,this,"","Berhasil Menyimpan")
+                        val intent = Intent(this@UserPreferencesActivity,MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    },2000)
+
                 }
             }
         }
@@ -130,9 +138,10 @@ class UserPreferencesActivity : AppCompatActivity() {
                     val birthDateTv = date.text.toString()
                     birthDate = birthDateTv
                     gender = genderRadio
+                    val desease = if (alergiList.size<1) listOf("") else alergiList
                     val dataDiri = Data(birthDate,email,"",gender,idUser,nama,noHp)
                     viewModel.editDatari(dataDiri)
-                    viewModel.postUserPreference(token,goal,height,weight,genderRadio,birthDateTv,level,alergiList,favoritFoodList)
+                    viewModel.postUserPreference(token,goal,height,weight,genderRadio,birthDateTv,level,desease,favoritFoodList)
 
                 }
 

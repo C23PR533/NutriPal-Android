@@ -1,7 +1,6 @@
 package com.example.nutripal.ui.home
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.nutripal.MainActivity
 import com.example.nutripal.R
 import com.example.nutripal.databinding.FragmentHomeBinding
 import com.example.nutripal.network.response.ApiResult
@@ -24,6 +22,7 @@ import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.auth.AuthActivity
 import com.example.nutripal.ui.detail.DetailActivity
+import com.example.nutripal.ui.userpreference.UserPreferencesActivity
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.Util.getCalories
 import com.example.nutripal.utils.Util.getDateNow
@@ -67,36 +66,43 @@ class HomeFragment : Fragment() {
         }
 
 
-        nutripalViewModel.getUserPreference(token.toString())
 
-        nutripalViewModel.userPreference.observe(viewLifecycleOwner) { preference ->
+        nutripalViewModel.getUserPreference(token.toString())
+        nutripalViewModel.userPreference.observe(viewLifecycleOwner) {preference->
             when (preference) {
+                is ApiResult.Loading -> {
+                    showDialogLoading(true)
+                }
+                is ApiResult.Error -> {
+                    Log.e("GAGAL","calorie: $")
+                    showDialogLoading(true)
+                    val intent = Intent(requireContext(),UserPreferencesActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
                 is ApiResult.Success -> {
+                    Log.e("SUKSES","calorie: $")
                     val result =  preference.data.listUserPreferences
                     val desease = convertListToString(result.disease)
                     val fav = convertListToString(result.favoriteFood)
                     pref.setDataPreference(
                         result.goals,result.weight,result.height,result.gender,result.birthdate,result.activityLevel,desease,fav
                     )
-                    pref.setCalorie( getHitungKalori(preference.data.listUserPreferences))
+                    val cal = getHitungKalori(preference.data.listUserPreferences)
+                    Log.e("CALORIE","calorie: $cal")
+                    pref.setCalorie( cal)
                     showDialogLoading(false)
                     nutripalViewModel.getHistoryAktifitas(token.toString(), getDateNow())
                 }
-
-                is ApiResult.Loading -> {
-                    showDialogLoading(true)
-                }
-
-                is ApiResult.Error -> {
-                    showDialogLoading(false)
-                }
             }
         }
+
         nutripalViewModel.history.observe(viewLifecycleOwner){history->
             when (history) {
                 is ApiResult.Success -> {
                     setupDashboard(history.data)
                     showDialogLoading(false)
+
                 }
                 is ApiResult.Loading -> {
                     showDialogLoading(true)
@@ -137,6 +143,7 @@ class HomeFragment : Fragment() {
                         }
                         showDialogLoading(false)
 
+
                     }
                     is ApiResult.Loading->{
                         showDialogLoading(true)
@@ -170,6 +177,10 @@ class HomeFragment : Fragment() {
 
 
     }
+
+
+
+
 
     private fun hideToolbar() {
         val toolbar = activity?.findViewById<Toolbar>(R.id.toolbar)
@@ -212,6 +223,7 @@ class HomeFragment : Fragment() {
 
     private fun getHitungKalori(preference: ListUserPreferences):Double{
          calorie = getCalories(preference)
+        Log.e("CALORI","$calorie")
         return calorie
     }
 
