@@ -9,9 +9,9 @@ import com.example.nutripal.databinding.ItemSearchBinding
 import com.example.nutripal.network.response.favorites.FavoriteFood
 
 class FoodFavoriteAdapter(
-    private val listFood:List<FavoriteFood>,
-    private val listner: FavoriteFoodsListener
-):RecyclerView.Adapter<FoodFavoriteAdapter.ViewHolder>() {
+    private val context: Context,
+    private val listFood:List<String>,
+    private val listner:FavoriteFoodsListener):RecyclerView.Adapter<FoodFavoriteAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemFavoriteBinding
@@ -24,15 +24,11 @@ class FoodFavoriteAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val food = listFood[position]
-        val calori = food.calories
-
         holder.binding.apply {
-            tvTitle.text = food.foodName
-            tvCal.text = "${calori} kkal"
-            tvNo.text = "${position+1}"
+            tvTitle.text = food
         }
         holder.itemView.setOnClickListener {
-            listner.onKlik(food.foodId)
+            listner.onKlik(food)
         }
     }
     class ViewHolder(val binding:ItemFavoriteBinding):RecyclerView.ViewHolder(binding.root)

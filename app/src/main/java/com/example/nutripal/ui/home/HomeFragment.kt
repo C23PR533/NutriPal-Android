@@ -98,6 +98,15 @@ class HomeFragment : Fragment() {
                     showDialogLoading(false)
                     nutripalViewModel.getHistoryAktifitas(token.toString(), getDateNow())
                 }
+
+                is ApiResult.Loading -> {
+                    showDialogLoading(true)
+                }
+
+                is ApiResult.Error -> {
+                    startActivity(Intent(requireContext(),UserPreferencesActivity::class.java))
+                    showDialogLoading(false)
+                }
             }
         }
 
