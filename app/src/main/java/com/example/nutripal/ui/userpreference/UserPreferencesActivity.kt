@@ -14,13 +14,23 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutripal.MainActivity
 import android.R
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.util.Log
+import android.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.databinding.ActivityUserPreferencesBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.datadiri.Data
 import com.example.nutripal.savepreference.PreferenceUser
+import com.example.nutripal.ui.detail.DetailActivity
+import com.example.nutripal.ui.search.SearchFoodAdapter
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.DialogUtil.showDialogSuccesError
 import com.example.nutripal.utils.Util.setupDatePicker
+import com.google.android.material.chip.Chip
 
 class UserPreferencesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserPreferencesBinding
@@ -56,6 +66,41 @@ class UserPreferencesActivity : AppCompatActivity() {
 
         val pref = PreferenceUser(this)
         val token = pref.getToken().toString()
+
+
+        binding.etSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()|| newText.isEmpty()){
+                    binding.rcListSearch.visibility = View.GONE
+                    setupRcListSearch(emptyList())
+                }else{
+                    viewModel.getSearchFood(newText)
+                    viewModel.searchFood.observe(this@UserPreferencesActivity){search->
+                        when(search){
+                            is ApiResult.Loading->{
+                            }
+                            is ApiResult.Error->{
+                            }
+                            is ApiResult.Success->{
+                                binding.rcListSearch.visibility = View.VISIBLE
+                                setupRcListSearch(search.data.data)
+                            }
+                        }
+                    }
+                }
+                return true
+            }
+        })
+        binding.etSearch.setOnCloseListener {
+            binding.rcListSearch.visibility = View.GONE
+            true
+        }
+
 
         viewModel.getDatadiri(token)
         viewModel.dataDiri.observe(this){dataDiri->
@@ -100,11 +145,11 @@ class UserPreferencesActivity : AppCompatActivity() {
             val listCbAlergi = listOf(
                 cbDiabetes,cbHipertensi,cbJantung,cbObesitas
             )
-            val listCbFoods = listOf(
-                cbAyam,cbGoreng,cbIkan,cbNasi,cbKue,cbTahu,cbSambal,cbBakar,cbMie,cbTelur,cbDaging,cbTumis,cbUdang,cbSayur,cbPisang,cbEs,cbSapi,cbPuding,cbBolu,cbBumbu
-            )
+//            val listCbFoods = listOf(
+//                cbAyam,cbGoreng,cbIkan,cbNasi,cbKue,cbTahu,cbSambal,cbBakar,cbMie,cbTelur,cbDaging,cbTumis,cbUdang,cbSayur,cbPisang,cbEs,cbSapi,cbPuding,cbBolu,cbBumbu
+//            )
             getCheckBoxAlergi(listCbAlergi)
-            getCheckBoxFood(listCbFoods)
+//            getCheckBoxFood(listCbFoods)
 
         }
         binding.apply {
@@ -112,7 +157,7 @@ class UserPreferencesActivity : AppCompatActivity() {
                 val radioGroup = genderRadioGroup
                 val selectedRadioButtonId = radioGroup.checkedRadioButtonId
                 val selectedRadioButton = findViewById<RadioButton>(selectedRadioButtonId)
-
+                val chip = getAllChipTexts()
                 if (etHeight.text.isNullOrEmpty()){
                     etHeight.error = "Insert your height"
                 }else if (etWeight.text.isNullOrEmpty()){
@@ -121,8 +166,10 @@ class UserPreferencesActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext,"Pilih Jenis Kelamin",Toast.LENGTH_SHORT).show()
                 }else if (date.text.isNullOrEmpty()){
                     Toast.makeText(applicationContext,"Isi Tanggal Lahir",Toast.LENGTH_SHORT).show()
-                }else if (favoritFoodList.size<5){
-                    Toast.makeText(applicationContext,"Pilih Minimal 3 Makanan Favorite",Toast.LENGTH_SHORT).show()
+                }else if (chip.size<5){
+                    Toast.makeText(applicationContext,"Pilih Minimal 5 Makanan Favorite",Toast.LENGTH_SHORT).show()
+                }else if (chip.size>10){
+                    Toast.makeText(applicationContext,"Pilih Maximal 10 Makanan Favorite",Toast.LENGTH_SHORT).show()
                 }else{
                     val height = etHeight.text.toString()
                     val weight = etWeight.text.toString()
@@ -130,9 +177,11 @@ class UserPreferencesActivity : AppCompatActivity() {
                     val birthDateTv = date.text.toString()
                     birthDate = birthDateTv
                     gender = genderRadio
+
+
                     val dataDiri = Data(birthDate,email,"",gender,idUser,nama,noHp)
                     viewModel.editDatari(dataDiri)
-                    viewModel.postUserPreference(token,goal,height,weight,genderRadio,birthDateTv,level,alergiList,favoritFoodList)
+                    viewModel.postUserPreference(token,goal,height,weight,genderRadio,birthDateTv,level,alergiList,chip)
 
                 }
 
@@ -143,6 +192,55 @@ class UserPreferencesActivity : AppCompatActivity() {
 
 
 
+    }
+    private fun getAllChipTexts(): List<String> {
+        val chipTexts = mutableListOf<String>()
+
+        val chipCount = binding.chipWrapper.childCount
+        for (i in 0 until chipCount) {
+            val chip = binding.chipWrapper.getChildAt(i) as Chip
+            chipTexts.add(chip.text.toString())
+        }
+
+        return chipTexts
+    }
+
+
+    fun addChip(text: String) {
+        val chip = Chip(this)
+        chip.text = text
+        chip.isCloseIconVisible = true
+        chip.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+        chip.setTextColor(
+            ContextCompat.getColor(this, R.color.black))
+
+        chip.setOnCloseIconClickListener {
+            // Menghapus Chip saat ikon close di klik
+            binding.chipWrapper.removeView(chip)
+        }
+
+        binding.chipWrapper.addView(chip)
+    }
+
+    private fun setupRcListSearch(listSearch:List<com.example.nutripal.network.response.search.Data>){
+        val adapter= SearchFoodAdapter(listSearch,object: SearchFoodAdapter.ListenerSearch{
+            override fun onKlik(food: com.example.nutripal.network.response.search.Data) {
+
+                val listChip = getAllChipTexts()
+                if (listChip.contains(food.foodName)){
+                    Toast.makeText(this@UserPreferencesActivity,"Makanan ${food.foodName} sudah ada",Toast.LENGTH_SHORT).show()
+                }else{
+                    addChip(food.foodName)
+                    Toast.makeText(this@UserPreferencesActivity,"add ${food.foodName}",Toast.LENGTH_SHORT).show()
+                }
+
+
+            }
+        })
+        binding.apply {
+            rcListSearch.adapter = adapter
+            rcListSearch.layoutManager = LinearLayoutManager(this@UserPreferencesActivity)
+        }
     }
 
     private fun getCheckBoxAlergi(cb:List<CheckBox>){

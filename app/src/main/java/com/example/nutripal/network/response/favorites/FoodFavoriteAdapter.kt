@@ -12,7 +12,7 @@ import com.example.nutripal.network.response.food.Serving
 
 class FoodFavoriteAdapter(
     private val context: Context,
-    private val listFood:List<FavoriteFood>,
+    private val listFood:List<String>,
     private val listner:FavoriteFoodsListener):RecyclerView.Adapter<FoodFavoriteAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,14 +26,11 @@ class FoodFavoriteAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val food = listFood[position]
-        val calori = food.calories
-
         holder.binding.apply {
-            tvTitle.text = food.foodName
-            tvCal.text = "${calori} kkal"
+            tvTitle.text = food
         }
         holder.itemView.setOnClickListener {
-            listner.onKlik(food.foodId)
+            listner.onKlik(food)
         }
     }
     class ViewHolder(val binding:ItemSearchBinding):RecyclerView.ViewHolder(binding.root)

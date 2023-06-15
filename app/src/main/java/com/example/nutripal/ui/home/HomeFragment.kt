@@ -24,6 +24,7 @@ import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.auth.AuthActivity
 import com.example.nutripal.ui.detail.DetailActivity
+import com.example.nutripal.ui.userpreference.UserPreferencesActivity
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.Util.getCalories
 import com.example.nutripal.utils.Util.getDateNow
@@ -88,6 +89,7 @@ class HomeFragment : Fragment() {
                 }
 
                 is ApiResult.Error -> {
+                    startActivity(Intent(requireContext(),UserPreferencesActivity::class.java))
                     showDialogLoading(false)
                 }
             }
