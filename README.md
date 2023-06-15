@@ -1,15 +1,16 @@
 # NutriPal-Android
 Nutripal App is Application that helps to monitor the daily calorie intake of users and recommends food and drinks that meet their nutritional needs. With this app, users can easily track their calorie intake and receive personalized recommendations for healthy and balanced meals based on their favorite type of cuisine that is appropriate with their illness history. The app also provides detailed nutritional information for each food and drink, allowing users to make informed choices and maintain a healthy and balanced diet.
 The Features :
-*Login/Register
-*User Preference FIeld
-*Dashboard
-*Food recommendations based on user preferences
-*Search Food
-*Detail Food
-*Tracking Food
-*Favorite Food
-*Profile  - Edit Profile
+
+* Login/Register
+* User Preference FIeld
+* Dashboard
+* Food recommendations based on user preferences
+* Search Food
+* Detail Food
+* Tracking Food
+* Favorite Food
+* Profile  - Edit Profile
           - Edit User Preference
  
  ## Screenshot
