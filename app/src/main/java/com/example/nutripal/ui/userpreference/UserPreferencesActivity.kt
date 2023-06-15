@@ -16,11 +16,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutripal.MainActivity
-import android.R
-import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.util.Log
 import android.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager

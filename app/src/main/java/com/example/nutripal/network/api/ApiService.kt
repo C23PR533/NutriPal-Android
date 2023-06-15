@@ -97,7 +97,6 @@ interface ApiService {
     @FormUrlEncoded
     @POST("userpreferences")
     suspend fun postUserPreferences(
-        @Header("Authorization") token: String,
         @Field("id_user")id_user:String,
         @Field("goals")goals:String,
         @Field("height")height:String,

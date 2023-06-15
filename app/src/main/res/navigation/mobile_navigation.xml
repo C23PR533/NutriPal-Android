@@ -17,6 +17,13 @@
             app:popUpToInclusive="true"
             app:popUpTo="@id/navigation_home"
             />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_search"
+            app:destination="@id/navigation_search"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/navigation_home"
+            />
     </fragment>
 
     <fragment

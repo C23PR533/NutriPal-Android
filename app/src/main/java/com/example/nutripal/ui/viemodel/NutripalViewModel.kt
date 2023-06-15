@@ -321,12 +321,12 @@ class NutripalViewModel: ViewModel() {
 
     }
 
-    fun postUserPreference(token: String,userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
+    fun postUserPreference(userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
         _responPreference.value = ApiResult.Loading
         viewModelScope.launch {
             try {
                 val response = ApiConfig.getApiService().postUserPreferences(
-                    token,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
+                    userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
                 )
                 if (response.isSuccessful){
 

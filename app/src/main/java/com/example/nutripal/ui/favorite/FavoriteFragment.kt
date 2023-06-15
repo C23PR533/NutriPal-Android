@@ -67,7 +67,7 @@ class FavoriteFragment : Fragment() {
     }
     private fun setupRecylcerFoods(foods: Data) {
         val adapter =
-            FoodFavoriteAdapter(foods.favoriteFoods, object : FoodFavoriteAdapter.FavoriteFoodsListener {
+            FoodFavoriteAdapter(requireContext(),foods.favoriteFoods, object : FoodFavoriteAdapter.FavoriteFoodsListener {
                 override fun onKlik(id: String) {
                     Log.e("KLIK",id)
                 }

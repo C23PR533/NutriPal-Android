@@ -187,6 +187,9 @@ class HomeFragment : Fragment() {
         binding.circleImageView.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_profile)
         }
+        binding.etSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_search)
+        }
 
 
     }

@@ -259,11 +259,12 @@
                 android:layout_marginHorizontal="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
-                <EditText
+                <TextView
+                    android:id="@+id/etSearch"
                     android:background="@null"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:enabled="false"
+                    android:gravity="center_vertical"
                     android:hint="search"
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_search_blue"

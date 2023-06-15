@@ -26,6 +26,7 @@ class FoodFavoriteAdapter(
         val food = listFood[position]
         holder.binding.apply {
             tvTitle.text = food
+            tvNo.text = "${position+1}"
         }
         holder.itemView.setOnClickListener {
             listner.onKlik(food)
