@@ -65,7 +65,7 @@ interface ApiService {
 
     @GET("userpreferences/{id_user}")
     suspend fun getUserPreferences(
-        @Header("Authorization") token: String,
+//        @Header("Authorization") token: String,
         @Path("id_user")id_user:String
     ): Response<ResponseUserPreferences>
 

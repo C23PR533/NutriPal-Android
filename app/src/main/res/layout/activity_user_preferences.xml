@@ -219,7 +219,7 @@
                         android:id="@+id/cbHipertensi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="hypertension" />
+                        android:text="Hypertension" />
                 </TableRow>
             </TableLayout>
             <!--        checkbox alergi-->

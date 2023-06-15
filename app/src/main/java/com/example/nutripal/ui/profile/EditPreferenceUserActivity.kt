@@ -55,7 +55,7 @@ class EditPreferenceUserActivity : AppCompatActivity() {
 
 
 
-        nutripalviewModel.getUserPreference("Bearer ${auth}",token)
+        nutripalviewModel.getUserPreference(token)
         nutripalviewModel.userPreference.observe(this){userpreference->
             when(userpreference){
                 is ApiResult.Loading->{

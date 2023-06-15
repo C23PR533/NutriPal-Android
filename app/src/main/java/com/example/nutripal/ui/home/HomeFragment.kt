@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }else{
-            nutripalViewModel.getUserPreference("Bearer ${auth}",token.toString())
+            nutripalViewModel.getUserPreference(token.toString())
         }
 
 

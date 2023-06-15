@@ -21,6 +21,7 @@ import com.example.nutripal.R
 import com.example.nutripal.databinding.ActivityDetailBinding
 import com.example.nutripal.network.response.ApiResult
 import com.example.nutripal.network.response.foodid.ResponseFoodId
+import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import com.example.nutripal.savepreference.PreferenceUser
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import java.text.SimpleDateFormat
@@ -118,6 +119,7 @@ class DetailActivity : AppCompatActivity() {
                     setupInformationNutirition(food.data)
                     foodId = food.data
                     nutripalViewModel.getFoodFavorite(token,foodId.data[0].foodId)
+                    nutripalViewModel.getUserPreference(token)
                 }
             }
         }
@@ -137,6 +139,22 @@ class DetailActivity : AppCompatActivity() {
 
                     showDialogLoading(false)
 
+                }
+            }
+        }
+
+
+        nutripalViewModel.userPreference.observe(this){prefrence->
+            when(prefrence){
+                is ApiResult.Loading->{
+                    showDialogLoading(true)
+                }
+                is ApiResult.Error->{
+                    showDialogLoading(false)
+                }
+                is ApiResult.Success->{
+                    detectDesease(prefrence.data.listUserPreferences.disease,foodId)
+                    showDialogLoading(false)
                 }
             }
         }
@@ -179,6 +197,53 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
+    private fun detectDesease(desease:List<String>,food:ResponseFoodId){
+        if(desease.contains("Diabetes")){
+            Log.e("DESEASE","Diabetes")
+            if (food.data[0].servings.serving[0].sugar.isNotBlank()){
+                val sugar = food.data[0].servings.serving[0].sugar.toDouble()
+                if (sugar>50){
+                    showMessage("Gula Terlalau Banyak")
+                }
+            }
+
+        }else if (desease.contains("Obesity")){
+            if (food.data[0].servings.serving[0].fat.isNotBlank()){
+                Log.e("DESEASE","Obesity")
+                val lemak =  food.data[0].servings.serving[0].fat.toDouble()
+
+                if (lemak>3){
+                    showMessage("Lemak Terlalau Banyak")
+                }
+            }
+
+        }else if (desease.contains("Heart")){
+            if (food.data[0].servings.serving[0].cholesterol.isNotBlank()){
+                Log.e("DESEASE","Heart")
+                val cholestrol =  food.data[0].servings.serving[0].cholesterol.toDouble()
+                if (cholestrol>3){
+                    showMessage("Kolestrol Terlalau Banyak")
+                }
+            }
+
+        }else if (desease.contains("Hypertension")){
+            Log.e("DESEASE","Hypertension")
+            if (food.data[0].servings.serving[0].saturatedFat.isNotBlank()){
+                val lemakJenuh =  food.data[0].servings.serving[0].saturatedFat.toDouble()
+                if (lemakJenuh>3){
+                    showMessage("Kolestrol Terlalau Banyak")
+                }
+            }
+
+        }
+    }
+
+    private fun showMessage(message: String) {
+        binding.apply {
+            tvMessage.text = message
+            vBgMessage.visibility = View.VISIBLE
+        }
+    }
 
 
     private fun setupDatePicker() {

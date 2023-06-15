@@ -114,7 +114,7 @@ class LoginFragment : Fragment() {
                     Log.e("AUTH",login.data.data.idToken)
                     Log.e("AUTH",auth)
                     showDialogLoading(false)
-                    viewModel.getUserPreference("Bearer ${auth}",uid)
+                    viewModel.getUserPreference(uid)
                 }
             }
         }

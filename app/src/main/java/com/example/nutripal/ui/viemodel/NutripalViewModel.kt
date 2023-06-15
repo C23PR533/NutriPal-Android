@@ -303,11 +303,11 @@ class NutripalViewModel: ViewModel() {
 //        },2000)
 //    }
 
-      fun getUserPreference(token: String,id_user:String){
+      fun getUserPreference(id_user:String){
         viewModelScope.launch {
             _userPrefernce.value = ApiResult.Loading
             try {
-                val response = ApiConfig.getApiService().getUserPreferences(token,id_user)
+                val response = ApiConfig.getApiService().getUserPreferences(id_user)
                 if (response.isSuccessful){
                     val result = response.body()!!
                     _userPrefernce.value = ApiResult.Success(result)

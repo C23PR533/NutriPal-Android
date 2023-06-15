@@ -266,6 +266,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:hint="search"
+                    android:textSize="18sp"
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_search_blue"
                     android:paddingStart="20dp" />
