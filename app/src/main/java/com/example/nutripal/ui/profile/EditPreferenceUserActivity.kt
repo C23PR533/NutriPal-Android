@@ -130,7 +130,6 @@ class EditPreferenceUserActivity : AppCompatActivity() {
                     }
                     setupcbDeseaseFromDb(result)
                     setupChipFavorite(result)
-                    setupChipFavorite(result)
                     showDialogLoading(false)
                 }
             }

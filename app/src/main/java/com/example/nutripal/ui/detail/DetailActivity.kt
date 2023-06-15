@@ -203,7 +203,7 @@ class DetailActivity : AppCompatActivity() {
             if (food.data[0].servings.serving[0].sugar.isNotBlank()){
                 val sugar = food.data[0].servings.serving[0].sugar.toDouble()
                 if (sugar>50){
-                    showMessage("Gula Terlalau Banyak")
+                    showMessage("Gula Terlalu Banyak")
                 }
             }
 
@@ -213,7 +213,7 @@ class DetailActivity : AppCompatActivity() {
                 val lemak =  food.data[0].servings.serving[0].fat.toDouble()
 
                 if (lemak>3){
-                    showMessage("Lemak Terlalau Banyak")
+                    showMessage("Lemak Terlalu Banyak")
                 }
             }
 
@@ -222,7 +222,7 @@ class DetailActivity : AppCompatActivity() {
                 Log.e("DESEASE","Heart")
                 val cholestrol =  food.data[0].servings.serving[0].cholesterol.toDouble()
                 if (cholestrol>3){
-                    showMessage("Kolestrol Terlalau Banyak")
+                    showMessage("Kolestrol Terlalu Banyak")
                 }
             }
 
@@ -231,7 +231,7 @@ class DetailActivity : AppCompatActivity() {
             if (food.data[0].servings.serving[0].saturatedFat.isNotBlank()){
                 val lemakJenuh =  food.data[0].servings.serving[0].saturatedFat.toDouble()
                 if (lemakJenuh>3){
-                    showMessage("Kolestrol Terlalau Banyak")
+                    showMessage("Kolestrol Terlalu Banyak")
                 }
             }
 
