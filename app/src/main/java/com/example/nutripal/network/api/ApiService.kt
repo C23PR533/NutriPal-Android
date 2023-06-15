@@ -110,7 +110,6 @@ interface ApiService {
     @FormUrlEncoded
     @PUT("userpreferences/{id_user}")
     suspend fun editUserPreferences(
-        @Header("Authorization") token: String,
         @Path("id_user")id_user:String,
         @Field("id_user")id:String,
         @Field("goals")goals:String,

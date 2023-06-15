@@ -346,11 +346,11 @@ class NutripalViewModel: ViewModel() {
         }
     }
 
-    fun editUserPreference(token: String,userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
+    fun editUserPreference(userId:String,goal:String,height:String,weight:String,gender:String,birthDate:String,activityLevel:String,disease:List<String>,favFood:List<String>){
         _responPreference.value = ApiResult.Loading
         viewModelScope.launch {
             val response = ApiConfig.getApiService().editUserPreferences(
-                token,userId,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
+               userId,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
             )
             try {
                 if (response.isSuccessful){

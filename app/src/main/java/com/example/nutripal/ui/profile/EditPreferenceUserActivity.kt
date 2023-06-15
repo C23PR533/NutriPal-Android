@@ -4,6 +4,7 @@ package com.example.nutripal.ui.profile
 import android.R
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,18 +12,24 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.RadioButton
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutripal.databinding.ActivityEditPreferenceUserBinding
 import com.example.nutripal.network.response.ApiResult
+import com.example.nutripal.network.response.search.Data
 import com.example.nutripal.network.response.userpreference.ListUserPreferences
 import com.example.nutripal.savepreference.PreferenceUser
+import com.example.nutripal.ui.search.SearchFoodAdapter
 import com.example.nutripal.ui.userpreference.CustomSpinerLevelActivity
 import com.example.nutripal.ui.userpreference.SpinerItemLevelActivity
 import com.example.nutripal.ui.userpreference.SpinerItemWeightGoal
 import com.example.nutripal.ui.viemodel.NutripalViewModel
 import com.example.nutripal.utils.Util
+import com.google.android.material.chip.Chip
 
 class EditPreferenceUserActivity : AppCompatActivity() {
 
@@ -52,6 +59,38 @@ class EditPreferenceUserActivity : AppCompatActivity() {
         setupSpinerLevelActivity()
         setupDialogLoading()
 
+        binding.etSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()|| newText.isEmpty()){
+                    binding.rcListSearch.visibility = View.GONE
+                    setupRcListSearch(emptyList())
+                }else{
+                    nutripalviewModel.getSearchFood(newText)
+                    nutripalviewModel.searchFood.observe(this@EditPreferenceUserActivity){search->
+                        when(search){
+                            is ApiResult.Loading->{
+                            }
+                            is ApiResult.Error->{
+                            }
+                            is ApiResult.Success->{
+                                binding.rcListSearch.visibility = View.VISIBLE
+                                setupRcListSearch(search.data.data)
+                            }
+                        }
+                    }
+                }
+                return true
+            }
+        })
+        binding.etSearch.setOnCloseListener {
+            binding.rcListSearch.visibility = View.GONE
+            true
+        }
 
 
 
@@ -90,7 +129,8 @@ class EditPreferenceUserActivity : AppCompatActivity() {
                         etWeight.setText(result.weight)
                     }
                     setupcbDeseaseFromDb(result)
-                    setupCbFromDb(result)
+                    setupChipFavorite(result)
+                    setupChipFavorite(result)
                     showDialogLoading(false)
                 }
             }
@@ -122,13 +162,14 @@ class EditPreferenceUserActivity : AppCompatActivity() {
             btnSave.setOnClickListener {
                 val selectedRadioButtonId = radioGroup.checkedRadioButtonId
                 val selectedRadioButton = findViewById<RadioButton>(selectedRadioButtonId)
+                val chip = getAllChipTexts()
                 if (etHeight.text.isNullOrEmpty()){
                     etHeight.error = "Insert your height"
                 }else if (etWeight.text.isNullOrEmpty()){
                     etWeight.error = "Insert your weight"
                 }else if (date.text.isNullOrEmpty()){
                     Toast.makeText(applicationContext,"Isi Tanggal Lahir",Toast.LENGTH_SHORT).show()
-                }else if (favoritFoodList.size<5){
+                }else if (chip.size<5){
                     Toast.makeText(applicationContext,"Pilih Minimal 5 Makanan Favorite",Toast.LENGTH_SHORT).show()
                 }else{
                     val height = etHeight.text.toString()
@@ -137,7 +178,7 @@ class EditPreferenceUserActivity : AppCompatActivity() {
                      genderRadio = selectedRadioButton.text.toString()
                     Log.e("AUTH",auth)
                     nutripalviewModel.editUserPreference(
-                        "Bearer ${auth}",
+
                         token,
                         goal,
                         height,
@@ -146,7 +187,7 @@ class EditPreferenceUserActivity : AppCompatActivity() {
                         birthDateTv,
                         level,
                         alergiList,
-                        favoritFoodList
+                        chip
                     )
                 }
             }
@@ -154,11 +195,9 @@ class EditPreferenceUserActivity : AppCompatActivity() {
             val listCbAlergi = listOf(
                 cbDiabetes,cbHipertensi,cbJantung,cbObesitas
             )
-            val listCbFoods = listOf(
-                cbAyam,cbGoreng,cbIkan,cbNasi,cbKue,cbTahu,cbSambal,cbBakar,cbMie,cbTelur,cbDaging,cbTumis,cbUdang,cbSayur,cbPisang,cbEs,cbSapi,cbPuding,cbBolu,cbBumbu
-            )
+
             getCheckBoxAlergi(listCbAlergi)
-            getCheckBoxFood(listCbFoods)
+
 
         }
 
@@ -168,74 +207,60 @@ class EditPreferenceUserActivity : AppCompatActivity() {
 
     }
 
-    private fun setupCbFromDb(result: ListUserPreferences){
+    private fun setupChipFavorite(result: ListUserPreferences) {
+        val foodFav = result.favoriteFood
+        for (i in foodFav.indices){
+            addChip(foodFav[i])
+        }
+    }
+    fun addChip(text: String) {
+        val chip = Chip(this)
+        chip.text = text
+        chip.isCloseIconVisible = true
+        chip.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+        chip.setTextColor(
+            ContextCompat.getColor(this, R.color.black))
+
+        chip.setOnCloseIconClickListener {
+            // Menghapus Chip saat ikon close di klik
+            binding.chipWrapper.removeView(chip)
+        }
+
+        binding.chipWrapper.addView(chip)
+    }
+    private fun getAllChipTexts(): List<String> {
+        val chipTexts = mutableListOf<String>()
+
+        val chipCount = binding.chipWrapper.childCount
+        for (i in 0 until chipCount) {
+            val chip = binding.chipWrapper.getChildAt(i) as Chip
+            chipTexts.add(chip.text.toString())
+        }
+
+        return chipTexts
+    }
+    private fun setupRcListSearch(listSearch:List<com.example.nutripal.network.response.search.Data>){
+        val adapter= SearchFoodAdapter(listSearch,object: SearchFoodAdapter.ListenerSearch{
+            override fun onKlik(food: Data) {
+
+                val listChip = getAllChipTexts()
+                if (listChip.contains(food.foodName)){
+                    Toast.makeText(this@EditPreferenceUserActivity,"Makanan ${food.foodName} sudah ada",Toast.LENGTH_SHORT).show()
+                }else{
+                    addChip(food.foodName)
+                    Toast.makeText(this@EditPreferenceUserActivity,"add ${food.foodName}",Toast.LENGTH_SHORT).show()
+                }
+
+
+            }
+        })
         binding.apply {
-            val favoriteFoods = result.favoriteFood
-
-            if ("Ayam" in favoriteFoods) {
-                cbAyam.isChecked = true
-            }
-            if ("Goreng" in favoriteFoods) {
-                cbGoreng.isChecked = true
-            }
-            if ("Ikan" in favoriteFoods) {
-                cbIkan.isChecked = true
-            }
-            if ("Nasi" in favoriteFoods) {
-                cbNasi.isChecked = true
-            }
-            if ("Kue" in favoriteFoods) {
-                cbKue.isChecked = true
-            }
-            if ("Tahu" in favoriteFoods) {
-                cbTahu.isChecked = true
-            }
-            if ("Sambal" in favoriteFoods) {
-                cbSambal.isChecked = true
-            }
-            if ("Bakar" in favoriteFoods) {
-                cbBakar.isChecked = true
-            }
-            if ("Mie" in favoriteFoods) {
-                cbMie.isChecked = true
-            }
-            if ("Telur" in favoriteFoods) {
-                cbTelur.isChecked = true
-            }
-            if ("Daging" in favoriteFoods) {
-                cbDaging.isChecked = true
-            }
-            if ("Udang" in favoriteFoods) {
-                cbUdang.isChecked = true
-            }
-            if ("Tumis" in favoriteFoods) {
-                cbTumis.isChecked = true
-            }
-            if ("Pisang" in favoriteFoods) {
-                cbPisang.isChecked = true
-            }
-            if ("Es" in favoriteFoods) {
-                cbEs.isChecked = true
-            }
-            if ("Sayur" in favoriteFoods) {
-                cbSayur.isChecked = true
-            }
-            if ("Sapi" in favoriteFoods) {
-                cbSapi.isChecked = true
-            }
-            if ("Pudding" in favoriteFoods) {
-                cbPuding.isChecked = true
-            }
-            if ("Bolu" in favoriteFoods) {
-                cbBolu.isChecked = true
-            }
-            if ("Bumbu" in favoriteFoods) {
-                cbBumbu.isChecked = true
-            }
-
-
+            rcListSearch.adapter = adapter
+            rcListSearch.layoutManager = LinearLayoutManager(this@EditPreferenceUserActivity)
         }
     }
+
+
     private fun setupcbDeseaseFromDb(result:ListUserPreferences){
         binding.apply {
             val diseases = result.disease
@@ -267,19 +292,7 @@ class EditPreferenceUserActivity : AppCompatActivity() {
             }
         }
     }
-    private fun getCheckBoxFood(cb:List<CheckBox>){
-        for (i in cb.indices){
-            cb[i].setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked){
-                    val text = cb[i].text.toString()
-                    favoritFoodList.add(text)
-                }else{
-                    val text = cb[i].text.toString()
-                    favoritFoodList.remove(text)
-                }
-            }
-        }
-    }
+
     private fun setupSpinerLevelActivity() {
         val spinerItemLevelActivity= listOf(
             SpinerItemLevelActivity(1.2,"Sedentary|(tidak banyak bergerak)"),
