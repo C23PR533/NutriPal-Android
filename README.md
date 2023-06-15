@@ -36,8 +36,8 @@ User can edit/update their profile and user preference data
 
 ## third library
 * Dahsboard using cirucular progressbar from [Here](https://github.com/lopspower/CircularProgressBar)
-* Image picker from [https://github.com/Dhaval2404/ImagePicker]
-* Communication with API using Retrofit[https://github.com/square/retrofit]
+* Image picker from [Here](https://github.com/Dhaval2404/ImagePicker)
+* Communication with API using Retrofit[Here](https://github.com/square/retrofit)
 
 
 
