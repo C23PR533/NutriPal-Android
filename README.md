@@ -12,28 +12,28 @@ The Features :
 *Profile  - Edit Profile
           - Edit User Preference
  
- ##Screenshot
+ ## Screenshot
  ![Group 1 (2)](https://github.com/C23PR533/NutriPal-Android/assets/82020550/250a452f-732c-4646-ade2-ccb30d64ad26)
 
-##Features
-###Login/Register
+## Features
+### Login/Register
 Login and Register using Firebase Authentication (Email adn Password)
-###User Preference Field
+### User Preference Field
 Field For the user to be able to calculate the number of daily calories. and as a reference for system recommendations
-###Dashboard
+### Dashboard
 Status of calories consumed by the user based on the current date
-###Search Food
+### Search Food
 the user can search for the food he wants
-###Detail Food
+### Detail Food
 the user can see the details of the food, what the nutrition is, and will get a warning notification if the nutritional content violates the taboos of the disease that has been filled in the userpreference field
-###Tracking Food
+### Tracking Food
 Users can enter food into their daily diet, and it will be recorded on the food tracking page, and users can see the history of calories they have eaten on past dates.
-###Favorite Food
+### Favorite Food
 User can see all of the their favorite food
-###Profile
+### Profile
 User can edit/update their profile and user preference data
 
-##third library
+## third library
 *Dahsboard using cirucular progressbar from [https://github.com/lopspower/CircularProgressBar]
 *Image picker from [https://github.com/Dhaval2404/ImagePicker]
 *Communication with API using Retrofit[https://github.com/square/retrofit]
