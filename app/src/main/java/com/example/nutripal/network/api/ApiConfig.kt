@@ -24,7 +24,7 @@ class ApiConfig {
 
         fun getApiService(): ApiService {
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://nutripal-api-beta-v1-dt3pitfd4q-et.a.run.app/")
+                .baseUrl("https://nutripal-api-v6seqii7ka-et.a.run.app/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
