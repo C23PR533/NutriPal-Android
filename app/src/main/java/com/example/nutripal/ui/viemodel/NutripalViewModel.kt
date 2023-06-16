@@ -326,7 +326,7 @@ class NutripalViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val response = ApiConfig.getApiService().postUserPreferences(
-                    userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
+                    userId,userId,goal,height,weight,birthDate,gender,activityLevel,disease,favFood
                 )
                 if (response.isSuccessful){
 

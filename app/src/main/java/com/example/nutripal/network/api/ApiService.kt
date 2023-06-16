@@ -95,8 +95,9 @@ interface ApiService {
     ):Response<ResponsStatus>
 
     @FormUrlEncoded
-    @POST("userpreferences")
+    @POST("userpreferences/{id}")
     suspend fun postUserPreferences(
+        @Path("id")id:String,
         @Field("id_user")id_user:String,
         @Field("goals")goals:String,
         @Field("height")height:String,
